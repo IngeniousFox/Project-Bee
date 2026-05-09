@@ -443,8 +443,8 @@ namespace juego {
         respetar las medidas indicadas previamente.
 
         *******************************************************************************************/
-        tablero ()->equipa (LadoTablero::Izquierda, L"Devils", carpeta_activos_juego + "escudo_devils.png");
-        tablero ()->equipa (LadoTablero::Derecha,   L"Tusk",   carpeta_activos_juego + "escudo_tusk.png");
+        tablero ()->equipa (LadoTablero::Izquierda, L"Abejas",  carpeta_activos_juego + "escudo_devils.png");
+        tablero ()->equipa (LadoTablero::Derecha,   L"Arañas", carpeta_activos_juego + "escudo_tusk.png");
         /*******************************************************************************************
         /******************************************************************************************/
         //
@@ -535,50 +535,40 @@ namespace juego {
 
         *******************************************************************************************/
         //
-        Miner  = new ActorPersonaje {this, LadoTablero::Izquierda, 0, L"Miner"};
-        Male   = new ActorPersonaje {this, LadoTablero::Izquierda, 1, L"Male"};
-        Patrek = new ActorPersonaje {this, LadoTablero::Izquierda, 2, L"Patrek"};
-        Pirate = new ActorPersonaje {this, LadoTablero::Izquierda, 3, L"Pirate"};
-        Aristo = new ActorPersonaje {this, LadoTablero::Derecha,   0, L"Aristo"};
-        Harja  = new ActorPersonaje {this, LadoTablero::Derecha,   1, L"Harja"};
-        Hunter = new ActorPersonaje {this, LadoTablero::Derecha,   2, L"Hunter"};
-        Thief  = new ActorPersonaje {this, LadoTablero::Derecha,   3, L"Thief"};
+        AbejaReina       = new ActorPersonaje {this, LadoTablero::Izquierda, 0, L"Abeja Reina"};
+        AbejaGuardia     = new ActorPersonaje {this, LadoTablero::Izquierda, 1, L"Abeja Guardia"};
+        AbejaExploradora = new ActorPersonaje {this, LadoTablero::Izquierda, 2, L"Exploradora"};
+        AranaReina       = new ActorPersonaje {this, LadoTablero::Derecha,   0, L"Araña Reina"};
+        Avispa           = new ActorPersonaje {this, LadoTablero::Derecha,   1, L"Avispa"};
+        AranaCazadora    = new ActorPersonaje {this, LadoTablero::Derecha,   2, L"Araña Cazadora"};
         //
-        Miner ->ponArchivoRetrato (carpeta_retratos_juego + "miner1_75.png");
-        Male  ->ponArchivoRetrato (carpeta_retratos_juego + "male1_75.png");
-        Patrek->ponArchivoRetrato (carpeta_retratos_juego + "patrek_75.png");
-        Pirate->ponArchivoRetrato (carpeta_retratos_juego + "pirate1_75.png");
-        Aristo->ponArchivoRetrato (carpeta_retratos_juego + "aristocrat_75.png");
-        Harja ->ponArchivoRetrato (carpeta_retratos_juego + "harja_75.png");
-        Hunter->ponArchivoRetrato (carpeta_retratos_juego + "Hunter_75.png");
-        Thief ->ponArchivoRetrato (carpeta_retratos_juego + "thief2_75.png");
+        AbejaReina      ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee01_Queen.png");
+        AbejaGuardia    ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee02_Guard.png");
+        AbejaExploradora->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee03_Explorer.png");
+        AranaReina      ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider01_Queen.png");
+        Avispa          ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider02_Avispa.png");
+        AranaCazadora   ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider01_Queen_test.png");
         //
-        Miner ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
-        Male  ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
-        Patrek->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
-        Pirate->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
-        Aristo->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
-        Harja ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
-        Hunter->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
-        Thief ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
+        AbejaReina      ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
+        AbejaGuardia    ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
+        AbejaExploradora->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
+        AranaReina      ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
+        Avispa          ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
+        AranaCazadora   ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
         //
-        Miner ->ponIniciativa (20);
-        Male  ->ponIniciativa (19);
-        Patrek->ponIniciativa (18);
-        Pirate->ponIniciativa (17);
-        Aristo->ponIniciativa (20);
-        Harja ->ponIniciativa (19);
-        Hunter->ponIniciativa (18);
-        Thief ->ponIniciativa (17);
+        AbejaReina      ->ponIniciativa (20);
+        AbejaGuardia    ->ponIniciativa (19);
+        AbejaExploradora->ponIniciativa (18);
+        AranaReina      ->ponIniciativa (20);
+        Avispa          ->ponIniciativa (19);
+        AranaCazadora   ->ponIniciativa (18);
         //
-        agregaPersonaje (Miner);
-        agregaPersonaje (Male);
-        agregaPersonaje (Patrek);
-        agregaPersonaje (Pirate);
-        agregaPersonaje (Aristo);
-        agregaPersonaje (Harja);
-        agregaPersonaje (Hunter);
-        agregaPersonaje (Thief);
+        agregaPersonaje (AbejaReina);
+        agregaPersonaje (AbejaGuardia);
+        agregaPersonaje (AbejaExploradora);
+        agregaPersonaje (AranaReina);
+        agregaPersonaje (Avispa);
+        agregaPersonaje (AranaCazadora);
         //
         /*******************************************************************************************
         /******************************************************************************************/
@@ -823,41 +813,33 @@ namespace juego {
 
         *******************************************************************************************/
         //
-        Miner ->agregaHabilidad (ataqueEspadaNormal);
-        Miner ->agregaHabilidad (ataqueArco);
-        Miner ->agregaHabilidad (ataqueEspadaPoderoso);
-        Miner ->agregaHabilidad (defensaFerrea);
+        AbejaReina      ->agregaHabilidad (ataqueEspadaNormal);
+        AbejaReina      ->agregaHabilidad (ataqueArco);
+        AbejaReina      ->agregaHabilidad (ataqueEspadaPoderoso);
+        AbejaReina      ->agregaHabilidad (defensaFerrea);
         //
-        Male  ->agregaHabilidad (ataqueEspadaNormal);
-        Male  ->agregaHabilidad (curacionSimple);
-        Male  ->agregaHabilidad (curacionGrupo);
-        Male  ->agregaHabilidad (proyectilMagico);
+        AbejaGuardia    ->agregaHabilidad (ataqueEspadaNormal);
+        AbejaGuardia    ->agregaHabilidad (curacionSimple);
+        AbejaGuardia    ->agregaHabilidad (curacionGrupo);
+        AbejaGuardia    ->agregaHabilidad (proyectilMagico);
         //
-        Patrek->agregaHabilidad (ataqueEspadaNormal);
-        Patrek->agregaHabilidad (proyectilMagico);
-        Patrek->agregaHabilidad (bolaFuego);
+        AbejaExploradora->agregaHabilidad (ataqueEspadaNormal);
+        AbejaExploradora->agregaHabilidad (ataqueArco);
+        AbejaExploradora->agregaHabilidad (ataqueEspadaPoderoso);
         //
-        Pirate->agregaHabilidad (ataqueEspadaNormal);
-        Pirate->agregaHabilidad (ataqueArco);
-        Pirate->agregaHabilidad (ataqueEspadaPoderoso);
+        AranaReina      ->agregaHabilidad (ataqueEspadaNormal);
+        AranaReina      ->agregaHabilidad (ataqueArco);
+        AranaReina      ->agregaHabilidad (ataqueEspadaPoderoso);
+        AranaReina      ->agregaHabilidad (defensaFerrea);
         //
-        Aristo->agregaHabilidad (ataqueEspadaNormal);
-        Aristo->agregaHabilidad (ataqueArco);
-        Aristo->agregaHabilidad (ataqueEspadaPoderoso);
-        Aristo->agregaHabilidad (defensaFerrea);
+        Avispa          ->agregaHabilidad (ataqueEspadaNormal);
+        Avispa          ->agregaHabilidad (curacionSimple);
+        Avispa          ->agregaHabilidad (curacionGrupo);
+        Avispa          ->agregaHabilidad (proyectilMagico);
         //
-        Harja ->agregaHabilidad (ataqueEspadaNormal);
-        Harja ->agregaHabilidad (curacionSimple);
-        Harja ->agregaHabilidad (curacionGrupo);
-        Harja ->agregaHabilidad (proyectilMagico);
-        //
-        Hunter->agregaHabilidad (ataqueEspadaNormal);
-        Hunter->agregaHabilidad (proyectilMagico);
-        Hunter->agregaHabilidad (bolaFuego);
-        //
-        Thief ->agregaHabilidad (ataqueEspadaNormal);
-        Thief ->agregaHabilidad (ataqueArco);
-        Thief ->agregaHabilidad (ataqueEspadaPoderoso);
+        AranaCazadora   ->agregaHabilidad (ataqueEspadaNormal);
+        AranaCazadora   ->agregaHabilidad (proyectilMagico);
+        AranaCazadora   ->agregaHabilidad (bolaFuego);
         //
         /*******************************************************************************************
         /******************************************************************************************/
@@ -1041,73 +1023,53 @@ namespace juego {
 
         *******************************************************************************************/
         //
-        Miner ->agregaAtaque     (ataqueCuerpoACuerpo,  70);
-        Miner ->agregaAtaque     (ataqueADistancia,     50);
-        Miner ->agregaDefensa    (defensaCuerpoACuerpo, 70);
-        Miner ->agregaDefensa    (defensaADistancia,    70);
-        Miner ->agregaDefensa    (defensaMagica,        20);
-        Miner ->agregaReduceDano (danoFisico,           10);
-        Miner ->agregaReduceDano (danoMagico,            5);
+        AbejaReina      ->agregaAtaque     (ataqueCuerpoACuerpo,  70);
+        AbejaReina      ->agregaAtaque     (ataqueADistancia,     50);
+        AbejaReina      ->agregaDefensa    (defensaCuerpoACuerpo, 70);
+        AbejaReina      ->agregaDefensa    (defensaADistancia,    70);
+        AbejaReina      ->agregaDefensa    (defensaMagica,        20);
+        AbejaReina      ->agregaReduceDano (danoFisico,           10);
+        AbejaReina      ->agregaReduceDano (danoMagico,            5);
         //
-        Male  ->agregaAtaque     (ataqueCuerpoACuerpo,  50);
-      //Male  ->agregaAtaque     (ataqueADistancia,     50);  No se usa
-        Male  ->agregaAtaque     (ataqueMagico,         50);
-        Male  ->agregaDefensa    (defensaCuerpoACuerpo, 50);
-        Male  ->agregaDefensa    (defensaADistancia,    50);
-        Male  ->agregaDefensa    (defensaMagica,        50);
-        Male  ->agregaReduceDano (danoFisico,            5);
-        Male  ->agregaReduceDano (danoMagico,           10);
-        //                       
-        Patrek->agregaAtaque     (ataqueCuerpoACuerpo,  50);
-      //Patrek->agregaAtaque     (ataqueADistancia,     50);  No se usa
-        Patrek->agregaAtaque     (ataqueMagico,         70);        
-        Patrek->agregaDefensa    (defensaCuerpoACuerpo, 40);
-        Patrek->agregaDefensa    (defensaADistancia,    40);
-        Patrek->agregaDefensa    (defensaMagica,        30);
-        Patrek->agregaReduceDano (danoFisico,            0);
-        Patrek->agregaReduceDano (danoMagico,           15);
-        //                       
-        Pirate->agregaAtaque     (ataqueCuerpoACuerpo,  60);
-        Pirate->agregaAtaque     (ataqueADistancia,     70);        
-        Pirate->agregaDefensa    (defensaCuerpoACuerpo, 50);
-        Pirate->agregaDefensa    (defensaADistancia,    50);
-        Pirate->agregaDefensa    (defensaMagica,        50);
-        Pirate->agregaReduceDano (danoFisico,            7);
-        Pirate->agregaReduceDano (danoMagico,            7);
-        //                       
-        Aristo->agregaAtaque     (ataqueCuerpoACuerpo,  70);
-        Aristo->agregaAtaque     (ataqueADistancia,     50);        
-        Aristo->agregaDefensa    (defensaCuerpoACuerpo, 70);
-        Aristo->agregaDefensa    (defensaADistancia,    70);
-        Aristo->agregaDefensa    (defensaMagica,        20);
-        Aristo->agregaReduceDano (danoFisico,           10);
-        Aristo->agregaReduceDano (danoMagico,            5);
-        //                       
-        Harja ->agregaAtaque     (ataqueCuerpoACuerpo,  50);
-      //Harja ->agregaAtaque     (ataqueADistancia,     50);  No se usa
-        Harja ->agregaAtaque     (ataqueMagico,         50);        
-        Harja ->agregaDefensa    (defensaCuerpoACuerpo, 50);
-        Harja ->agregaDefensa    (defensaADistancia,    50);
-        Harja ->agregaDefensa    (defensaMagica,        50);
-        Harja ->agregaReduceDano (danoFisico,            5);
-        Harja ->agregaReduceDano (danoMagico,           10);
-        //                       
-        Hunter->agregaAtaque     (ataqueCuerpoACuerpo,  50);
-      //Hunter->agregaAtaque     (ataqueADistancia,     50);  No se usa
-        Hunter->agregaAtaque     (ataqueMagico,         70);        
-        Hunter->agregaDefensa    (defensaCuerpoACuerpo, 40);
-        Hunter->agregaDefensa    (defensaADistancia,    40);
-        Hunter->agregaDefensa    (defensaMagica,        30);
-        Hunter->agregaReduceDano (danoFisico,            0);
-        Hunter->agregaReduceDano (danoMagico,           15);
-        //                       
-        Thief ->agregaAtaque     (ataqueCuerpoACuerpo,  60);
-        Thief ->agregaAtaque     (ataqueADistancia,     70);        
-        Thief ->agregaDefensa    (defensaCuerpoACuerpo, 50);
-        Thief ->agregaDefensa    (defensaADistancia,    50);
-        Thief ->agregaDefensa    (defensaMagica,        50);
-        Thief ->agregaReduceDano (danoFisico,            7);
-        Thief ->agregaReduceDano (danoMagico,            7);
+        AbejaGuardia    ->agregaAtaque     (ataqueCuerpoACuerpo,  50);
+        AbejaGuardia    ->agregaAtaque     (ataqueMagico,         50);
+        AbejaGuardia    ->agregaDefensa    (defensaCuerpoACuerpo, 50);
+        AbejaGuardia    ->agregaDefensa    (defensaADistancia,    50);
+        AbejaGuardia    ->agregaDefensa    (defensaMagica,        50);
+        AbejaGuardia    ->agregaReduceDano (danoFisico,            5);
+        AbejaGuardia    ->agregaReduceDano (danoMagico,           10);
+        //
+        AbejaExploradora->agregaAtaque     (ataqueCuerpoACuerpo,  60);
+        AbejaExploradora->agregaAtaque     (ataqueADistancia,     70);
+        AbejaExploradora->agregaDefensa    (defensaCuerpoACuerpo, 50);
+        AbejaExploradora->agregaDefensa    (defensaADistancia,    50);
+        AbejaExploradora->agregaDefensa    (defensaMagica,        50);
+        AbejaExploradora->agregaReduceDano (danoFisico,            7);
+        AbejaExploradora->agregaReduceDano (danoMagico,            7);
+        //
+        AranaReina      ->agregaAtaque     (ataqueCuerpoACuerpo,  70);
+        AranaReina      ->agregaAtaque     (ataqueADistancia,     50);
+        AranaReina      ->agregaDefensa    (defensaCuerpoACuerpo, 70);
+        AranaReina      ->agregaDefensa    (defensaADistancia,    70);
+        AranaReina      ->agregaDefensa    (defensaMagica,        20);
+        AranaReina      ->agregaReduceDano (danoFisico,           10);
+        AranaReina      ->agregaReduceDano (danoMagico,            5);
+        //
+        Avispa          ->agregaAtaque     (ataqueCuerpoACuerpo,  50);
+        Avispa          ->agregaAtaque     (ataqueMagico,         50);
+        Avispa          ->agregaDefensa    (defensaCuerpoACuerpo, 50);
+        Avispa          ->agregaDefensa    (defensaADistancia,    50);
+        Avispa          ->agregaDefensa    (defensaMagica,        50);
+        Avispa          ->agregaReduceDano (danoFisico,            5);
+        Avispa          ->agregaReduceDano (danoMagico,           10);
+        //
+        AranaCazadora   ->agregaAtaque     (ataqueCuerpoACuerpo,  50);
+        AranaCazadora   ->agregaAtaque     (ataqueMagico,         70);
+        AranaCazadora   ->agregaDefensa    (defensaCuerpoACuerpo, 40);
+        AranaCazadora   ->agregaDefensa    (defensaADistancia,    40);
+        AranaCazadora   ->agregaDefensa    (defensaMagica,        30);
+        AranaCazadora   ->agregaReduceDano (danoFisico,            0);
+        AranaCazadora   ->agregaReduceDano (danoMagico,           15);
         //
         /*******************************************************************************************
         /******************************************************************************************/
@@ -1247,14 +1209,12 @@ namespace juego {
         //
         modo ()->configuraDesplaza (RejillaTablero::distanciaCeldas);
         //
-        Miner ->ponSitioFicha (Coord {23, 15});
-        Male  ->ponSitioFicha (Coord {17, 15});
-        Patrek->ponSitioFicha (Coord {29, 15});
-        Pirate->ponSitioFicha (Coord {35, 15});
-        Aristo->ponSitioFicha (Coord {23, 35});
-        Harja ->ponSitioFicha (Coord {17, 35});
-        Hunter->ponSitioFicha (Coord {29, 35});
-        Thief ->ponSitioFicha (Coord {35, 35});
+        AbejaReina      ->ponSitioFicha (Coord {17, 15});
+        AbejaGuardia    ->ponSitioFicha (Coord {23, 15});
+        AbejaExploradora->ponSitioFicha (Coord {29, 15});
+        AranaReina      ->ponSitioFicha (Coord {17, 35});
+        Avispa          ->ponSitioFicha (Coord {23, 35});
+        AranaCazadora   ->ponSitioFicha (Coord {29, 35});
         //
         tablero ()->asignaSonidoEstablece (carpeta_sonidos_juego + "Metal Click.wav", 100);
         tablero ()->asignaSonidoDesplaza  (carpeta_sonidos_juego + "SnowWalk.ogg",    100);
@@ -1274,14 +1234,12 @@ namespace juego {
         //
         JuegoMesaBase::termina ();
         //
-        Aristo   = nullptr;
-        Harja    = nullptr;
-        Hunter   = nullptr;
-        Thief    = nullptr;
-        Miner    = nullptr;
-        Male     = nullptr;
-        Patrek   = nullptr;
-        Pirate   = nullptr;
+        AbejaReina       = nullptr;
+        AbejaGuardia     = nullptr;
+        AbejaExploradora = nullptr;
+        AranaReina       = nullptr;
+        Avispa           = nullptr;
+        AranaCazadora    = nullptr;
         //
         ataqueEspadaNormal   = nullptr;
         ataqueArco           = nullptr;

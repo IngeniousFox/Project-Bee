@@ -37,14 +37,12 @@ namespace juego {
         la lista de personajes diseñados para el juego.
 
         *******************************************************************************************/
-        ActorPersonaje * Aristo {};
-        ActorPersonaje * Harja {};
-        ActorPersonaje * Hunter {};
-        ActorPersonaje * Thief {};
-        ActorPersonaje * Miner {};
-        ActorPersonaje * Male {};
-        ActorPersonaje * Patrek {};
-        ActorPersonaje * Pirate {};
+        ActorPersonaje * AbejaReina {};
+        ActorPersonaje * AbejaGuardia {};
+        ActorPersonaje * AbejaExploradora {};
+        ActorPersonaje * AranaReina {};
+        ActorPersonaje * Avispa {};
+        ActorPersonaje * AranaCazadora {};
         /*******************************************************************************************
         /******************************************************************************************/
  
