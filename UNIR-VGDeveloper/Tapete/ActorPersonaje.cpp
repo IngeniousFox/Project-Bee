@@ -298,7 +298,8 @@ namespace tapete {
 
     void ActorPersonaje::procesaEstados () {
         for (EfectoEstado & estado : estados_) {
-            if (estado.turnos <= 0) {
+            // turnos < 0 = "hasta fin de ronda": no se decrementa ni expira aquí
+            if (estado.turnos < 0) {
                 continue;
             }
             // Aplica el efecto de veneno si el personaje sigue vivo
@@ -311,10 +312,10 @@ namespace tapete {
             // Decrementa el contador de turnos
             estado.turnos --;
         }
-        // Elimina los estados expirados
+        // Elimina solo los estados que han llegado a 0 (no los negativos permanentes)
         estados_.erase (
             std::remove_if (estados_.begin (), estados_.end (),
-                [] (const EfectoEstado & e) { return e.turnos <= 0; }),
+                [] (const EfectoEstado & e) { return e.turnos == 0; }),
             estados_.end ());
     }
 

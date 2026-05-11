@@ -983,7 +983,7 @@ namespace juego {
         // Mandato Regio: debuff puro (sin daño), cuesta el máximo de PA menos 1 (coste fijo)
         mandatoRegio->ponCoste (ActorPersonaje::maximoPuntosAccion - 1);
         mandatoRegio->ponAlcance (RejillaTablero::filas + RejillaTablero::columnas - 1); // alcance total
-        mandatoRegio->ponEfectoEstado (TipoEstado::MultiplicadorCosteHabilidades, 10, 1);
+        mandatoRegio->ponEfectoEstado (TipoEstado::MultiplicadorCosteHabilidades, 10, -1); // -1 = hasta fin de ronda
         //
         // Feromonas de Jalea Real: buff de defensa en área a aliados (sin curación de HP)
         feromonasJalea->ponCoste (4);
