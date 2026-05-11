@@ -98,11 +98,15 @@ namespace tapete {
         int puntosAccionEnJuego () const;
         void ponPuntosAccionEnJuego (int valor);
 
-        // Estado de veneno: daño periódico por turno
-        bool tieneVeneno () const;
-        void aplicaVeneno (int dano_por_turno, int turnos);
-        void procesaVeneno ();
-        void limpiaVeneno ();
+        // Sistema de estados activos (veneno, modificadores de ataque/defensa, etc.)
+        bool tieneEstadosActivos () const;
+        void aplicaEstado (TipoEstado tipo, int valor, int turnos);
+        void procesaEstados ();
+        void limpiaEstados ();
+        void limpiaEstadosNegativos ();
+
+        // Calcula el coste real en PA de una habilidad, aplicando modificadores de estado
+        int costeHabilidad (const Habilidad * habilidad) const;
 
     protected:
 
@@ -146,8 +150,7 @@ namespace tapete {
 
         int puntos_accion_en_juego {};
 
-        int veneno_dano_por_turno_   {};
-        int veneno_turnos_restantes_ {};
+        std::vector <EfectoEstado> estados_ {};
 
         PresenciaPersonaje presencia_personaje {this};
 

@@ -987,7 +987,7 @@ namespace juego {
         venenoMortal->asignaAtaque  (ataqueCuerpoACuerpo);
         venenoMortal->asignaDefensa (defensaCuerpoACuerpo);
         venenoMortal->asignaDano    (danoFisico, 10);
-        venenoMortal->ponVeneno     (8, 3);
+        venenoMortal->ponEfectoEstado (TipoEstado::VenenoDanoPorTurno, 8, 3);
         //
         /*******************************************************************************************
         /******************************************************************************************/

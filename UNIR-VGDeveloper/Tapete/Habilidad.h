@@ -84,11 +84,10 @@ namespace tapete {
         int indice () const;
         void ponIndice (int valor);
 
-        // Efecto de veneno: daño por turno aplicado al oponente durante N turnos
-        bool esVeneno       () const;
-        int  venonoDano     () const;
-        int  venonoDuracion () const;
-        void ponVeneno      (int dano_por_turno, int turnos);
+        // Efectos de estado: estados que la habilidad aplica sobre el objetivo al ejecutarse
+        using ListaEfectosEstado = std::vector <EfectoEstado>;
+        const ListaEfectosEstado & efectosEstado () const;
+        void ponEfectoEstado (TipoEstado tipo, int valor, int turnos);
 
     private:
 
@@ -119,9 +118,7 @@ namespace tapete {
 
         int indice_ {};
 
-        bool es_veneno_      {};
-        int  veneno_dano_    {};
-        int  veneno_duracion_{};
+        ListaEfectosEstado efectos_estado {};
 
     };
 

@@ -17,6 +17,7 @@ using Color  = unir2d::Color;
 
 #include "LadoTablero.h"
 #include "TipoEstadistica.h"
+#include "EfectoEstado.h"
 #include "Habilidad.h"
 #include "CuadroIndica.h"
 

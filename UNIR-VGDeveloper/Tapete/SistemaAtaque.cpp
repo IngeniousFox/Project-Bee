@@ -69,9 +69,10 @@ namespace tapete {
         this->atacante_  = atacante;
         this->habilidad_ = habilidad;
         //
-        // ver: 'ValidacionJuego::EstadisticasHabilidades' '(i) (k)' 
+        // ver: 'ValidacionJuego::EstadisticasHabilidades' '(i) (k)'
         if (habilidad_->efectosAtaque  ().size () == 0 &&
-            habilidad_->efectosDefensa ().size () == 0   ) {
+            habilidad_->efectosDefensa ().size () == 0 &&
+            habilidad_->efectosEstado  ().size () == 0   ) {
             throw std::logic_error {
                     "Sistema de ataque mal configurado: habilidad auto-aplicada sin efectos definidos"};
         }
@@ -113,6 +114,10 @@ namespace tapete {
             registro.valor_final_defensa = atacante_->valorDefensa (registro.tipo_defensa);
             //
             cambios_efecto.push_back (registro);
+        }
+        // Aplica los efectos de estado auto-infligidos (buffs/debuffs persistentes por turnos)
+        for (const EfectoEstado & efecto : habilidad_->efectosEstado ()) {
+            atacante_->aplicaEstado (efecto.tipo, efecto.valor, efecto.turnos);
         }
     }
 
@@ -284,9 +289,11 @@ namespace tapete {
             }
             oponente->ponVitalidad (registro.vitalidad_final);
         }
-        // Si la habilidad tiene efecto de veneno y el oponente sigue vivo, aplica el estado
-        if (habilidad_->esVeneno () && registro.vitalidad_final > 0) {
-            oponente->aplicaVeneno (habilidad_->venonoDano (), habilidad_->venonoDuracion ());
+        // Aplica los efectos de estado de la habilidad sobre el oponente (si sigue vivo)
+        for (const EfectoEstado & efecto : habilidad_->efectosEstado ()) {
+            if (registro.vitalidad_final > 0) {
+                oponente->aplicaEstado (efecto.tipo, efecto.valor, efecto.turnos);
+            }
         }
         //
         ataques_oponente.push_back (registro);

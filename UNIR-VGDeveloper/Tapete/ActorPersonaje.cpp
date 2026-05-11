@@ -79,7 +79,13 @@ namespace tapete {
 
     int ActorPersonaje::valorAtaque (TipoAtaque * tipo_ataque) const {
         Multivalor multi = valores_tipo_ataque.at (tipo_ataque);
-        return multi.inicial + multi.cambio;
+        int resultado = multi.inicial + multi.cambio;
+        for (const EfectoEstado & estado : estados_) {
+            if (estado.tipo == TipoEstado::ModificadorAtaque) {
+                resultado += estado.valor;
+            }
+        }
+        return resultado;
     }
 
 
@@ -105,7 +111,13 @@ namespace tapete {
 
     int ActorPersonaje::valorDefensa (TipoDefensa * tipo_defensa) const {
         Multivalor multi = valores_tipo_defensa.at (tipo_defensa);
-        return multi.inicial + multi.cambio;
+        int resultado = multi.inicial + multi.cambio;
+        for (const EfectoEstado & estado : estados_) {
+            if (estado.tipo == TipoEstado::ModificadorDefensa) {
+                resultado += estado.valor;
+            }
+        }
+        return resultado;
     }
 
 
@@ -262,39 +274,75 @@ namespace tapete {
     }
 
 
-    bool ActorPersonaje::tieneVeneno () const {
-        return veneno_turnos_restantes_ > 0;
+    bool ActorPersonaje::tieneEstadosActivos () const {
+        return ! estados_.empty ();
     }
 
 
-    void ActorPersonaje::aplicaVeneno (int dano_por_turno, int turnos) {
-        // Si ya hay veneno activo, acumula el daño y toma el mayor número de turnos
-        veneno_dano_por_turno_   = veneno_dano_por_turno_ + dano_por_turno;
-        if (turnos > veneno_turnos_restantes_) {
-            veneno_turnos_restantes_ = turnos;
+    void ActorPersonaje::aplicaEstado (TipoEstado tipo, int valor, int turnos) {
+        // Para veneno: si ya hay veneno activo, acumula el daño y toma el mayor número de turnos
+        if (tipo == TipoEstado::VenenoDanoPorTurno) {
+            for (EfectoEstado & estado : estados_) {
+                if (estado.tipo == TipoEstado::VenenoDanoPorTurno) {
+                    estado.valor  += valor;
+                    if (turnos > estado.turnos) {
+                        estado.turnos = turnos;
+                    }
+                    return;
+                }
+            }
         }
+        estados_.push_back (EfectoEstado {tipo, valor, turnos});
     }
 
 
-    void ActorPersonaje::procesaVeneno () {
-        if (veneno_turnos_restantes_ <= 0) {
-            return;
+    void ActorPersonaje::procesaEstados () {
+        for (EfectoEstado & estado : estados_) {
+            if (estado.turnos <= 0) {
+                continue;
+            }
+            // Aplica el efecto de veneno si el personaje sigue vivo
+            if (estado.tipo == TipoEstado::VenenoDanoPorTurno && vitalidad_ > 0) {
+                vitalidad_ -= estado.valor;
+                if (vitalidad_ < 0) {
+                    vitalidad_ = 0;
+                }
+            }
+            // Decrementa el contador de turnos
+            estado.turnos --;
         }
-        int nueva_vitalidad = vitalidad_ - veneno_dano_por_turno_;
-        if (nueva_vitalidad < 0) {
-            nueva_vitalidad = 0;
-        }
-        vitalidad_ = nueva_vitalidad;
-        veneno_turnos_restantes_ --;
-        if (veneno_turnos_restantes_ == 0) {
-            veneno_dano_por_turno_ = 0;
-        }
+        // Elimina los estados expirados
+        estados_.erase (
+            std::remove_if (estados_.begin (), estados_.end (),
+                [] (const EfectoEstado & e) { return e.turnos <= 0; }),
+            estados_.end ());
     }
 
 
-    void ActorPersonaje::limpiaVeneno () {
-        veneno_dano_por_turno_   = 0;
-        veneno_turnos_restantes_ = 0;
+    void ActorPersonaje::limpiaEstados () {
+        estados_.clear ();
+    }
+
+
+    void ActorPersonaje::limpiaEstadosNegativos () {
+        estados_.erase (
+            std::remove_if (estados_.begin (), estados_.end (),
+                [] (const EfectoEstado & e) { return e.esNegativo (); }),
+            estados_.end ());
+    }
+
+
+    int ActorPersonaje::costeHabilidad (const Habilidad * habilidad) const {
+        int coste = habilidad->coste ();
+        for (const EfectoEstado & estado : estados_) {
+            if (estado.tipo == TipoEstado::ModificadorCosteHabilidades) {
+                coste += estado.valor;  // valor negativo => descuento
+            }
+        }
+        if (coste < 1) {
+            coste = 1;
+        }
+        return coste;
     }
 
 
@@ -311,6 +359,7 @@ namespace tapete {
     void ActorPersonaje::termina () {
         extraeDibujos ();
         lista_habilidades.clear ();
+        estados_.clear ();
         presencia_personaje.libera ();
     }
 

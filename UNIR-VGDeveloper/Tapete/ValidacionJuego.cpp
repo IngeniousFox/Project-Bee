@@ -341,13 +341,17 @@ namespace tapete {
             }
             // (i) (k)
             if (auto_aplicada) {
-                aserta (habil->efectosAtaque ().size () > 0 || habil->efectosDefensa ().size () > 0,
-                        std::format (L"La habilidad '{}' debe tener al menos un efecto en ataque o en defensa.", habil->nombre ()),
+                aserta (habil->efectosAtaque ().size () > 0 || habil->efectosDefensa ().size () > 0 ||
+                        habil->efectosEstado ().size () > 0,
+                        std::format (L"La habilidad '{}' debe tener al menos un efecto en ataque, defensa o estado.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
-                aserta ( (habil->efectosAtaque ().size () >  0 && habil->efectosDefensa ().size () == 0) ||
-                        (habil->efectosAtaque ().size () == 0 && habil->efectosDefensa ().size () >  0), 
-                        std::format (L"La habilidad '{}' no puede tener efectos en ataque y en defensa simultáneamente.", habil->nombre ()),
-                        LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
+                // Si usa el sistema clásico de efectos (no estados), no pueden usarse ambos tipos a la vez
+                if (habil->efectosEstado ().size () == 0) {
+                    aserta ( (habil->efectosAtaque ().size () >  0 && habil->efectosDefensa ().size () == 0) ||
+                            (habil->efectosAtaque ().size () == 0 && habil->efectosDefensa ().size () >  0),
+                            std::format (L"La habilidad '{}' no puede tener efectos en ataque y en defensa simultáneamente.", habil->nombre ()),
+                            LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
+                }
             } else {
                 aserta (habil->efectosAtaque ().size () == 0 && habil->efectosDefensa ().size () == 0,
                         std::format (L"La habilidad '{}' no puede tener efectos en ataque o en defensa.", habil->nombre ()),

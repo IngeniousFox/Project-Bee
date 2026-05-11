@@ -180,10 +180,10 @@ namespace tapete {
 
 
     void ModoJuegoBase::avanzaTurno () {
-        // Procesar efectos de veneno activos en todos los personajes vivos
+        // Procesar efectos de estado activos en todos los personajes vivos
         for (ActorPersonaje * persj : juego_->personajes ()) {
-            if (persj->tieneVeneno () && persj->vitalidad () > 0) {
-                persj->procesaVeneno ();
+            if (persj->vitalidad () > 0) {
+                persj->procesaEstados ();
             }
         }
         refrescaBarrasVida ();
@@ -742,10 +742,10 @@ namespace tapete {
 
     void ModoJuegoBase::validaHabilidadSimple (bool & uso_valido, int & puntos_en_juego) {
         // solo usado en 'ModoJuegoComun'
-        //      
+        //
         asertaHabilidadSimple ("validaHabilidadSimple");
-        // 
-        puntos_en_juego = habilidad_accion->coste ();
+        //
+        puntos_en_juego = atacante_->costeHabilidad (habilidad_accion);
         //
         if (puntos_en_juego > atacante_->puntosAccion ()) {
             uso_valido = false;
@@ -865,7 +865,7 @@ namespace tapete {
         // no es así:
         //puntos_en_juego = puntosEnJuegoSegmento (
         //        atacante_->sitioFicha (), oponente_->sitioFicha ());
-        puntos_en_juego = habilidad_accion->coste ();
+        puntos_en_juego = atacante_->costeHabilidad (habilidad_accion);
         //
         float distn = distanciaCeldas (oponente_->sitioFicha (), atacante_->sitioFicha ()); 
         if (distn > habilidad_accion->alcance ()) {
@@ -1009,7 +1009,7 @@ namespace tapete {
         // 
         // no es así:
         //puntos_en_juego = puntosEnJuegoSegmento (atacante_->sitioFicha (), celda_area);
-        puntos_en_juego = habilidad_accion->coste ();
+        puntos_en_juego = atacante_->costeHabilidad (habilidad_accion);
         //
         // ver comentario en AreaCentradaCeldas
         //
@@ -1324,7 +1324,7 @@ namespace tapete {
     void ModoJuegoBase::restauraPersonajes () {
         for (ActorPersonaje * persj : juego_->personajes ()) {
             persj->ponPuntosAccion (ActorPersonaje::maximoPuntosAccion);
-            persj->limpiaVeneno ();
+            persj->limpiaEstados ();
             if (persj->vitalidad () > 0) {
                 persj->presencia ().aclaraRetrato ();
             }
