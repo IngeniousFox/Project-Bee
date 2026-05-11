@@ -980,8 +980,8 @@ namespace juego {
         *******************************************************************************************/
         //
         // ── Abeja Reina ──────────────────────────────────────────────────────────
-        // Mandato Regio: debuff puro (sin daño), cuesta todos los PA de la Reina menos 1
-        mandatoRegio->ponCostaTodoMenosUno ();
+        // Mandato Regio: debuff puro (sin daño), cuesta el máximo de PA menos 1 (coste fijo)
+        mandatoRegio->ponCoste (ActorPersonaje::maximoPuntosAccion - 1);
         mandatoRegio->ponAlcance (RejillaTablero::filas + RejillaTablero::columnas - 1); // alcance total
         mandatoRegio->ponEfectoEstado (TipoEstado::MultiplicadorCosteHabilidades, 10, 1);
         //
