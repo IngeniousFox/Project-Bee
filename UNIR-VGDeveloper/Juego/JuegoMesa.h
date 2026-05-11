@@ -68,6 +68,13 @@ namespace juego {
         la lista de habilidades diseñadas para el juego.
 
         *******************************************************************************************/
+        // --- Habilidades de la Abeja Reina ---
+        Habilidad * mandatoRegio    {};  // Debuff: multiplica x10 el coste de habilidades del enemigo
+        Habilidad * feromonasJalea  {};  // Buff área: sube la defensa de los aliados
+        Habilidad * decretoEnjambre {};  // Ataque melee + empuje 3 casillas
+        Habilidad * ultimaVoluntad  {};  // Buff equipo: reduce el coste de habilidades en 1 PA
+
+        // --- Habilidades placeholder (pendientes de personaje real) ---
         Habilidad * ataqueEspadaNormal {};
         Habilidad * ataqueArco {};
         Habilidad * ataqueEspadaPoderoso {};

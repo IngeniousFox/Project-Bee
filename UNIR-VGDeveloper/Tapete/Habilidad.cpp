@@ -200,5 +200,29 @@ namespace tapete {
     }
 
 
+    bool Habilidad::costaTodoMenosUno () const {
+        return costa_todo_menos_uno_;
+    }
+
+
+    void Habilidad::ponCostaTodoMenosUno () {
+        costa_todo_menos_uno_ = true;
+        // Asegura que coste_ sea válido (>0) para pasar la validación estática
+        if (coste_ == 0) {
+            coste_ = 1;
+        }
+    }
+
+
+    int Habilidad::celdasEmpuje () const {
+        return celdas_empuje_;
+    }
+
+
+    void Habilidad::ponEmpuje (int celdas) {
+        celdas_empuje_ = celdas;
+    }
+
+
 }
 

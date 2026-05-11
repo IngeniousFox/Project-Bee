@@ -65,7 +65,9 @@ namespace tapete {
             // vitalidad original del oponente
             int                vitalidad_origen;      
             // vitalidad del oponente ajustada con el valor final del daño
-            int                vitalidad_final;       
+            int                vitalidad_final;
+            // celda final del oponente tras el empuje (igual a sitioFicha si no hay empuje)
+            Coord              celda_empuje_final;
         };
         const std::vector <AtaqueOponente> & ataquesOponente () const;
 
@@ -149,7 +151,7 @@ namespace tapete {
                 int              aleatorio_100);
 
         // Cálculo para una habilidad "de ataque" o "de curación", que "afecta a área"
-        // Usado cuando la habilidad tiene: 
+        // Usado cuando la habilidad tiene:
         //      tipoEnfoque = EnfoqueHabilidad::area
         //      tipoAcceso  = { AccesoHabilidad::directo, AccesoHabilidad::indirecto }
         //      antagonista = { Antagonista::oponente, Antagonista::aliado }
@@ -157,10 +159,20 @@ namespace tapete {
         //      antagonista = Antagonista::oponente ==> "de ataque"
         //      antagonista = Antagonista::aliado   ==> "de curación"
         void calcula (
-                ActorPersonaje *               atacante, 
+                ActorPersonaje *               atacante,
                 Habilidad *                    habilidad,
-                std::vector <ActorPersonaje *> lista_oponentes, 
+                std::vector <ActorPersonaje *> lista_oponentes,
                 int                            aleatorio_100);
+
+        // Cálculo para una habilidad "de equipo" que afecta a todos los aliados del atacante
+        // Usado cuando la habilidad tiene:
+        //      tipoEnfoque = EnfoqueHabilidad::equipo
+        //      tipoAcceso  = AccesoHabilidad::ninguno
+        //      antagonista = Antagonista::aliado
+        void calcula (
+                ActorPersonaje *               atacante,
+                Habilidad *                    habilidad,
+                std::vector <ActorPersonaje *> aliados);
         
     private:
 

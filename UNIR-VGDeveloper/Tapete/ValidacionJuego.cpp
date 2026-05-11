@@ -121,11 +121,11 @@ namespace tapete {
             switch (habil->tipoEnfoque ()) {
             case EnfoqueHabilidad::personaje:
             case EnfoqueHabilidad::area:
-                aserta (habil->tipoAcceso () == AccesoHabilidad::directo || 
+                aserta (habil->tipoAcceso () == AccesoHabilidad::directo ||
                         habil->tipoAcceso () == AccesoHabilidad::indirecto,
                         std::format (L"El tipo de acceso de la habilidad '{}' es inválido", habil->nombre ()),
                         LocalizaConfigura::Seccion_5_Habilidades_parte_2);
-                aserta (habil->antagonista () == Antagonista::oponente || 
+                aserta (habil->antagonista () == Antagonista::oponente ||
                         habil->antagonista () == Antagonista::aliado,
                         std::format (L"El tipo de antagonista de la habilidad '{}' es inválido", habil->nombre ()),
                         LocalizaConfigura::Seccion_5_Habilidades_parte_2);
@@ -135,6 +135,14 @@ namespace tapete {
                         std::format (L"El tipo de acceso de la habilidad '{}' es inválido", habil->nombre ()),
                         LocalizaConfigura::Seccion_5_Habilidades_parte_2);
                 aserta (habil->antagonista () == Antagonista::si_mismo,
+                        std::format (L"El tipo de antagonista de la habilidad '{}' es inválido", habil->nombre ()),
+                        LocalizaConfigura::Seccion_5_Habilidades_parte_2);
+                break;
+            case EnfoqueHabilidad::equipo:
+                aserta (habil->tipoAcceso () == AccesoHabilidad::ninguno,
+                        std::format (L"El tipo de acceso de la habilidad '{}' es inválido", habil->nombre ()),
+                        LocalizaConfigura::Seccion_5_Habilidades_parte_2);
+                aserta (habil->antagonista () == Antagonista::aliado,
                         std::format (L"El tipo de antagonista de la habilidad '{}' es inválido", habil->nombre ()),
                         LocalizaConfigura::Seccion_5_Habilidades_parte_2);
                 break;
@@ -217,18 +225,26 @@ namespace tapete {
             //
             bool de_ataque        = false;
             bool de_curacion      = false;
+            bool de_equipo        = false;
             bool auto_aplicada    = false;
             bool afecta_personaje = false;
             bool afecta_area      = false;
-            switch (habil->antagonista ()) {
-            case Antagonista::oponente:
-                de_ataque = true;
+            switch (habil->tipoEnfoque ()) {
+            case EnfoqueHabilidad::equipo:
+                de_equipo = true;
                 break;
-            case Antagonista::aliado:
-                de_curacion = true;
-                break;
-            case Antagonista::si_mismo:
-                auto_aplicada = true;
+            default:
+                switch (habil->antagonista ()) {
+                case Antagonista::oponente:
+                    de_ataque = true;
+                    break;
+                case Antagonista::aliado:
+                    de_curacion = true;
+                    break;
+                case Antagonista::si_mismo:
+                    auto_aplicada = true;
+                    break;
+                }
                 break;
             }
             if (de_ataque || de_curacion) {
@@ -238,6 +254,8 @@ namespace tapete {
                     break;
                 case EnfoqueHabilidad::area:
                     afecta_area = true;
+                    break;
+                default:
                     break;
                 }
             }
@@ -257,6 +275,7 @@ namespace tapete {
                         std::format (L"La habilidad '{}' tiene un alcance excesivo.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
             } else {
+                // equipo, si_mismo y auto_aplicada no tienen alcance
                 aserta (habil->alcance () == 0,
                         std::format (L"La habilidad '{}' no puede tener alcance.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
@@ -274,21 +293,23 @@ namespace tapete {
                         std::format (L"La habilidad '{}' no puede tener radio de área de alcance.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
             }
-            // (d)
-            if (de_ataque) {
-                aserta (habil->tipoAtaque () != nullptr,
-                        std::format (L"La habilidad '{}' no tiene un tipo de ataque.", habil->nombre ()),
-                        LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
-                aserta (pertenece (habil->tipoAtaque (), juego->ataques ()), 
+            // (d) El tipo de ataque es obligatorio solo en ataques con daño real
+            // Un ataque de debuff puro (solo efectosEstado, sin tipoAtaque) es válido
+            bool tiene_dano_real = de_ataque && habil->tipoAtaque () != nullptr;
+            if (tiene_dano_real) {
+                aserta (pertenece (habil->tipoAtaque (), juego->ataques ()),
                         std::format (L"La habilidad '{}' tiene un tipo de ataque desconocido.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
             } else {
-                aserta (habil->tipoAtaque () == nullptr,
+                aserta (! de_ataque || habil->efectosEstado ().size () > 0,
+                        std::format (L"La habilidad '{}' de ataque sin daño debe tener efectos de estado.", habil->nombre ()),
+                        LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
+                aserta (! de_curacion && ! auto_aplicada && ! de_equipo || habil->tipoAtaque () == nullptr,
                         std::format (L"La habilidad '{}' no puede tener un tipo de ataque.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
             }
-            // (e)
-            if (de_ataque) {
+            // (e) El tipo de defensa solo es obligatorio si hay tipo de ataque
+            if (tiene_dano_real) {
                 aserta (habil->tipoDefensa () != nullptr,
                         std::format (L"La habilidad '{}' no tiene un tipo de defensa.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
@@ -300,8 +321,8 @@ namespace tapete {
                         std::format (L"La habilidad '{}' no puede tener un tipo de defensa.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
             }
-            // (f)
-            if (de_ataque) {
+            // (f) El tipo de daño es obligatorio solo si hay tipo de ataque con daño
+            if (tiene_dano_real) {
                 aserta (habil->tipoDano () != nullptr,
                         std::format (L"La habilidad '{}' no tiene un tipo de daño.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
@@ -313,8 +334,8 @@ namespace tapete {
                         std::format (L"La habilidad '{}' no puede tener un tipo de daño.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
             }
-            // (g)
-            if (de_ataque) {
+            // (g) El valor de daño es obligatorio solo si hay tipo de daño
+            if (tiene_dano_real) {
                 aserta (0 < habil->valorDano (),
                         std::format (L"La habilidad '{}' no tiene un valor de daño.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
@@ -326,14 +347,17 @@ namespace tapete {
                         std::format (L"La habilidad '{}' no puede tener un valor de daño.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
             }
-            // (h)
-            if (de_curacion) {
-                aserta (0 < habil->valorCuracion (),
-                        std::format (L"La habilidad '{}' no tiene un valor de curación.", habil->nombre ()),
+            // (h) La curación de vitalidad es opcional si la habilidad aplica efectosEstado (buff puro)
+            if (de_curacion || de_equipo) {
+                // Debe tener al menos un efecto: curación de HP o buff de estado
+                aserta (habil->valorCuracion () > 0 || habil->efectosEstado ().size () > 0,
+                        std::format (L"La habilidad '{}' de curación/equipo no tiene ni curación ni estados.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
-                aserta (habil->valorCuracion () <= ActorPersonaje::maximaVitalidad,
-                        std::format (L"La habilidad '{}' tiene un valor de curación excesivo.", habil->nombre ()),
-                        LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
+                if (habil->valorCuracion () > 0) {
+                    aserta (habil->valorCuracion () <= ActorPersonaje::maximaVitalidad,
+                            std::format (L"La habilidad '{}' tiene un valor de curación excesivo.", habil->nombre ()),
+                            LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
+                }
             } else {
                 aserta (habil->valorCuracion () == 0,
                         std::format (L"La habilidad '{}' no puede tener un valor de curación.", habil->nombre ()),

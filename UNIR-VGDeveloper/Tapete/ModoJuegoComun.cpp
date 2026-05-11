@@ -316,13 +316,15 @@ namespace tapete {
             ModoJuegoBase::estableceModoAccionHabilidad (indice_habilidad);
             bool valido = true;
             int puntos  = 0;
-            if (habilidadAccion ()->tipoEnfoque () == EnfoqueHabilidad::si_mismo) {
+            if (habilidadAccion ()->tipoEnfoque () == EnfoqueHabilidad::si_mismo ||
+                habilidadAccion ()->tipoEnfoque () == EnfoqueHabilidad::equipo) {
                 ModoJuegoBase::validaHabilidadSimple  (valido, puntos);
                 ModoJuegoBase::muestraHabilidadSimple (valido, puntos);
             }
             //
             switch (habilidadAccion ()->tipoEnfoque ()) {
             case EnfoqueHabilidad::si_mismo:
+            case EnfoqueHabilidad::equipo:
                 if (! valido) {
                     estado ().transita (EstadoJuegoComun::habilidadSimpleInvalida);
                 } else {
@@ -1024,7 +1026,9 @@ namespace tapete {
         case ignora:
             break;
         case SIMPLE:
-            aserta (habilidadAccion ()->tipoEnfoque () == EnfoqueHabilidad::si_mismo, "tipoEnfoque", simbolo_tipo_accion);
+            aserta (habilidadAccion ()->tipoEnfoque () == EnfoqueHabilidad::si_mismo ||
+                    habilidadAccion ()->tipoEnfoque () == EnfoqueHabilidad::equipo,
+                    "tipoEnfoque", simbolo_tipo_accion);
             break;
         case OPONENTE:
             aserta (habilidadAccion ()->tipoEnfoque () == EnfoqueHabilidad::personaje, "tipoEnfoque", simbolo_tipo_accion);

@@ -204,13 +204,25 @@ namespace tapete {
         assert (habilidad_->antagonista () == Antagonista::oponente);
         //
         AtaqueOponente registro {};
-        registro.oponente = oponente;
+        registro.oponente          = oponente;
+        registro.celda_empuje_final = oponente->sitioFicha ();
         //
-        registro.tipo_ataque = habilidad_->tipoAtaque (); 
-        // véase: 'ValidacionJuego::EstadisticasHabilidades' '(d)'
+        registro.tipo_ataque = habilidad_->tipoAtaque ();
+        //
+        // Habilidades de debuff puro: sin tipo de ataque ni daño, solo aplican estados
         if (registro.tipo_ataque == nullptr) {
-            throw std::logic_error {"Sistema de ataque mal configurado, aplicando ataque: tipo de ataque no establecido en la habilidad"};
+            registro.vitalidad_origen = oponente->vitalidad ();
+            registro.vitalidad_final  = oponente->vitalidad ();
+            // Aplica los efectos de estado (maldición/debuff), siempre acierta
+            for (const EfectoEstado & efecto : habilidad_->efectosEstado ()) {
+                if (registro.vitalidad_final > 0) {
+                    oponente->aplicaEstado (efecto.tipo, efecto.valor, efecto.turnos);
+                }
+            }
+            ataques_oponente.push_back (registro);
+            return;
         }
+        //
         // véase: 'ValidacionJuego::EstadisticasPersonajes' '(a)'
         if (! atacante_->apareceAtaque (registro.tipo_ataque)) {
             throw std::logic_error {"Sistema de ataque mal configurado, aplicando ataque: tipo de ataque no admitido por el atacante"};
@@ -236,64 +248,93 @@ namespace tapete {
             throw std::logic_error {"Sistema de ataque mal configurado, aplicando ataque: valor de defensa inválido"};
         }
         //
-        registro.ventaja = registro.valor_ataque - registro.valor_defensa;
-        registro.aleatorio_100 = aleatorio_100;
+        registro.ventaja            = registro.valor_ataque - registro.valor_defensa;
+        registro.aleatorio_100      = aleatorio_100;
         registro.valor_final_ataque = registro.ventaja + registro.aleatorio_100;
         //
         // véase: 'ValidacionJuego::SistemaAtaque'
         if (grados_efectividad.size () == 0) {
             throw std::logic_error {"Sistema de ataque mal configurado: grados de efectividad no configurados"};
         }
-        // 
+        //
         // véase: 'ValidacionJuego::SistemaAtaque'
         for (GradoEfectividad * efectividad : grados_efectividad) {
             if (registro.valor_final_ataque <= efectividad->valorSuperioAtaque ()) {
-                registro.efectividad = efectividad;
+                registro.efectividad    = efectividad;
                 registro.porciento_dano = efectividad->porcentajeDano ();
                 break;
             }
         }
         //
-        registro.tipo_dano = habilidad_->tipoDano ();
-        // véase: 'ValidacionJuego::EstadisticasHabilidades' '(f)'
-        if (registro.tipo_dano == nullptr) {
-            throw std::logic_error {"Sistema de ataque mal configurado, aplicando ataque: tipo de daño no establecido en la habilidad"};
-        }
+        registro.tipo_dano  = habilidad_->tipoDano ();
         registro.valor_dano = habilidad_->valorDano ();
-        // véase: 'ValidacionJuego::EstadisticasHabilidades' '(g)'
-        if (registro.valor_dano <= 0 || ActorPersonaje::maximaVitalidad < registro.valor_dano) {
-            throw std::logic_error {"Sistema de ataque mal configurado, aplicando ataque: valor de daño inválido"};
-        }
-        registro.valor_ajustado_dano = (int) (registro.valor_dano * (((float) registro.porciento_dano) / 100.0f)); 
         //
-        // véase: 'ValidacionJuego::EstadisticasPersonajes' '(c)'
-        if (! oponente->apareceReduceDano (registro.tipo_dano)) {
-            throw std::logic_error {"Sistema de ataque mal configurado, aplicando ataque: reducción de daño no establecido en el oponente"};
-        }
-        registro.valor_reduce_dano = oponente->valorReduceDano (registro.tipo_dano);
-        // véase: 'ValidacionJuego::EstadisticasPersonajes' '(c)'
-        if (registro.valor_dano < 0 || ActorPersonaje::maximaVitalidad < registro.valor_dano) {
-            throw std::logic_error {"Sistema de ataque mal configurado, aplicando ataque: valor de reducción de daño inválido"};
-        }
-        registro.valor_final_dano = registro.valor_ajustado_dano - registro.valor_reduce_dano;
-        //
-        registro.vitalidad_origen = oponente->vitalidad ();
-        registro.vitalidad_final  = oponente->vitalidad ();
-        if (registro.vitalidad_final > 0) {
-            registro.vitalidad_final -= registro.valor_final_dano;
-            if (registro.vitalidad_final < 0) {
-                registro.vitalidad_final = 0;
+        // Habilidades con daño real
+        if (registro.tipo_dano != nullptr && registro.valor_dano > 0) {
+            registro.valor_ajustado_dano = (int) (registro.valor_dano * (((float) registro.porciento_dano) / 100.0f));
+            //
+            // véase: 'ValidacionJuego::EstadisticasPersonajes' '(c)'
+            if (! oponente->apareceReduceDano (registro.tipo_dano)) {
+                throw std::logic_error {"Sistema de ataque mal configurado, aplicando ataque: reducción de daño no establecido en el oponente"};
             }
-            if (registro.vitalidad_final > ActorPersonaje::maximaVitalidad) {
-                registro.vitalidad_final = ActorPersonaje::maximaVitalidad;
-            }
-            oponente->ponVitalidad (registro.vitalidad_final);
-        }
-        // Aplica los efectos de estado de la habilidad sobre el oponente (si sigue vivo)
-        for (const EfectoEstado & efecto : habilidad_->efectosEstado ()) {
+            registro.valor_reduce_dano = oponente->valorReduceDano (registro.tipo_dano);
+            registro.valor_final_dano  = registro.valor_ajustado_dano - registro.valor_reduce_dano;
+            //
+            registro.vitalidad_origen = oponente->vitalidad ();
+            registro.vitalidad_final  = oponente->vitalidad ();
             if (registro.vitalidad_final > 0) {
-                oponente->aplicaEstado (efecto.tipo, efecto.valor, efecto.turnos);
+                registro.vitalidad_final -= registro.valor_final_dano;
+                if (registro.vitalidad_final < 0) {
+                    registro.vitalidad_final = 0;
+                }
+                if (registro.vitalidad_final > ActorPersonaje::maximaVitalidad) {
+                    registro.vitalidad_final = ActorPersonaje::maximaVitalidad;
+                }
+                oponente->ponVitalidad (registro.vitalidad_final);
             }
+        } else {
+            registro.vitalidad_origen = oponente->vitalidad ();
+            registro.vitalidad_final  = oponente->vitalidad ();
+        }
+        //
+        // Aplica los efectos de estado de la habilidad sobre el oponente (si sigue vivo)
+        if (registro.porciento_dano > 0) {
+            for (const EfectoEstado & efecto : habilidad_->efectosEstado ()) {
+                if (registro.vitalidad_final > 0) {
+                    oponente->aplicaEstado (efecto.tipo, efecto.valor, efecto.turnos);
+                }
+            }
+        }
+        //
+        // Empuje: desplaza al oponente en la dirección del ataque (alejándolo del atacante)
+        if (habilidad_->celdasEmpuje () > 0 && registro.vitalidad_final > 0) {
+            int delta_fila = oponente->sitioFicha ().fila () - atacante_->sitioFicha ().fila ();
+            int delta_coln = oponente->sitioFicha ().coln () - atacante_->sitioFicha ().coln ();
+            Coord direccion    {delta_fila, delta_coln};
+            Coord celda_actual = oponente->sitioFicha ();
+            for (int paso = 0; paso < habilidad_->celdasEmpuje (); ++ paso) {
+                Coord celda_sig = celda_actual + direccion;
+                if (! CalculoCaminos::celdaEnTablero (celda_sig)) {
+                    break;
+                }
+                if (CalculoCaminos::celdaEnMuro (juego, celda_sig)) {
+                    break;
+                }
+                // Detener si hay otro personaje en esa casilla
+                bool ocupada = false;
+                for (ActorPersonaje * p : juego->personajes ()) {
+                    if (p != oponente && p->sitioFicha () == celda_sig) {
+                        ocupada = true;
+                        break;
+                    }
+                }
+                if (ocupada) {
+                    break;
+                }
+                celda_actual = celda_sig;
+            }
+            oponente->ponSitioFicha (celda_actual);
+            registro.celda_empuje_final = celda_actual;
         }
         //
         ataques_oponente.push_back (registro);
@@ -304,19 +345,16 @@ namespace tapete {
     void SistemaAtaque::calculaCuracion (ActorPersonaje * oponente) {
         // la habilidad es de curación, el oponente puede ser del mismo equipo o no
         assert (habilidad_->antagonista () == Antagonista::aliado);
-        //        
+        //
         CuracionOponente registro {};
         registro.oponente = oponente;
         //
-        // véase: 'ValidacionJuego::EstadisticasHabilidades' '(h)'
-        if (habilidad_->valorCuracion () == 0) {
-            throw std::logic_error {"Sistema de ataque mal configurado, aplicando curación: curación no establecida en la habilidad"};
-        }
-        registro.valor_curacion = habilidad_->valorCuracion ();
-        //
         registro.vitalidad_origen = oponente->vitalidad ();
         registro.vitalidad_final  = oponente->vitalidad ();
-        if (registro.vitalidad_final > 0) {
+        //
+        // Curación de vitalidad (si la habilidad tiene valor de curación)
+        if (habilidad_->valorCuracion () > 0 && registro.vitalidad_final > 0) {
+            registro.valor_curacion   = habilidad_->valorCuracion ();
             registro.vitalidad_final += registro.valor_curacion;
             if (registro.vitalidad_final < 0) {
                 registro.vitalidad_final = 0;
@@ -327,7 +365,33 @@ namespace tapete {
             oponente->ponVitalidad (registro.vitalidad_final);
         }
         //
+        // Aplica los efectos de estado de la habilidad al objetivo (buff)
+        if (registro.vitalidad_final > 0) {
+            for (const EfectoEstado & efecto : habilidad_->efectosEstado ()) {
+                oponente->aplicaEstado (efecto.tipo, efecto.valor, efecto.turnos);
+            }
+        }
+        //
         curaciones_oponente.push_back (registro);
+    }
+
+
+    // Cálculo para una habilidad "de equipo" que afecta a todos los aliados del atacante
+    void SistemaAtaque::calcula (
+            ActorPersonaje *               atacante,
+            Habilidad *                    habilidad,
+            std::vector <ActorPersonaje *> aliados) {
+        assert (habilidad->tipoEnfoque () == EnfoqueHabilidad::equipo);
+        assert (habilidad->tipoAcceso  () == AccesoHabilidad::ninguno);
+        assert (habilidad->antagonista () == Antagonista::aliado);
+        //
+        reinicia ();
+        this->atacante_  = atacante;
+        this->habilidad_ = habilidad;
+        //
+        for (ActorPersonaje * aliado : aliados) {
+            calculaCuracion (aliado);
+        }
     }
 
 

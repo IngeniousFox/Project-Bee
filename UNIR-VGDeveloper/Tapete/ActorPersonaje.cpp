@@ -333,12 +333,20 @@ namespace tapete {
 
 
     int ActorPersonaje::costeHabilidad (const Habilidad * habilidad) const {
-        int coste = habilidad->coste ();
+        // Habilidades que cuestan todos los PA del usuario menos 1
+        if (habilidad->costaTodoMenosUno ()) {
+            return std::max (1, puntos_accion - 1);
+        }
+        int coste       = habilidad->coste ();
+        int multiplicador = 1;
         for (const EfectoEstado & estado : estados_) {
             if (estado.tipo == TipoEstado::ModificadorCosteHabilidades) {
                 coste += estado.valor;  // valor negativo => descuento
+            } else if (estado.tipo == TipoEstado::MultiplicadorCosteHabilidades) {
+                multiplicador *= estado.valor;
             }
         }
+        coste *= multiplicador;
         if (coste < 1) {
             coste = 1;
         }

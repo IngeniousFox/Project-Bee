@@ -11,10 +11,11 @@ namespace tapete {
 
     // Tipos de efecto de estado que pueden afectar a un personaje
     enum class TipoEstado {
-        VenenoDanoPorTurno,          // Aplica daño al personaje al final de cada turno
-        ModificadorDefensa,          // Modifica todos los valores de defensa del personaje
-        ModificadorAtaque,           // Modifica todos los valores de ataque del personaje
-        ModificadorCosteHabilidades, // Modifica el coste en PA de las habilidades del personaje
+        VenenoDanoPorTurno,              // Aplica daño al personaje al final de cada turno
+        ModificadorDefensa,              // Modifica (suma) todos los valores de defensa del personaje
+        ModificadorAtaque,               // Modifica (suma) todos los valores de ataque del personaje
+        ModificadorCosteHabilidades,     // Modifica (suma, puede ser negativo) el coste en PA de las habilidades
+        MultiplicadorCosteHabilidades,   // Multiplica el coste en PA de las habilidades (valor >= 1)
     };
 
 

@@ -649,8 +649,50 @@ namespace juego {
 
         *******************************************************************************************/
         //
+        // ── Abeja Reina ──────────────────────────────────────────────────────────
+        mandatoRegio    = new Habilidad {
+                L"Mandato Regio",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::indirecto, Antagonista::oponente};
+        feromonasJalea  = new Habilidad {
+                L"Feromonas de Jalea Real",
+                EnfoqueHabilidad::area,      AccesoHabilidad::indirecto, Antagonista::aliado};
+        decretoEnjambre = new Habilidad {
+                L"Decreto de Enjambre",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
+        ultimaVoluntad  = new Habilidad {
+                L"Última Voluntad",
+                EnfoqueHabilidad::equipo,    AccesoHabilidad::ninguno,   Antagonista::aliado};
+        //
+        mandatoRegio   ->ponDescripcion (
+                L"La Reina dicta un mandato inapelable: el enemigo elegido ve multiplicado por 10 el coste de todas sus habilidades durante 1 turno. La Reina se queda con un único punto de acción.");
+        feromonasJalea ->ponDescripcion (
+                L"La Reina libera feromonas de jalea real que refuerzan la coraza de todos los aliados en el área, aumentando su defensa durante 2 turnos.");
+        decretoEnjambre->ponDescripcion (
+                L"La Reina lidera una carga en masa: ataca cuerpo a cuerpo y empuja al enemigo 3 casillas hacia atrás.");
+        ultimaVoluntad ->ponDescripcion (
+                L"En un último acto de liderazgo, la Reina infunde determinación a todos sus aliados vivos, reduciendo el coste de sus habilidades en 1 PA durante 3 turnos.");
+        //
+        mandatoRegio   ->ponArchivosImagenes (
+                carpeta_habilids_juego + "espada.png",          carpeta_habilids_juego + "fondo_5.png");
+        feromonasJalea ->ponArchivosImagenes (
+                carpeta_habilids_juego + "vela_triple.png",     carpeta_habilids_juego + "fondo_5.png");
+        decretoEnjambre->ponArchivosImagenes (
+                carpeta_habilids_juego + "espada_poderosa.png", carpeta_habilids_juego + "fondo_5.png");
+        ultimaVoluntad ->ponArchivosImagenes (
+                carpeta_habilids_juego + "escudo.png",          carpeta_habilids_juego + "fondo_5.png");
+        //
+        mandatoRegio   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        feromonasJalea ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        decretoEnjambre->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        ultimaVoluntad ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        //
+        agregaHabilidad (mandatoRegio);
+        agregaHabilidad (feromonasJalea);
+        agregaHabilidad (decretoEnjambre);
+        agregaHabilidad (ultimaVoluntad);
+        // ── Habilidades placeholder ──────────────────────────────────────────────
         ataqueEspadaNormal   = new Habilidad {
-                L"Ataque cuerpo a cuerpo normal", 
+                L"Ataque cuerpo a cuerpo normal",
                 EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
         ataqueArco           = new Habilidad {
                 L"Ataque a distancia normal",     
@@ -822,10 +864,10 @@ namespace juego {
 
         *******************************************************************************************/
         //
-        AbejaReina      ->agregaHabilidad (ataqueEspadaNormal);
-        AbejaReina      ->agregaHabilidad (ataqueArco);
-        AbejaReina      ->agregaHabilidad (ataqueEspadaPoderoso);
-        AbejaReina      ->agregaHabilidad (defensaFerrea);
+        AbejaReina      ->agregaHabilidad (mandatoRegio);
+        AbejaReina      ->agregaHabilidad (feromonasJalea);
+        AbejaReina      ->agregaHabilidad (decretoEnjambre);
+        AbejaReina      ->agregaHabilidad (ultimaVoluntad);
         //
         AbejaGuardia    ->agregaHabilidad (ataqueEspadaNormal);
         AbejaGuardia    ->agregaHabilidad (curacionSimple);
@@ -937,7 +979,31 @@ namespace juego {
 
         *******************************************************************************************/
         //
-        ataqueEspadaNormal->ponCoste (3);                                       
+        // ── Abeja Reina ──────────────────────────────────────────────────────────
+        // Mandato Regio: debuff puro (sin daño), cuesta todos los PA de la Reina menos 1
+        mandatoRegio->ponCostaTodoMenosUno ();
+        mandatoRegio->ponAlcance (RejillaTablero::filas + RejillaTablero::columnas - 1); // alcance total
+        mandatoRegio->ponEfectoEstado (TipoEstado::MultiplicadorCosteHabilidades, 10, 1);
+        //
+        // Feromonas de Jalea Real: buff de defensa en área a aliados (sin curación de HP)
+        feromonasJalea->ponCoste (4);
+        feromonasJalea->ponAlcance (5);
+        feromonasJalea->ponRadioAlcance (2);
+        feromonasJalea->ponEfectoEstado (TipoEstado::ModificadorDefensa, 20, 2);
+        //
+        // Decreto de Enjambre: ataque melee físico + empuje 3 casillas
+        decretoEnjambre->ponCoste (5);
+        decretoEnjambre->ponAlcance (1);
+        decretoEnjambre->asignaAtaque  (ataqueCuerpoACuerpo);
+        decretoEnjambre->asignaDefensa (defensaCuerpoACuerpo);
+        decretoEnjambre->asignaDano    (danoFisico, 35);
+        decretoEnjambre->ponEmpuje (3);
+        //
+        // Última Voluntad: buff equipo, reduce coste de habilidades en 1 PA durante 3 turnos
+        ultimaVoluntad->ponCoste (8);
+        ultimaVoluntad->ponEfectoEstado (TipoEstado::ModificadorCosteHabilidades, -1, 3);
+        // ── Habilidades placeholder ──────────────────────────────────────────────
+        ataqueEspadaNormal->ponCoste (3);
         ataqueEspadaNormal->ponAlcance (1);
         ataqueEspadaNormal->asignaAtaque  (ataqueCuerpoACuerpo); 
         ataqueEspadaNormal->asignaDefensa (defensaCuerpoACuerpo); 
@@ -1258,6 +1324,11 @@ namespace juego {
         AranaReina       = nullptr;
         Avispa           = nullptr;
         Polilla    = nullptr;
+        //
+        mandatoRegio    = nullptr;
+        feromonasJalea  = nullptr;
+        decretoEnjambre = nullptr;
+        ultimaVoluntad  = nullptr;
         //
         ataqueEspadaNormal   = nullptr;
         ataqueArco           = nullptr;

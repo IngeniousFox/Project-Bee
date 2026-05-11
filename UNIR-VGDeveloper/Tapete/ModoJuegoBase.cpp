@@ -782,8 +782,20 @@ namespace tapete {
         // solo usado en 'ModoJuegoComun'
         //
         asertaHabilidadSimple ("aplicaHabilidadSimple");
-        // 
-        juego_->sistemaAtaque ().calcula (atacante_, habilidad_accion);
+        //
+        if (habilidad_accion->tipoEnfoque () == EnfoqueHabilidad::equipo) {
+            // Aplica a todos los aliados vivos del atacante
+            std::vector <ActorPersonaje *> aliados;
+            for (ActorPersonaje * persj : juego_->personajes ()) {
+                if (persj->ladoTablero () == atacante_->ladoTablero () &&
+                    persj->vitalidad ()   >  0) {
+                    aliados.push_back (persj);
+                }
+            }
+            juego_->sistemaAtaque ().calcula (atacante_, habilidad_accion, aliados);
+        } else {
+            juego_->sistemaAtaque ().calcula (atacante_, habilidad_accion);
+        }
         //
         atacante_->ponPuntosAccion (atacante_->puntosAccion () - atacante_->puntosAccionEnJuego ());
         atacante_->ponPuntosAccionEnJuego (0);
@@ -808,11 +820,13 @@ namespace tapete {
         aserta (modo_accion == ModoAccionPersonaje::Habilidad,
                                                 metodo, "modo de acción inválido");
         aserta (habilidad_accion != nullptr,    metodo, "habilidad nula");
-        aserta (habilidad_accion->tipoEnfoque () == EnfoqueHabilidad::si_mismo,
+        aserta (habilidad_accion->tipoEnfoque () == EnfoqueHabilidad::si_mismo ||
+                habilidad_accion->tipoEnfoque () == EnfoqueHabilidad::equipo,
                                                 metodo, "enfoque habilidad inválido");
         aserta (habilidad_accion->tipoAcceso () == AccesoHabilidad::ninguno,
                                                 metodo, "acceso habilidad inválido");
-        aserta (habilidad_accion->antagonista () == Antagonista::si_mismo,
+        aserta (habilidad_accion->antagonista () == Antagonista::si_mismo ||
+                habilidad_accion->antagonista () == Antagonista::aliado,
                                                 metodo, "antagonista habilidad inválido");
     }
 
