@@ -72,6 +72,7 @@ namespace tapete {
         void preparaMarcas ();
 
         int  indiceBarraVida ();
+        void actualizaOpacidadHabilidades ();
 
         static void aserta (bool expresion, const string & mensaje);
 

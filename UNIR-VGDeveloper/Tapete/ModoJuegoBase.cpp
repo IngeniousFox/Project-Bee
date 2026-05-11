@@ -1170,7 +1170,8 @@ namespace tapete {
         // solo usado en 'ModoJuegoComun'
         //
         PresenciaActuante & presnc = juego_->tablero ()->presencia (lado_tablero);
-        Habilidad * habil = presnc.personaje ()->habilidades () [indice_habilidad];
+        ActorPersonaje * personaje = presnc.personaje ();
+        Habilidad * habil = personaje->habilidades () [indice_habilidad];
         wstring tipo;
         switch (habil->tipoEnfoque ()) {
         case EnfoqueHabilidad::personaje:
@@ -1181,13 +1182,17 @@ namespace tapete {
                 tipo = L"área directa";
             } else {
                 tipo = L"área indirecta";
-            } 
+            }
             break;
         case EnfoqueHabilidad::si_mismo:
             tipo = L"simple";
             break;
+        case EnfoqueHabilidad::equipo:
+            tipo = L"equipo";
+            break;
         }
-        wstring cadena = std::format (L"{} ({})", habil->nombre (), tipo);
+        int coste = personaje->costeHabilidad (habil);
+        wstring cadena = std::format (L"{} ({} PA, {})", habil->nombre (), coste, tipo);
         juego_->tablero ()->indicaHabilidad (lado_tablero, indice_habilidad, cadena);
     }
 

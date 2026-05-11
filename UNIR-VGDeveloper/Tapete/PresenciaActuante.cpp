@@ -232,6 +232,8 @@ namespace tapete {
             lista_fonds [indc]->ponVisible (true);
         }
 
+        actualizaOpacidadHabilidades ();
+
         //int indc = 0;
         //for (unir2d::Imagen * imagen : 
         //            actor_tablero->presencia_habilidades.imagenesHabilidades (personaje)) {
@@ -331,6 +333,9 @@ namespace tapete {
                 imagen_luces_punto_accion [indc]->seleccionaEstampa (1, 1);
             }
         }
+        if (visible_) {
+            actualizaOpacidadHabilidades ();
+        }
     }
 
 
@@ -347,6 +352,22 @@ namespace tapete {
         int indice_vida = (int) (coefic * (PresenciaActuante::cuentaBarrasVida - 1)) + 1;
         assert (1 <= indice_vida && indice_vida <= PresenciaActuante::cuentaBarrasVida);
         return PresenciaActuante::cuentaBarrasVida - indice_vida + 1;
+    }
+
+
+    void PresenciaActuante::actualizaOpacidadHabilidades () {
+        std::vector <unir2d::Imagen *> lista_habld =
+                actor_tablero->presencia_habilidades.imagenesHabilidades (personaje_mostrado);
+        std::vector <unir2d::Imagen *> lista_fonds =
+                actor_tablero->presencia_habilidades.imagenesFondosHabilidad (personaje_mostrado);
+        int pa_disponibles = personaje_mostrado->puntosAccion ();
+        for (int indc = 0; indc < static_cast <int> (lista_habld.size ()); ++ indc) {
+            Habilidad * habilidad = personaje_mostrado->habilidades () [indc];
+            bool puede_pagar = personaje_mostrado->costeHabilidad (habilidad) <= pa_disponibles;
+            unir2d::Color color = puede_pagar ? unir2d::Color::Blanco : unir2d::Color::Gris;
+            lista_habld [indc]->colorea (color);
+            lista_fonds [indc]->colorea (color);
+        }
     }
 
 
