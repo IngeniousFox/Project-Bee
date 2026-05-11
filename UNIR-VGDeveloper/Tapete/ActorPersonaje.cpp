@@ -257,11 +257,45 @@ namespace tapete {
     }
 
 
-    void ActorPersonaje::ponPuntosAccionEnJuego (int valor) { 
+    void ActorPersonaje::ponPuntosAccionEnJuego (int valor) {
         puntos_accion_en_juego = valor;
     }
 
 
+    bool ActorPersonaje::tieneVeneno () const {
+        return veneno_turnos_restantes_ > 0;
+    }
+
+
+    void ActorPersonaje::aplicaVeneno (int dano_por_turno, int turnos) {
+        // Si ya hay veneno activo, acumula el daño y toma el mayor número de turnos
+        veneno_dano_por_turno_   = veneno_dano_por_turno_ + dano_por_turno;
+        if (turnos > veneno_turnos_restantes_) {
+            veneno_turnos_restantes_ = turnos;
+        }
+    }
+
+
+    void ActorPersonaje::procesaVeneno () {
+        if (veneno_turnos_restantes_ <= 0) {
+            return;
+        }
+        int nueva_vitalidad = vitalidad_ - veneno_dano_por_turno_;
+        if (nueva_vitalidad < 0) {
+            nueva_vitalidad = 0;
+        }
+        vitalidad_ = nueva_vitalidad;
+        veneno_turnos_restantes_ --;
+        if (veneno_turnos_restantes_ == 0) {
+            veneno_dano_por_turno_ = 0;
+        }
+    }
+
+
+    void ActorPersonaje::limpiaVeneno () {
+        veneno_dano_por_turno_   = 0;
+        veneno_turnos_restantes_ = 0;
+    }
 
 
 //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

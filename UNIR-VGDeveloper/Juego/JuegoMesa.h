@@ -42,7 +42,7 @@ namespace juego {
         ActorPersonaje * AbejaExploradora {};
         ActorPersonaje * AranaReina {};
         ActorPersonaje * Avispa {};
-        ActorPersonaje * AranaCazadora {};
+        ActorPersonaje * Polilla {};
         /*******************************************************************************************
         /******************************************************************************************/
  
@@ -68,7 +68,7 @@ namespace juego {
         la lista de habilidades diseñadas para el juego.
 
         *******************************************************************************************/
-        Habilidad * ataqueEspadaNormal {}; 
+        Habilidad * ataqueEspadaNormal {};
         Habilidad * ataqueArco {};
         Habilidad * ataqueEspadaPoderoso {};
         Habilidad * defensaFerrea {};
@@ -76,6 +76,7 @@ namespace juego {
         Habilidad * curacionGrupo {};
         Habilidad * proyectilMagico {};
         Habilidad * bolaFuego {};
+        Habilidad * venenoMortal {};
         /*******************************************************************************************
         /******************************************************************************************/
 

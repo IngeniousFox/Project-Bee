@@ -180,6 +180,14 @@ namespace tapete {
 
 
     void ModoJuegoBase::avanzaTurno () {
+        // Procesar efectos de veneno activos en todos los personajes vivos
+        for (ActorPersonaje * persj : juego_->personajes ()) {
+            if (persj->tieneVeneno () && persj->vitalidad () > 0) {
+                persj->procesaVeneno ();
+            }
+        }
+        refrescaBarrasVida ();
+        //
         turno_ ++;
         jugada_ = 1;
         if (trazar_avance) {
@@ -1316,6 +1324,7 @@ namespace tapete {
     void ModoJuegoBase::restauraPersonajes () {
         for (ActorPersonaje * persj : juego_->personajes ()) {
             persj->ponPuntosAccion (ActorPersonaje::maximoPuntosAccion);
+            persj->limpiaVeneno ();
             if (persj->vitalidad () > 0) {
                 persj->presencia ().aclaraRetrato ();
             }

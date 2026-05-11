@@ -190,5 +190,27 @@ namespace tapete {
     }
 
 
+    bool Habilidad::esVeneno () const {
+        return es_veneno_;
+    }
+
+
+    int Habilidad::venonoDano () const {
+        return veneno_dano_;
+    }
+
+
+    int Habilidad::venonoDuracion () const {
+        return veneno_duracion_;
+    }
+
+
+    void Habilidad::ponVeneno (int dano_por_turno, int turnos) {
+        es_veneno_       = true;
+        veneno_dano_     = dano_por_turno;
+        veneno_duracion_ = turnos;
+    }
+
+
 }
 

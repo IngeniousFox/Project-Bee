@@ -284,6 +284,10 @@ namespace tapete {
             }
             oponente->ponVitalidad (registro.vitalidad_final);
         }
+        // Si la habilidad tiene efecto de veneno y el oponente sigue vivo, aplica el estado
+        if (habilidad_->esVeneno () && registro.vitalidad_final > 0) {
+            oponente->aplicaVeneno (habilidad_->venonoDano (), habilidad_->venonoDuracion ());
+        }
         //
         ataques_oponente.push_back (registro);
     }

@@ -443,8 +443,8 @@ namespace juego {
         respetar las medidas indicadas previamente.
 
         *******************************************************************************************/
-        tablero ()->equipa (LadoTablero::Izquierda, L"Abejas",  carpeta_activos_juego + "escudo_devils.png");
-        tablero ()->equipa (LadoTablero::Derecha,   L"Arañas", carpeta_activos_juego + "escudo_tusk.png");
+        tablero ()->equipa (LadoTablero::Izquierda, L"Colmena Dorada",  carpeta_activos_juego + "escudo_devils.png");
+        tablero ()->equipa (LadoTablero::Derecha,   L"Corte de Seda y Veneno", carpeta_activos_juego + "escudo_tusk.png");
         /*******************************************************************************************
         /******************************************************************************************/
         //
@@ -536,39 +536,39 @@ namespace juego {
         *******************************************************************************************/
         //
         AbejaReina       = new ActorPersonaje {this, LadoTablero::Izquierda, 0, L"Abeja Reina"};
-        AbejaGuardia     = new ActorPersonaje {this, LadoTablero::Izquierda, 1, L"Abeja Guardia"};
+        AbejaGuardia     = new ActorPersonaje {this, LadoTablero::Izquierda, 1, L"Guardiana"};
         AbejaExploradora = new ActorPersonaje {this, LadoTablero::Izquierda, 2, L"Exploradora"};
-        AranaReina       = new ActorPersonaje {this, LadoTablero::Derecha,   0, L"Araña Reina"};
+        AranaReina       = new ActorPersonaje {this, LadoTablero::Derecha,   0, L"Reina Araña"};
         Avispa           = new ActorPersonaje {this, LadoTablero::Derecha,   1, L"Avispa"};
-        AranaCazadora    = new ActorPersonaje {this, LadoTablero::Derecha,   2, L"Araña Cazadora"};
+        Polilla    = new ActorPersonaje {this, LadoTablero::Derecha,   2, L"Polilla"};
         //
         AbejaReina      ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee01_Queen.png");
         AbejaGuardia    ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee02_Guard.png");
         AbejaExploradora->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee03_Explorer.png");
         AranaReina      ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider01_Queen.png");
         Avispa          ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider02_Avispa.png");
-        AranaCazadora   ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider01_Queen_test.png");
+        Polilla   ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider03_Polilla.png");
         //
         AbejaReina      ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
         AbejaGuardia    ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
         AbejaExploradora->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
         AranaReina      ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
         Avispa          ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
-        AranaCazadora   ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
+        Polilla   ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
         //
         AbejaReina      ->ponIniciativa (20);
         AbejaGuardia    ->ponIniciativa (19);
         AbejaExploradora->ponIniciativa (18);
         AranaReina      ->ponIniciativa (20);
         Avispa          ->ponIniciativa (19);
-        AranaCazadora   ->ponIniciativa (18);
+        Polilla   ->ponIniciativa (18);
         //
         agregaPersonaje (AbejaReina);
         agregaPersonaje (AbejaGuardia);
         agregaPersonaje (AbejaExploradora);
         agregaPersonaje (AranaReina);
         agregaPersonaje (Avispa);
-        agregaPersonaje (AranaCazadora);
+        agregaPersonaje (Polilla);
         //
         /*******************************************************************************************
         /******************************************************************************************/
@@ -671,8 +671,11 @@ namespace juego {
                 L"Proyectil mágico",              
                 EnfoqueHabilidad::personaje, AccesoHabilidad::indirecto, Antagonista::oponente};
         bolaFuego            = new Habilidad {
-                L"Bola de fuego",                 
+                L"Bola de fuego",
                 EnfoqueHabilidad::area,      AccesoHabilidad::directo,   Antagonista::oponente};
+        venenoMortal         = new Habilidad {
+                L"Veneno mortal",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
         //
         ataqueEspadaNormal  ->ponDescripcion (
                 L"El personaje usa su espada para atacar a un enemigo que se encuentra en una casilla próxima.");
@@ -690,6 +693,8 @@ namespace juego {
                 L"El personaje acumula energía mágica y la lanza contra un enemigo.");
         bolaFuego           ->ponDescripcion (
                 L"El personaje acumula energía mágica y la lanza contra un grupo de enemigos.");
+        venenoMortal        ->ponDescripcion (
+                L"La polilla inocula un veneno paralizante: inflige daño inmediato y envenena al objetivo durante 3 turnos.");
         //
         ataqueEspadaNormal  ->ponArchivosImagenes (
                 carpeta_habilids_juego + "espada.png",          carpeta_habilids_juego + "fondo_5.png");
@@ -707,6 +712,8 @@ namespace juego {
                 carpeta_habilids_juego + "cristales.png",       carpeta_habilids_juego + "fondo_5.png");
         bolaFuego           ->ponArchivosImagenes (
                 carpeta_habilids_juego + "bola_fuego.png",      carpeta_habilids_juego + "fondo_5.png");
+        venenoMortal        ->ponArchivosImagenes (
+                carpeta_habilids_juego + "cristales.png",        carpeta_habilids_juego + "fondo_5.png");
         //
         ataqueEspadaNormal  ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
         ataqueArco          ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
@@ -716,6 +723,7 @@ namespace juego {
         curacionGrupo       ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
         proyectilMagico     ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
         bolaFuego           ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        venenoMortal        ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
         //
         agregaHabilidad (ataqueEspadaNormal);
         agregaHabilidad (ataqueArco);
@@ -725,6 +733,7 @@ namespace juego {
         agregaHabilidad (curacionGrupo );
         agregaHabilidad (proyectilMagico );
         agregaHabilidad (bolaFuego );
+        agregaHabilidad (venenoMortal);
         //
         /*******************************************************************************************
         /******************************************************************************************/
@@ -837,9 +846,10 @@ namespace juego {
         Avispa          ->agregaHabilidad (curacionGrupo);
         Avispa          ->agregaHabilidad (proyectilMagico);
         //
-        AranaCazadora   ->agregaHabilidad (ataqueEspadaNormal);
-        AranaCazadora   ->agregaHabilidad (proyectilMagico);
-        AranaCazadora   ->agregaHabilidad (bolaFuego);
+        Polilla   ->agregaHabilidad (ataqueEspadaNormal);
+        Polilla   ->agregaHabilidad (proyectilMagico);
+        Polilla   ->agregaHabilidad (bolaFuego);
+        Polilla   ->agregaHabilidad (venenoMortal);
         //
         /*******************************************************************************************
         /******************************************************************************************/
@@ -971,6 +981,14 @@ namespace juego {
         bolaFuego->asignaDefensa (defensaMagica);
         bolaFuego->asignaDano    (danoMagico, 50);
         //
+        // Veneno mortal: inflige daño inmediato + 8 pts de veneno por turno durante 3 turnos
+        venenoMortal->ponCoste (6);
+        venenoMortal->ponAlcance (1);
+        venenoMortal->asignaAtaque  (ataqueCuerpoACuerpo);
+        venenoMortal->asignaDefensa (defensaCuerpoACuerpo);
+        venenoMortal->asignaDano    (danoFisico, 10);
+        venenoMortal->ponVeneno     (8, 3);
+        //
         /*******************************************************************************************
         /******************************************************************************************/
     }
@@ -1063,13 +1081,13 @@ namespace juego {
         Avispa          ->agregaReduceDano (danoFisico,            5);
         Avispa          ->agregaReduceDano (danoMagico,           10);
         //
-        AranaCazadora   ->agregaAtaque     (ataqueCuerpoACuerpo,  50);
-        AranaCazadora   ->agregaAtaque     (ataqueMagico,         70);
-        AranaCazadora   ->agregaDefensa    (defensaCuerpoACuerpo, 40);
-        AranaCazadora   ->agregaDefensa    (defensaADistancia,    40);
-        AranaCazadora   ->agregaDefensa    (defensaMagica,        30);
-        AranaCazadora   ->agregaReduceDano (danoFisico,            0);
-        AranaCazadora   ->agregaReduceDano (danoMagico,           15);
+        Polilla   ->agregaAtaque     (ataqueCuerpoACuerpo,  50);
+        Polilla   ->agregaAtaque     (ataqueMagico,         70);
+        Polilla   ->agregaDefensa    (defensaCuerpoACuerpo, 40);
+        Polilla   ->agregaDefensa    (defensaADistancia,    40);
+        Polilla   ->agregaDefensa    (defensaMagica,        30);
+        Polilla   ->agregaReduceDano (danoFisico,            0);
+        Polilla   ->agregaReduceDano (danoMagico,           15);
         //
         /*******************************************************************************************
         /******************************************************************************************/
@@ -1214,7 +1232,7 @@ namespace juego {
         AbejaExploradora->ponSitioFicha (Coord {29, 15});
         AranaReina      ->ponSitioFicha (Coord {17, 35});
         Avispa          ->ponSitioFicha (Coord {23, 35});
-        AranaCazadora   ->ponSitioFicha (Coord {29, 35});
+        Polilla   ->ponSitioFicha (Coord {29, 35});
         //
         tablero ()->asignaSonidoEstablece (carpeta_sonidos_juego + "Metal Click.wav", 100);
         tablero ()->asignaSonidoDesplaza  (carpeta_sonidos_juego + "SnowWalk.ogg",    100);
@@ -1239,7 +1257,7 @@ namespace juego {
         AbejaExploradora = nullptr;
         AranaReina       = nullptr;
         Avispa           = nullptr;
-        AranaCazadora    = nullptr;
+        Polilla    = nullptr;
         //
         ataqueEspadaNormal   = nullptr;
         ataqueArco           = nullptr;
@@ -1249,6 +1267,7 @@ namespace juego {
         curacionGrupo        = nullptr;
         proyectilMagico      = nullptr;
         bolaFuego            = nullptr;
+        venenoMortal         = nullptr;
         //
         ataqueCuerpoACuerpo  = nullptr;
         ataqueADistancia     = nullptr;

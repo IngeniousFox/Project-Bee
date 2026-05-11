@@ -84,6 +84,12 @@ namespace tapete {
         int indice () const;
         void ponIndice (int valor);
 
+        // Efecto de veneno: daño por turno aplicado al oponente durante N turnos
+        bool esVeneno       () const;
+        int  venonoDano     () const;
+        int  venonoDuracion () const;
+        void ponVeneno      (int dano_por_turno, int turnos);
+
     private:
 
         wstring nombre_ {};
@@ -112,6 +118,10 @@ namespace tapete {
         //int coln_selecn_imagen {};
 
         int indice_ {};
+
+        bool es_veneno_      {};
+        int  veneno_dano_    {};
+        int  veneno_duracion_{};
 
     };
 
