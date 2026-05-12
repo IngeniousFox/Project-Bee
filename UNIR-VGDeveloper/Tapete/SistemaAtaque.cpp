@@ -278,7 +278,7 @@ namespace tapete {
                 throw std::logic_error {"Sistema de ataque mal configurado, aplicando ataque: reducción de daño no establecido en el oponente"};
             }
             registro.valor_reduce_dano = oponente->valorReduceDano (registro.tipo_dano);
-            registro.valor_final_dano  = registro.valor_ajustado_dano - registro.valor_reduce_dano;
+            registro.valor_final_dano  = std::max (0, registro.valor_ajustado_dano - registro.valor_reduce_dano);
             //
             registro.vitalidad_origen = oponente->vitalidad ();
             registro.vitalidad_final  = oponente->vitalidad ();
@@ -306,21 +306,101 @@ namespace tapete {
             }
         }
         //
-        // Empuje: desplaza al oponente en la dirección del ataque (alejándolo del atacante)
+        // Devuelve el vecino hex de 'desde' que está más cerca (en píxeles) de 'hacia'.
+        // Necesario para desplazar paso a paso en una dirección hex arbitraria, ya que el
+        // delta raw entre dos celdas no adyacentes NO es un vector unitario hex.
+        auto proximaHacia = [] (Coord desde, Coord hacia) -> Coord {
+            const std::array <Coord, 6> vecinos {{
+                Coord (desde.fila () - 2, desde.coln ()    ),
+                Coord (desde.fila () - 1, desde.coln () + 1),
+                Coord (desde.fila () + 1, desde.coln () + 1),
+                Coord (desde.fila () + 2, desde.coln ()    ),
+                Coord (desde.fila () + 1, desde.coln () - 1),
+                Coord (desde.fila () - 1, desde.coln () - 1),
+            }};
+            Vector objetivo = RejillaTablero::centroHexagono (hacia);
+            Coord  mejor    = desde;
+            float  dist_min = 1e9f;
+            for (const Coord & c : vecinos) {
+                if (! CalculoCaminos::celdaEnTablero (c)) {
+                    continue;
+                }
+                float d = unir2d::norma (RejillaTablero::centroHexagono (c) - objetivo);
+                if (d < dist_min) {
+                    dist_min = d;
+                    mejor    = c;
+                }
+            }
+            return mejor;
+        };
+        //
+        // Empuje: desplaza al oponente alejándolo del atacante, un paso hex por iteración
         if (habilidad_->celdasEmpuje () > 0 && registro.vitalidad_final > 0) {
-            int delta_fila = oponente->sitioFicha ().fila () - atacante_->sitioFicha ().fila ();
-            int delta_coln = oponente->sitioFicha ().coln () - atacante_->sitioFicha ().coln ();
-            Coord direccion    {delta_fila, delta_coln};
             Coord celda_actual = oponente->sitioFicha ();
+            // Celda ficticia "detrás" del atacante para que la dirección sea hacia ella
+            // equivale a: partir del oponente, buscar el vecino más alejado del atacante
+            // → usamos la celda opuesta: la que está más lejos del atacante desde la actual
+            auto proximaLejos = [&] (Coord desde) -> Coord {
+                const std::array <Coord, 6> vecinos {{
+                    Coord (desde.fila () - 2, desde.coln ()    ),
+                    Coord (desde.fila () - 1, desde.coln () + 1),
+                    Coord (desde.fila () + 1, desde.coln () + 1),
+                    Coord (desde.fila () + 2, desde.coln ()    ),
+                    Coord (desde.fila () + 1, desde.coln () - 1),
+                    Coord (desde.fila () - 1, desde.coln () - 1),
+                }};
+                Vector atacante_px = RejillaTablero::centroHexagono (atacante_->sitioFicha ());
+                Coord  mejor       = desde;
+                float  dist_max    = -1.0f;
+                for (const Coord & c : vecinos) {
+                    if (! CalculoCaminos::celdaEnTablero (c)) {
+                        continue;
+                    }
+                    float d = unir2d::norma (RejillaTablero::centroHexagono (c) - atacante_px);
+                    if (d > dist_max) {
+                        dist_max = d;
+                        mejor    = c;
+                    }
+                }
+                return mejor;
+            };
             for (int paso = 0; paso < habilidad_->celdasEmpuje (); ++ paso) {
-                Coord celda_sig = celda_actual + direccion;
-                if (! CalculoCaminos::celdaEnTablero (celda_sig)) {
+                Coord celda_sig = proximaLejos (celda_actual);
+                if (celda_sig == celda_actual) {
                     break;
                 }
                 if (CalculoCaminos::celdaEnMuro (juego, celda_sig)) {
                     break;
                 }
-                // Detener si hay otro personaje en esa casilla
+                bool ocupada = false;
+                for (ActorPersonaje * p : juego->personajes ()) {
+                    if (p != oponente && p->sitioFicha () == celda_sig) {
+                        ocupada = true;
+                        break;
+                    }
+                }
+                if (ocupada) {
+                    break;
+                }
+                celda_actual = celda_sig;
+            }
+            oponente->ponSitioFicha (celda_actual);
+            registro.celda_empuje_final = celda_actual;
+        }
+        //
+        // Atracción: desplaza al oponente hacia el atacante, un paso hex por iteración
+        // Solo actúa si el ataque impactó (porciento_dano > 0)
+        if (habilidad_->celdasAtraccion () > 0 && registro.porciento_dano > 0 && registro.vitalidad_final > 0) {
+            Coord celda_actual = oponente->sitioFicha ();
+            for (int paso = 0; paso < habilidad_->celdasAtraccion (); ++ paso) {
+                Coord celda_sig = proximaHacia (celda_actual, atacante_->sitioFicha ());
+                if (celda_sig == celda_actual) {
+                    break;
+                }
+                if (CalculoCaminos::celdaEnMuro (juego, celda_sig)) {
+                    break;
+                }
+                // Detener si hay otro personaje (incluido el atacante), dejando al oponente adyacente
                 bool ocupada = false;
                 for (ActorPersonaje * p : juego->personajes ()) {
                     if (p != oponente && p->sitioFicha () == celda_sig) {

@@ -74,6 +74,12 @@ namespace juego {
         Habilidad * decretoEnjambre {};  // Ataque melee + empuje 3 casillas
         Habilidad * ultimaVoluntad  {};  // Buff equipo: reduce el coste de habilidades en 1 PA
 
+        // --- Habilidades de la Abeja Guardia ---
+        Habilidad * escudoQuitina        {};  // Buff propia: +35 defensa por 2 turnos
+        Habilidad * ataqueTronador       {};  // Ataque melee poderoso (daño 55)
+        Habilidad * embestidaTerritorial {};  // Ataque melee potente + empuje 3 casillas
+        Habilidad * aguijonCadena        {};  // Ataque a distancia: poco daño + atrae 3 casillas
+
         // --- Habilidades placeholder (pendientes de personaje real) ---
         Habilidad * ataqueEspadaNormal {};
         Habilidad * ataqueArco {};

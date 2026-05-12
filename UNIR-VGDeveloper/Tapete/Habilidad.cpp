@@ -224,5 +224,16 @@ namespace tapete {
     }
 
 
+    int Habilidad::celdasAtraccion () const {
+        return celdas_atraccion_;
+    }
+
+
+    void Habilidad::ponAtraccion (int celdas) {
+        celdas_atraccion_ = celdas;
+    }
+
+
+
 }
 

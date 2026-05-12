@@ -99,6 +99,10 @@ namespace tapete {
         int  celdasEmpuje () const;
         void ponEmpuje (int celdas);
 
+        // Atracción: desplaza al objetivo N casillas hacia el atacante (solo si el ataque impacta)
+        int  celdasAtraccion () const;
+        void ponAtraccion (int celdas);
+
     private:
 
         wstring nombre_ {};
@@ -131,7 +135,8 @@ namespace tapete {
         ListaEfectosEstado efectos_estado {};
 
         bool costa_todo_menos_uno_ {};
-        int  celdas_empuje_ {};
+        int  celdas_empuje_    {};
+        int  celdas_atraccion_ {};
 
     };
 

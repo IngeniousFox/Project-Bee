@@ -540,28 +540,28 @@ namespace juego {
         AbejaExploradora = new ActorPersonaje {this, LadoTablero::Izquierda, 2, L"Exploradora"};
         AranaReina       = new ActorPersonaje {this, LadoTablero::Derecha,   0, L"Reina Araña"};
         Avispa           = new ActorPersonaje {this, LadoTablero::Derecha,   1, L"Avispa"};
-        Polilla    = new ActorPersonaje {this, LadoTablero::Derecha,   2, L"Polilla"};
+        Polilla          = new ActorPersonaje {this, LadoTablero::Derecha,   2, L"Polilla"};
         //
         AbejaReina      ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee01_Queen.png");
         AbejaGuardia    ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee02_Guard.png");
         AbejaExploradora->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee03_Explorer.png");
         AranaReina      ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider01_Queen.png");
         Avispa          ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider02_Avispa.png");
-        Polilla   ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider03_Polilla.png");
+        Polilla         ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider03_Polilla.png");
         //
         AbejaReina      ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
         AbejaGuardia    ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
         AbejaExploradora->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
         AranaReina      ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
         Avispa          ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
-        Polilla   ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
+        Polilla         ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
         //
         AbejaReina      ->ponIniciativa (20);
         AbejaGuardia    ->ponIniciativa (19);
         AbejaExploradora->ponIniciativa (18);
         AranaReina      ->ponIniciativa (20);
         Avispa          ->ponIniciativa (19);
-        Polilla   ->ponIniciativa (18);
+        Polilla         ->ponIniciativa (18);
         //
         agregaPersonaje (AbejaReina);
         agregaPersonaje (AbejaGuardia);
@@ -690,6 +690,47 @@ namespace juego {
         agregaHabilidad (feromonasJalea);
         agregaHabilidad (decretoEnjambre);
         agregaHabilidad (ultimaVoluntad);
+        // ── Abeja Guardia ────────────────────────────────────────────────────────
+        escudoQuitina        = new Habilidad {
+                L"Escudo de Quitina",
+                EnfoqueHabilidad::si_mismo,  AccesoHabilidad::ninguno,   Antagonista::si_mismo};
+        ataqueTronador       = new Habilidad {
+                L"Ataque Tronador",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
+        embestidaTerritorial = new Habilidad {
+                L"Embestida Territorial",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
+        aguijonCadena        = new Habilidad {
+                L"Aguijón Cadena",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
+        //
+        escudoQuitina       ->ponDescripcion (
+                L"La Guardia endurece su exoesqueleto de quitina: obtiene +35 de defensa en todos los tipos durante 2 turnos, convirtiéndose en un muro casi infranqueable.");
+        ataqueTronador      ->ponDescripcion (
+                L"La Guardia descarga un golpe devastador con toda su masa: ataque cuerpo a cuerpo de alto daño que sacude al enemigo.");
+        embestidaTerritorial->ponDescripcion (
+                L"La Guardia carga como una apisonadora: ataque cuerpo a cuerpo potente que empuja al enemigo 3 casillas en dirección contraria al atacante.");
+        aguijonCadena       ->ponDescripcion (
+                L"La Guardia lanza su aguijón encadenado: ataque a distancia de poco daño que arrastra al objetivo hasta 3 casillas hacia ella. No arrastra si el ataque falla.");
+        //
+        escudoQuitina       ->ponArchivosImagenes (
+                carpeta_habilids_juego + "escudo.png",          carpeta_habilids_juego + "fondo_5.png");
+        ataqueTronador      ->ponArchivosImagenes (
+                carpeta_habilids_juego + "espada_poderosa.png", carpeta_habilids_juego + "fondo_5.png");
+        embestidaTerritorial->ponArchivosImagenes (
+                carpeta_habilids_juego + "espada_poderosa.png", carpeta_habilids_juego + "fondo_5.png");
+        aguijonCadena       ->ponArchivosImagenes (
+                carpeta_habilids_juego + "arco_flecha.png",     carpeta_habilids_juego + "fondo_5.png");
+        //
+        escudoQuitina       ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        ataqueTronador      ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        embestidaTerritorial->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        aguijonCadena       ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        //
+        agregaHabilidad (escudoQuitina);
+        agregaHabilidad (ataqueTronador);
+        agregaHabilidad (embestidaTerritorial);
+        agregaHabilidad (aguijonCadena);
         // ── Habilidades placeholder ──────────────────────────────────────────────
         ataqueEspadaNormal   = new Habilidad {
                 L"Ataque cuerpo a cuerpo normal",
@@ -869,10 +910,10 @@ namespace juego {
         AbejaReina      ->agregaHabilidad (decretoEnjambre);
         AbejaReina      ->agregaHabilidad (ultimaVoluntad);
         //
-        AbejaGuardia    ->agregaHabilidad (ataqueEspadaNormal);
-        AbejaGuardia    ->agregaHabilidad (curacionSimple);
-        AbejaGuardia    ->agregaHabilidad (curacionGrupo);
-        AbejaGuardia    ->agregaHabilidad (proyectilMagico);
+        AbejaGuardia    ->agregaHabilidad (escudoQuitina);
+        AbejaGuardia    ->agregaHabilidad (ataqueTronador);
+        AbejaGuardia    ->agregaHabilidad (embestidaTerritorial);
+        AbejaGuardia    ->agregaHabilidad (aguijonCadena);
         //
         AbejaExploradora->agregaHabilidad (ataqueEspadaNormal);
         AbejaExploradora->agregaHabilidad (ataqueArco);
@@ -1002,6 +1043,38 @@ namespace juego {
         // Última Voluntad: buff equipo, reduce coste de habilidades en 1 PA durante 3 turnos
         ultimaVoluntad->ponCoste (8);
         ultimaVoluntad->ponEfectoEstado (TipoEstado::ModificadorCosteHabilidades, -1, 3);
+        // ── Abeja Guardia ────────────────────────────────────────────────────────
+        // Escudo de Quitina: buff de defensa propio, dura 2 turnos
+        // Con base C-C 65, llega a 85 efectiva → más difícil de golpear pero no invulnerable
+        escudoQuitina->ponCoste (4);
+        escudoQuitina->ponEfectoEstado (TipoEstado::ModificadorDefensa, 20, 2);
+        //
+        // Ataque Tronador: golpe melee potente (55 daño bruto)
+        // vs def 50: E[daño] ≈ 41 bruto, ~36 neto (5 reducción). 5 PA → 7 daño/PA
+        ataqueTronador->ponCoste (5);
+        ataqueTronador->ponAlcance (1);
+        ataqueTronador->asignaAtaque  (ataqueCuerpoACuerpo);
+        ataqueTronador->asignaDefensa (defensaCuerpoACuerpo);
+        ataqueTronador->asignaDano    (danoFisico, 55);
+        //
+        // Embestida Territorial: golpe melee + empuje 3 casillas (45 daño bruto)
+        // Más caro que Tronador por la utilidad del empuje; daño menor pero reposiciona
+        embestidaTerritorial->ponCoste (6);
+        embestidaTerritorial->ponAlcance (1);
+        embestidaTerritorial->asignaAtaque  (ataqueCuerpoACuerpo);
+        embestidaTerritorial->asignaDefensa (defensaCuerpoACuerpo);
+        embestidaTerritorial->asignaDano    (danoFisico, 45);
+        embestidaTerritorial->ponEmpuje (3);
+        //
+        // Aguijón Cadena: ataque a distancia de poco daño + atrae hacia la Guardiana
+        // Daño bajo (20), pero el gancho trae al enemigo adyacente si el camino está libre
+        // Solo arrastra si el ataque impacta (roce, impacto o crítico)
+        aguijonCadena->ponCoste (4);
+        aguijonCadena->ponAlcance (6);   // desde cuántos casillas se puede lanzar
+        aguijonCadena->asignaAtaque  (ataqueADistancia);
+        aguijonCadena->asignaDefensa (defensaADistancia);
+        aguijonCadena->asignaDano    (danoFisico, 20);
+        aguijonCadena->ponAtraccion (RejillaTablero::filas + RejillaTablero::columnas); // arrastra hasta quedar adyacente
         // ── Habilidades placeholder ──────────────────────────────────────────────
         ataqueEspadaNormal->ponCoste (3);
         ataqueEspadaNormal->ponAlcance (1);
@@ -1115,13 +1188,13 @@ namespace juego {
         AbejaReina      ->agregaReduceDano (danoFisico,           10);
         AbejaReina      ->agregaReduceDano (danoMagico,            5);
         //
-        AbejaGuardia    ->agregaAtaque     (ataqueCuerpoACuerpo,  50);
-        AbejaGuardia    ->agregaAtaque     (ataqueMagico,         50);
-        AbejaGuardia    ->agregaDefensa    (defensaCuerpoACuerpo, 50);
-        AbejaGuardia    ->agregaDefensa    (defensaADistancia,    50);
-        AbejaGuardia    ->agregaDefensa    (defensaMagica,        50);
-        AbejaGuardia    ->agregaReduceDano (danoFisico,            5);
-        AbejaGuardia    ->agregaReduceDano (danoMagico,           10);
+        AbejaGuardia    ->agregaAtaque     (ataqueCuerpoACuerpo,  60);  // tanque melee
+        AbejaGuardia    ->agregaAtaque     (ataqueADistancia,     50);  // para Aguijón Cadena
+        AbejaGuardia    ->agregaDefensa    (defensaCuerpoACuerpo, 65);  // alta resistencia física
+        AbejaGuardia    ->agregaDefensa    (defensaADistancia,    55);
+        AbejaGuardia    ->agregaDefensa    (defensaMagica,        40);
+        AbejaGuardia    ->agregaReduceDano (danoFisico,           10);  // armadura física sólida
+        AbejaGuardia    ->agregaReduceDano (danoMagico,            5);
         //
         AbejaExploradora->agregaAtaque     (ataqueCuerpoACuerpo,  60);
         AbejaExploradora->agregaAtaque     (ataqueADistancia,     70);
@@ -1329,6 +1402,11 @@ namespace juego {
         feromonasJalea  = nullptr;
         decretoEnjambre = nullptr;
         ultimaVoluntad  = nullptr;
+        //
+        escudoQuitina        = nullptr;
+        ataqueTronador       = nullptr;
+        embestidaTerritorial = nullptr;
+        aguijonCadena        = nullptr;
         //
         ataqueEspadaNormal   = nullptr;
         ataqueArco           = nullptr;
