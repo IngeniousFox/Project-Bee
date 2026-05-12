@@ -35,9 +35,11 @@ namespace tapete {
 
         // Obstáculos temporales: celdas bloqueadas durante N turnos (creados por habilidades)
         struct ObstaculoTemporal { Coord celda; int turnos; };
-        bool tieneObstaculo (Coord celda) const;
-        void agregaObstaculo (Coord celda, int turnos);
+        bool tieneObstaculo   (Coord celda) const;
+        void agregaObstaculo  (Coord celda, int turnos);
         void procesaObstaculos ();
+        int  contaObstaculos  () const;
+        void limpiaObstaculos ();
 
         RejillaTablero    & rejilla ();
         PresenciaActuante & presencia (LadoTablero lado);

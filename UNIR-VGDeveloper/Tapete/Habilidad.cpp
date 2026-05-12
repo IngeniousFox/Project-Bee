@@ -278,8 +278,58 @@ namespace tapete {
 
 
     void Habilidad::ponCreaObstaculo (int turnos) {
-        crea_obstaculo_  = true;
+        crea_obstaculo_   = true;
         turnos_obstaculo_ = turnos;
+    }
+
+
+    bool Habilidad::eliminaObstaculos () const {
+        return elimina_obstaculos_;
+    }
+
+
+    void Habilidad::ponEliminaObstaculos () {
+        elimina_obstaculos_ = true;
+    }
+
+
+    bool Habilidad::limpiaEstadosNegativos () const {
+        return limpia_estados_negativos_;
+    }
+
+
+    void Habilidad::ponLimpiaEstadosNegativos () {
+        limpia_estados_negativos_ = true;
+    }
+
+
+    bool Habilidad::mueveAtacante () const {
+        return mueve_atacante_;
+    }
+
+
+    void Habilidad::ponMueveAtacante () {
+        mueve_atacante_ = true;
+    }
+
+
+    bool Habilidad::escapaAleatorio () const {
+        return escapa_aleatorio_;
+    }
+
+
+    void Habilidad::ponEscapaAleatorio () {
+        escapa_aleatorio_ = true;
+    }
+
+
+    const Habilidad::ListaEfectosEstado & Habilidad::efectosEstadoAliados () const {
+        return efectos_aliados_;
+    }
+
+
+    void Habilidad::ponEfectoEstadoAliados (TipoEstado tipo, int valor, int turnos) {
+        efectos_aliados_.push_back ({tipo, valor, turnos});
     }
 
 

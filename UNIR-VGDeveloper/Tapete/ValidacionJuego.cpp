@@ -302,7 +302,7 @@ namespace tapete {
                         std::format (L"La habilidad '{}' tiene un tipo de ataque desconocido.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
             } else {
-                aserta (! de_ataque || habil->efectosEstado ().size () > 0 || habil->creaObstaculo (),
+                aserta (! de_ataque || habil->efectosEstado ().size () > 0 || habil->creaObstaculo () || habil->mueveAtacante (),
                         std::format (L"La habilidad '{}' de ataque sin daño debe tener efectos de estado.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
                 aserta (! de_curacion && ! auto_aplicada && ! de_equipo || habil->tipoAtaque () == nullptr,
@@ -349,9 +349,11 @@ namespace tapete {
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
             }
             // (h) La curación de vitalidad es opcional si la habilidad aplica efectosEstado (buff puro)
+            // o si la habilidad elimina obstáculos (la curación es dinámica: por obstáculo absorbido)
             if (de_curacion || de_equipo) {
-                // Debe tener al menos un efecto: curación de HP o buff de estado
-                aserta (habil->valorCuracion () > 0 || habil->efectosEstado ().size () > 0,
+                // Debe tener al menos un efecto: curación de HP, buff de estado o eliminación de obstáculos
+                aserta (habil->valorCuracion () > 0 || habil->efectosEstado ().size () > 0 ||
+                        habil->eliminaObstaculos () || habil->mueveAtacante (),
                         std::format (L"La habilidad '{}' de curación/equipo no tiene ni curación ni estados.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
                 if (habil->valorCuracion () > 0) {

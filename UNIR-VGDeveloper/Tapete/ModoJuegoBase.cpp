@@ -186,8 +186,6 @@ namespace tapete {
                 persj->procesaEstados ();
             }
         }
-        // Decrementar y eliminar obstáculos temporales expirados
-        juego_->tablero ()->procesaObstaculos ();
         //
         refrescaBarrasVida ();
         //
@@ -203,6 +201,9 @@ namespace tapete {
 
 
     void ModoJuegoBase::avanzaRonda () {
+        // Decrementar y eliminar obstáculos temporales expirados (una vez por ronda)
+        juego_->tablero ()->procesaObstaculos ();
+        //
         restauraPersonajes ();
         ronda_ ++;
         turno_ = 1;
@@ -795,7 +796,24 @@ namespace tapete {
                     aliados.push_back (persj);
                 }
             }
-            juego_->sistemaAtaque ().calcula (atacante_, habilidad_accion, aliados);
+            if (habilidad_accion->eliminaObstaculos ()) {
+                // Absorción de cera: elimina SOLO los obstáculos creados por habilidades
+                // (sitios_obstaculos_temporales), nunca los muros fijos del mapa
+                int cuenta   = juego_->tablero ()->contaObstaculos ();
+                juego_->tablero ()->limpiaObstaculos ();
+                int curacion = cuenta * habilidad_accion->valorCuracion ();
+                if (curacion > 0) {
+                    for (ActorPersonaje * aliado : aliados) {
+                        int nueva = std::min (
+                                aliado->vitalidad () + curacion,
+                                ActorPersonaje::maximaVitalidad);
+                        aliado->ponVitalidad (nueva);
+                    }
+                    refrescaBarrasVida ();
+                }
+            } else {
+                juego_->sistemaAtaque ().calcula (atacante_, habilidad_accion, aliados);
+            }
         } else {
             juego_->sistemaAtaque ().calcula (atacante_, habilidad_accion);
         }
@@ -1044,6 +1062,10 @@ namespace tapete {
             acceso_valido = false;
             return;
         }
+        if (habilidad_accion->mueveAtacante () && CalculoCaminos::celdaOcupada (juego_, celda_area)) {
+            acceso_valido = false;
+            return;
+        }
         //
         float distn = distanciaCeldas (celda_area, atacante_->sitioFicha ());
         if (distn > habilidad_accion->alcance ()) {
@@ -1129,6 +1151,74 @@ namespace tapete {
             }
             if (! ocupada) {
                 juego_->tablero ()->agregaObstaculo (celda_bloqueo, habilidad_accion->turnosObstaculo ());
+            }
+        }
+        //
+        // Vapores: aplica efectos de estado a los aliados vivos del atacante
+        if (! habilidad_accion->efectosEstadoAliados ().empty ()) {
+            for (ActorPersonaje * persj : juego_->personajes ()) {
+                if (persj->ladoTablero () != atacante_->ladoTablero ()) continue;
+                if (persj->vitalidad ()   <= 0)                         continue;
+                for (const EfectoEstado & efecto : habilidad_accion->efectosEstadoAliados ()) {
+                    persj->aplicaEstado (efecto.tipo, efecto.valor, efecto.turnos);
+                }
+            }
+        }
+        //
+        // Arrastre: la Mosca se mueve al destino y arrastra al enemigo adyacente consigo
+        if (habilidad_accion->mueveAtacante () && ! area_celdas.empty () && ! area_celdas [0].empty ()) {
+            auto esAdyacente = [] (Coord a, Coord b) -> bool {
+                const std::array <Coord, 6> vecinos {{
+                    Coord (a.fila () - 2, a.coln ()    ),
+                    Coord (a.fila () - 1, a.coln () + 1),
+                    Coord (a.fila () + 1, a.coln () + 1),
+                    Coord (a.fila () + 2, a.coln ()    ),
+                    Coord (a.fila () + 1, a.coln () - 1),
+                    Coord (a.fila () - 1, a.coln () - 1),
+                }};
+                for (const Coord & c : vecinos) {
+                    if (c == b) return true;
+                }
+                return false;
+            };
+            Coord destino = area_celdas [0] [0];
+            Coord origen  = atacante_->sitioFicha ();
+            atacante_->ponSitioFicha (destino);
+            // Busca el primer enemigo adyacente a la posición original
+            for (ActorPersonaje * p : juego_->personajes ()) {
+                if (p->ladoTablero () == atacante_->ladoTablero ()) continue;
+                if (p->vitalidad () <= 0)                           continue;
+                if (! esAdyacente (origen, p->sitioFicha ()))       continue;
+                // El enemigo se mueve a la mejor celda adyacente al destino (la más cercana a su posición actual)
+                const std::array <Coord, 6> vecs_destino {{
+                    Coord (destino.fila () - 2, destino.coln ()    ),
+                    Coord (destino.fila () - 1, destino.coln () + 1),
+                    Coord (destino.fila () + 1, destino.coln () + 1),
+                    Coord (destino.fila () + 2, destino.coln ()    ),
+                    Coord (destino.fila () + 1, destino.coln () - 1),
+                    Coord (destino.fila () - 1, destino.coln () - 1),
+                }};
+                Coord mejor_celda = origen;  // fallback: posición original si nada libre
+                float mejor_dist  = 1e9f;
+                for (const Coord & c : vecs_destino) {
+                    if (! CalculoCaminos::celdaEnTablero (c))    continue;
+                    if (CalculoCaminos::celdaEnMuro (juego_, c)) continue;
+                    bool ocupada = false;
+                    for (ActorPersonaje * otro : juego_->personajes ()) {
+                        if (otro != p && otro->sitioFicha () == c && otro->vitalidad () > 0) {
+                            ocupada = true;
+                            break;
+                        }
+                    }
+                    if (ocupada) continue;
+                    float d = distanciaCeldas (c, p->sitioFicha ());
+                    if (d < mejor_dist) {
+                        mejor_dist  = d;
+                        mejor_celda = c;
+                    }
+                }
+                p->ponSitioFicha (mejor_celda);
+                break;
             }
         }
         //
@@ -1349,10 +1439,13 @@ namespace tapete {
 
     void ModoJuegoBase::personajesAreaCeldas (
             std::vector <ActorPersonaje *> & lista_oponentes) const {
+        bool busca_oponentes = habilidad_accion->antagonista () == Antagonista::oponente;
         for (int indc_radio = 0; indc_radio < area_celdas.size (); ++ indc_radio) {
             for (Coord celda : area_celdas [indc_radio]) {
                 for (ActorPersonaje * persj : juego_->personajes ()) {
-                    if (persj->sitioFicha () == celda) {
+                    if (persj->sitioFicha () != celda) continue;
+                    bool es_oponente = persj->ladoTablero () != atacante_->ladoTablero ();
+                    if (busca_oponentes == es_oponente) {
                         lista_oponentes.push_back (persj);
                     }
                 }

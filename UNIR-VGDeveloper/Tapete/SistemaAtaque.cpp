@@ -480,6 +480,46 @@ namespace tapete {
             }
         }
         //
+        // Escape aleatorio: el atacante avanza 3 celdas en una dirección hex aleatoria
+        if (habilidad_->escapaAleatorio ()) {
+            // Las 6 direcciones hex expresadas como deltas (fila, coln)
+            const std::array <Coord, 6> direcciones {{
+                Coord (-2,  0),
+                Coord (-1, +1),
+                Coord (+1, +1),
+                Coord (+2,  0),
+                Coord (+1, -1),
+                Coord (-1, -1),
+            }};
+            // Elegir dirección aleatoria; intentar todas si la elegida está bloqueada desde el inicio
+            int dir_inicio = aleatorio_100 % 6;
+            for (int intento = 0; intento < 6; ++ intento) {
+                const Coord & delta = direcciones [(dir_inicio + intento) % 6];
+                Coord celda_actual = atacante_->sitioFicha ();
+                Coord celda_dest   = celda_actual;
+                for (int paso = 0; paso < 3; ++ paso) {
+                    Coord siguiente {celda_actual.fila () + delta.fila (),
+                                     celda_actual.coln () + delta.coln ()};
+                    if (! CalculoCaminos::celdaEnTablero (siguiente))    break;
+                    if (CalculoCaminos::celdaEnMuro (juego, siguiente))  break;
+                    bool ocupada = false;
+                    for (ActorPersonaje * p : juego->personajes ()) {
+                        if (p->sitioFicha () == siguiente && p->vitalidad () > 0) {
+                            ocupada = true;
+                            break;
+                        }
+                    }
+                    if (ocupada) break;
+                    celda_actual = siguiente;
+                    celda_dest   = siguiente;
+                }
+                if (celda_dest != atacante_->sitioFicha ()) {
+                    atacante_->ponSitioFicha (celda_dest);
+                    break;
+                }
+            }
+        }
+        //
         ataques_oponente.push_back (registro);
     }
 
@@ -513,6 +553,10 @@ namespace tapete {
             for (const EfectoEstado & efecto : habilidad_->efectosEstado ()) {
                 oponente->aplicaEstado (efecto.tipo, efecto.valor, efecto.turnos);
             }
+        }
+        // Cuidados Intensivos: elimina todos los estados negativos (debuffs) del objetivo
+        if (habilidad_->limpiaEstadosNegativos () && registro.vitalidad_final > 0) {
+            oponente->limpiaEstadosNegativos ();
         }
         //
         curaciones_oponente.push_back (registro);

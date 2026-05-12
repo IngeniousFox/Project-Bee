@@ -116,6 +116,25 @@ namespace tapete {
     }
 
 
+    int ActorTablero::contaObstaculos () const {
+        return static_cast <int> (sitios_obstaculos_temporales.size ());
+    }
+
+
+    void ActorTablero::limpiaObstaculos () {
+        if (sitios_obstaculos_temporales.empty ()) {
+            return;
+        }
+        for (const ObstaculoTemporal & obs : sitios_obstaculos_temporales) {
+            sitios_muros.erase (
+                std::remove (sitios_muros.begin (), sitios_muros.end (), obs.celda),
+                sitios_muros.end ());
+        }
+        sitios_obstaculos_temporales.clear ();
+        presencia_tablero.reconstruyeMuros ();
+    }
+
+
     void ActorTablero::validaGraficoMuros () {
         if (this->grafico_muros == nullptr) {
             throw std::logic_error ("no establecido");

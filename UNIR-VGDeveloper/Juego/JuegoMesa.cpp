@@ -443,8 +443,8 @@ namespace juego {
         respetar las medidas indicadas previamente.
 
         *******************************************************************************************/
-        tablero ()->equipa (LadoTablero::Izquierda, L"Colmena Dorada",  carpeta_activos_juego + "escudo_devils.png");
-        tablero ()->equipa (LadoTablero::Derecha,   L"Corte de Seda y Veneno", carpeta_activos_juego + "escudo_tusk.png");
+        tablero ()->equipa (LadoTablero::Izquierda, L"Colmena Dorada",  carpeta_activos_juego + "BanderaColmenaDorada_1.png");
+        tablero ()->equipa (LadoTablero::Derecha,   L"Corte de Seda y Veneno", carpeta_activos_juego + "Bandera_cortedeseda_1.png");
         /*******************************************************************************************
         /******************************************************************************************/
         //
@@ -538,37 +538,47 @@ namespace juego {
         AbejaReina       = new ActorPersonaje {this, LadoTablero::Izquierda, 0, L"Abeja Reina"};
         AbejaGuardia     = new ActorPersonaje {this, LadoTablero::Izquierda, 1, L"Guardiana"};
         AbejaExploradora = new ActorPersonaje {this, LadoTablero::Izquierda, 2, L"Exploradora"};
+        AbejaNodriza     = new ActorPersonaje {this, LadoTablero::Izquierda, 3, L"Nodriza"};
         AranaReina       = new ActorPersonaje {this, LadoTablero::Derecha,   0, L"Reina Araña"};
         Avispa           = new ActorPersonaje {this, LadoTablero::Derecha,   1, L"Avispa"};
         Polilla          = new ActorPersonaje {this, LadoTablero::Derecha,   2, L"Polilla"};
+        MoscaCarronera   = new ActorPersonaje {this, LadoTablero::Derecha,   3, L"Mosca"};
         //
         AbejaReina      ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee01_Queen.png");
         AbejaGuardia    ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee02_Guard.png");
         AbejaExploradora->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee03_Explorer.png");
+        AbejaNodriza    ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Bee04_Nodriza.png");
         AranaReina      ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider01_Queen.png");
         Avispa          ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider02_Avispa.png");
         Polilla         ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider03_Polilla.png");
+        MoscaCarronera  ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider04_Mosca.png");
         //
         AbejaReina      ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
         AbejaGuardia    ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
         AbejaExploradora->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
+        AbejaNodriza    ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
         AranaReina      ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
         Avispa          ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
         Polilla         ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
+        MoscaCarronera  ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
         //
         AbejaReina      ->ponIniciativa (20);
         AbejaGuardia    ->ponIniciativa (19);
         AbejaExploradora->ponIniciativa (18);
+        AbejaNodriza    ->ponIniciativa (17);
         AranaReina      ->ponIniciativa (20);
         Avispa          ->ponIniciativa (19);
         Polilla         ->ponIniciativa (18);
+        MoscaCarronera  ->ponIniciativa (17);
         //
         agregaPersonaje (AbejaReina);
         agregaPersonaje (AbejaGuardia);
         agregaPersonaje (AbejaExploradora);
+        agregaPersonaje (AbejaNodriza);
         agregaPersonaje (AranaReina);
         agregaPersonaje (Avispa);
         agregaPersonaje (Polilla);
+        agregaPersonaje (MoscaCarronera);
         //
         /*******************************************************************************************
         /******************************************************************************************/
@@ -854,6 +864,129 @@ namespace juego {
         agregaHabilidad (precisionAguijon);
         agregaHabilidad (frenesi);
         agregaHabilidad (desgarrarFormacion);
+        // ── Abeja Nodriza ────────────────────────────────────────────────────────
+        jaleaRestauradora  = new Habilidad {
+                L"Jalea Restauradora",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::indirecto, Antagonista::aliado};
+        mantoMiel          = new Habilidad {
+                L"Manto de Miel",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::indirecto, Antagonista::aliado};
+        cuidadosIntensivos = new Habilidad {
+                L"Cuidados Intensivos",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::aliado};
+        absorcionCera      = new Habilidad {
+                L"Absorción de Cera",
+                EnfoqueHabilidad::equipo,    AccesoHabilidad::ninguno,   Antagonista::aliado};
+        //
+        jaleaRestauradora ->ponDescripcion (
+                L"La Nodriza segrega jalea real a distancia, restaurando una cantidad moderada de vitalidad a un aliado sin necesidad de contacto.");
+        mantoMiel         ->ponDescripcion (
+                L"La Nodriza recubre a un aliado con una capa de miel protectora, aumentando su defensa durante varios turnos.");
+        cuidadosIntensivos->ponDescripcion (
+                L"La Nodriza atiende en distancia de contacto a un aliado gravemente herido: curación intensa y limpieza de todos sus estados negativos activos.");
+        absorcionCera     ->ponDescripcion (
+                L"La Nodriza absorbe la cera solidificada de los obstáculos creados en combate. Por cada obstáculo destruido, canaliza energía vital hacia todos sus aliados.");
+        //
+        jaleaRestauradora ->ponArchivosImagenes (
+                carpeta_habilids_juego + "vela.png",    carpeta_habilids_juego + "fondo_5.png");
+        mantoMiel         ->ponArchivosImagenes (
+                carpeta_habilids_juego + "escudo.png",  carpeta_habilids_juego + "fondo_5.png");
+        cuidadosIntensivos->ponArchivosImagenes (
+                carpeta_habilids_juego + "vela.png",    carpeta_habilids_juego + "fondo_5.png");
+        absorcionCera     ->ponArchivosImagenes (
+                carpeta_habilids_juego + "cristales.png", carpeta_habilids_juego + "fondo_5.png");
+        //
+        jaleaRestauradora ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        mantoMiel         ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        cuidadosIntensivos->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        absorcionCera     ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        //
+        agregaHabilidad (jaleaRestauradora);
+        agregaHabilidad (mantoMiel);
+        agregaHabilidad (cuidadosIntensivos);
+        agregaHabilidad (absorcionCera);
+        // ── Mosca Carroñera ──────────────────────────────────────────────────────
+        cargaIlusoria   = new Habilidad {
+                L"Carga Ilusoria",
+                EnfoqueHabilidad::area,      AccesoHabilidad::indirecto, Antagonista::oponente};
+        ojosCarronero   = new Habilidad {
+                L"Ojos del Carroñero",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::indirecto, Antagonista::oponente};
+        arrastreVictima = new Habilidad {
+                L"Arrastre de Víctima",
+                EnfoqueHabilidad::area,      AccesoHabilidad::directo,   Antagonista::aliado};
+        huidaCobarde    = new Habilidad {
+                L"Huida Cobarde",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
+        //
+        cargaIlusoria  ->ponDescripcion (
+                L"La Mosca lanza un embate fantasmal a distancia sobre una única celda. Puede usarse sin línea de visión directa.");
+        ojosCarronero  ->ponDescripcion (
+                L"La Mosca detecta los puntos débiles del objetivo y erosiona su armadura, reduciendo drásticamente su defensa durante varios turnos.");
+        arrastreVictima->ponDescripcion (
+                L"La Mosca se lanza sobre el enemigo adyacente y lo arrastra consigo al retroceder, desplazando a ambos.");
+        huidaCobarde   ->ponDescripcion (
+                L"La Mosca distrae a un enemigo cercano, reduciéndole el ataque, y lo empuja para escapar de su alcance.");
+        //
+        cargaIlusoria  ->ponArchivosImagenes (
+                carpeta_habilids_juego + "cristales.png", carpeta_habilids_juego + "fondo_5.png");
+        ojosCarronero  ->ponArchivosImagenes (
+                carpeta_habilids_juego + "vela.png",      carpeta_habilids_juego + "fondo_5.png");
+        arrastreVictima->ponArchivosImagenes (
+                carpeta_habilids_juego + "espada.png",    carpeta_habilids_juego + "fondo_5.png");
+        huidaCobarde   ->ponArchivosImagenes (
+                carpeta_habilids_juego + "escudo.png",    carpeta_habilids_juego + "fondo_5.png");
+        //
+        cargaIlusoria  ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        ojosCarronero  ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        arrastreVictima->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        huidaCobarde   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        //
+        agregaHabilidad (cargaIlusoria);
+        agregaHabilidad (ojosCarronero);
+        agregaHabilidad (arrastreVictima);
+        agregaHabilidad (huidaCobarde);
+        // ── Polilla ──────────────────────────────────────────────────────────────
+        brebajeCorrupto = new Habilidad {
+                L"Brebaje Corrupto",
+                EnfoqueHabilidad::area,      AccesoHabilidad::indirecto, Antagonista::oponente};
+        unguentoCera    = new Habilidad {
+                L"Ungüento de Cera",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::indirecto, Antagonista::aliado};
+        ceraPegajosa    = new Habilidad {
+                L"Cera Pegajosa",
+                EnfoqueHabilidad::area,      AccesoHabilidad::indirecto, Antagonista::oponente};
+        vapores         = new Habilidad {
+                L"Vapores",
+                EnfoqueHabilidad::area,      AccesoHabilidad::indirecto, Antagonista::oponente};
+        //
+        brebajeCorrupto->ponDescripcion (
+                L"La Polilla rocía un brebaje corrosivo en área: reduce la defensa de todos los enemigos alcanzados durante 3 rondas.");
+        unguentoCera   ->ponDescripcion (
+                L"La Polilla aplica un ungüento de cera regeneradora a un aliado a distancia, restaurando una cantidad moderada de vitalidad.");
+        ceraPegajosa   ->ponDescripcion (
+                L"La Polilla segrega cera pegajosa sobre una casilla vacía a distancia, bloqueándola durante 3 rondas. Si hay un enemigo en esa casilla, también sufre -15 de ataque durante 2 turnos.");
+        vapores        ->ponDescripcion (
+                L"La Polilla libera una nube de vapores tóxicos que daña a todos los enemigos del área y, a la vez, estimula el instinto de caza de sus aliados, aumentando su ataque.");
+        //
+        brebajeCorrupto->ponArchivosImagenes (
+                carpeta_habilids_juego + "cristales.png",  carpeta_habilids_juego + "fondo_5.png");
+        unguentoCera   ->ponArchivosImagenes (
+                carpeta_habilids_juego + "vela.png",       carpeta_habilids_juego + "fondo_5.png");
+        ceraPegajosa   ->ponArchivosImagenes (
+                carpeta_habilids_juego + "cristales.png",  carpeta_habilids_juego + "fondo_5.png");
+        vapores        ->ponArchivosImagenes (
+                carpeta_habilids_juego + "bola_fuego.png", carpeta_habilids_juego + "fondo_5.png");
+        //
+        brebajeCorrupto->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        unguentoCera   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        ceraPegajosa   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        vapores        ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        //
+        agregaHabilidad (brebajeCorrupto);
+        agregaHabilidad (unguentoCera);
+        agregaHabilidad (ceraPegajosa);
+        agregaHabilidad (vapores);
         // ── Habilidades placeholder ──────────────────────────────────────────────
         ataqueEspadaNormal   = new Habilidad {
                 L"Ataque cuerpo a cuerpo normal",
@@ -1053,10 +1186,20 @@ namespace juego {
         Avispa          ->agregaHabilidad (frenesi);
         Avispa          ->agregaHabilidad (desgarrarFormacion);
         //
-        Polilla   ->agregaHabilidad (ataqueEspadaNormal);
-        Polilla   ->agregaHabilidad (proyectilMagico);
-        Polilla   ->agregaHabilidad (bolaFuego);
-        Polilla   ->agregaHabilidad (venenoMortal);
+        AbejaNodriza->agregaHabilidad (jaleaRestauradora);
+        AbejaNodriza->agregaHabilidad (mantoMiel);
+        AbejaNodriza->agregaHabilidad (cuidadosIntensivos);
+        AbejaNodriza->agregaHabilidad (absorcionCera);
+        //
+        Polilla    ->agregaHabilidad (brebajeCorrupto);
+        Polilla    ->agregaHabilidad (unguentoCera);
+        Polilla    ->agregaHabilidad (ceraPegajosa);
+        Polilla    ->agregaHabilidad (vapores);
+        //
+        MoscaCarronera ->agregaHabilidad (cargaIlusoria);
+        MoscaCarronera ->agregaHabilidad (ojosCarronero);
+        MoscaCarronera ->agregaHabilidad (arrastreVictima);
+        MoscaCarronera ->agregaHabilidad (huidaCobarde);
         //
         /*******************************************************************************************
         /******************************************************************************************/
@@ -1209,9 +1352,9 @@ namespace juego {
         //
         // Hilo del Titiritero: debuff puro al personaje, siempre acierta; cuesta TODOS los PA
         // turnos=-1 → dura hasta fin de ronda (se limpia en restauraPersonajes)
+        hiloTitiritero->ponCoste (ActorPersonaje::maximoPuntosAccion);
         hiloTitiritero->ponAlcance (RejillaTablero::filas + RejillaTablero::columnas - 1);
         hiloTitiritero->ponEfectoEstado (TipoEstado::HiloTitiritero, 1, -1);
-        hiloTitiritero->ponCostaTodo ();
         //
         // Mordedura Venenosa: melee con veneno (daño 30 + 10/turno durante 3 turnos)
         // coste 5 PA, adyacente, contra defensaCaC → daño moderado más DoT persistente
@@ -1285,6 +1428,54 @@ namespace juego {
         desgarrarFormacion->asignaDefensa (defensaCuerpoACuerpo);
         desgarrarFormacion->asignaDano    (danoFisico, 15);
         desgarrarFormacion->ponEfectoEstado (TipoEstado::ModificadorDefensa, -20, 2);
+        // ── Abeja Nodriza ────────────────────────────────────────────────────────
+        // Jalea Restauradora: curación media a distancia (indirecto), sin contacto
+        jaleaRestauradora->ponCoste (4);
+        jaleaRestauradora->ponAlcance (5);
+        jaleaRestauradora->asignaCuracion (30);
+        //
+        // Manto de Miel: buff de defensa a un aliado a distancia
+        mantoMiel->ponCoste (3);
+        mantoMiel->ponAlcance (5);
+        mantoMiel->ponEfectoEstado (TipoEstado::ModificadorDefensa, 25, 3);
+        //
+        // Cuidados Intensivos: curación alta a meleé + limpia todos los estados negativos
+        cuidadosIntensivos->ponCoste (6);
+        cuidadosIntensivos->ponAlcance (1);
+        cuidadosIntensivos->asignaCuracion (60);
+        cuidadosIntensivos->ponLimpiaEstadosNegativos ();
+        //
+        // Absorción de Cera: elimina obstáculos temporales del tablero y cura aliados
+        // valorCuracion = curación por cada obstáculo absorbido (0 obstáculos = 0 curación)
+        absorcionCera->ponCoste (5);
+        absorcionCera->asignaCuracion (20);
+        absorcionCera->ponEliminaObstaculos ();
+        // ── Polilla ──────────────────────────────────────────────────────────────
+        // Brebaje Corrupto: debuff puro en área — reduce defensa -25 durante 3 rondas
+        brebajeCorrupto->ponCoste (4);
+        brebajeCorrupto->ponAlcance (5);
+        brebajeCorrupto->ponRadioAlcance (2);
+        brebajeCorrupto->ponEfectoEstado (TipoEstado::ModificadorDefensa, -25, 3);
+        //
+        // Ungüento de Cera: curación moderada a distancia a un aliado
+        unguentoCera->ponCoste (4);
+        unguentoCera->ponAlcance (5);
+        unguentoCera->asignaCuracion (30);
+        //
+        // Cera Pegajosa: crea obstáculo temporal en celda vacía (idéntico a Reflujo de Polen)
+        ceraPegajosa->ponCoste (5);
+        ceraPegajosa->ponAlcance (6);
+        ceraPegajosa->ponRadioAlcance (0);
+        ceraPegajosa->ponCreaObstaculo (3);
+        //
+        // Vapores: ataque mágico en área + buff de ataque +20 a todos los aliados vivos durante 2 turnos
+        vapores->ponCoste (7);
+        vapores->ponAlcance (5);
+        vapores->ponRadioAlcance (2);
+        vapores->asignaAtaque  (ataqueMagico);
+        vapores->asignaDefensa (defensaMagica);
+        vapores->asignaDano    (danoMagico, 40);
+        vapores->ponEfectoEstadoAliados (TipoEstado::ModificadorAtaque, 20, 2);
         // ── Habilidades placeholder ──────────────────────────────────────────────
         ataqueEspadaNormal->ponCoste (3);
         ataqueEspadaNormal->ponAlcance (1);
@@ -1337,6 +1528,35 @@ namespace juego {
         venenoMortal->asignaDefensa (defensaCuerpoACuerpo);
         venenoMortal->asignaDano    (danoFisico, 10);
         venenoMortal->ponEfectoEstado (TipoEstado::VenenoDanoPorTurno, 8, 3);
+        // ── Mosca Carroñera ─────────────────────────────────────────────────────
+        // Carga Ilusoria: ataque en área indirecto, radio=0 (celda única), rango largo
+        // Ataca como a distancia (la Mosca lanza desde lejos sin línea de visión directa)
+        cargaIlusoria->ponCoste (4);
+        cargaIlusoria->ponAlcance (6);
+        cargaIlusoria->ponRadioAlcance (0);
+        cargaIlusoria->asignaAtaque  (ataqueADistancia);
+        cargaIlusoria->asignaDefensa (defensaADistancia);
+        cargaIlusoria->asignaDano    (danoFisico, 35);
+        //
+        // Ojos del Carroñero: debuff puro a distancia — baja defensa del objetivo -35 pts por 3 rondas
+        ojosCarronero->ponCoste (3);
+        ojosCarronero->ponAlcance (7);
+        ojosCarronero->ponEfectoEstado (TipoEstado::ModificadorDefensa, -35, 3);
+        //
+        // Arrastre de Víctima: selecciona celda libre; la Mosca se mueve allí y arrastra al enemigo adyacente
+        arrastreVictima->ponCoste (5);
+        arrastreVictima->ponAlcance (4);
+        arrastreVictima->ponRadioAlcance (0);
+        arrastreVictima->ponMueveAtacante ();
+        //
+        // Huida Cobarde: ataque corto + debuff ataque -20 por 1 ronda + la Mosca escapa a celda aleatoria
+        huidaCobarde->ponCoste (3);
+        huidaCobarde->ponAlcance (2);
+        huidaCobarde->asignaAtaque  (ataqueCuerpoACuerpo);
+        huidaCobarde->asignaDefensa (defensaCuerpoACuerpo);
+        huidaCobarde->asignaDano    (danoFisico, 10);
+        huidaCobarde->ponEfectoEstado (TipoEstado::ModificadorAtaque, -20, 1);
+        huidaCobarde->ponEscapaAleatorio ();
         //
         /*******************************************************************************************
         /******************************************************************************************/
@@ -1429,13 +1649,26 @@ namespace juego {
         Avispa          ->agregaReduceDano (danoFisico,            5);
         Avispa          ->agregaReduceDano (danoMagico,            5);
         //
-        Polilla   ->agregaAtaque     (ataqueCuerpoACuerpo,  50);
-        Polilla   ->agregaAtaque     (ataqueMagico,         70);
+        Polilla   ->agregaAtaque     (ataqueMagico,         70);  // solo Vapores usa ataque mágico
         Polilla   ->agregaDefensa    (defensaCuerpoACuerpo, 40);
         Polilla   ->agregaDefensa    (defensaADistancia,    40);
         Polilla   ->agregaDefensa    (defensaMagica,        30);
         Polilla   ->agregaReduceDano (danoFisico,            0);
         Polilla   ->agregaReduceDano (danoMagico,           15);
+        //
+        AbejaNodriza->agregaDefensa    (defensaCuerpoACuerpo, 45);  // soporte — poca resistencia
+        AbejaNodriza->agregaDefensa    (defensaADistancia,    45);
+        AbejaNodriza->agregaDefensa    (defensaMagica,        35);
+        AbejaNodriza->agregaReduceDano (danoFisico,            5);
+        AbejaNodriza->agregaReduceDano (danoMagico,            5);
+        //
+        MoscaCarronera  ->agregaAtaque     (ataqueCuerpoACuerpo,  55);  // Mosca Carroñera: melee y distancia física
+        MoscaCarronera  ->agregaAtaque     (ataqueADistancia,     60);  // para Carga Ilusoria
+        MoscaCarronera  ->agregaDefensa    (defensaCuerpoACuerpo, 40);  // ligera, evasiva
+        MoscaCarronera  ->agregaDefensa    (defensaADistancia,    45);
+        MoscaCarronera  ->agregaDefensa    (defensaMagica,        30);
+        MoscaCarronera  ->agregaReduceDano (danoFisico,            5);
+        MoscaCarronera  ->agregaReduceDano (danoMagico,            5);
         //
         /*******************************************************************************************
         /******************************************************************************************/
@@ -1578,9 +1811,11 @@ namespace juego {
         AbejaReina      ->ponSitioFicha (Coord {17, 15});
         AbejaGuardia    ->ponSitioFicha (Coord {23, 15});
         AbejaExploradora->ponSitioFicha (Coord {29, 15});
+        AbejaNodriza    ->ponSitioFicha (Coord {35, 15});
         AranaReina      ->ponSitioFicha (Coord {17, 35});
         Avispa          ->ponSitioFicha (Coord {23, 35});
-        Polilla   ->ponSitioFicha (Coord {29, 35});
+        Polilla         ->ponSitioFicha (Coord {29, 35});
+        MoscaCarronera      ->ponSitioFicha (Coord {35, 35});
         //
         tablero ()->asignaSonidoEstablece (carpeta_sonidos_juego + "Metal Click.wav", 100);
         tablero ()->asignaSonidoDesplaza  (carpeta_sonidos_juego + "SnowWalk.ogg",    100);
@@ -1603,9 +1838,11 @@ namespace juego {
         AbejaReina       = nullptr;
         AbejaGuardia     = nullptr;
         AbejaExploradora = nullptr;
+        AbejaNodriza     = nullptr;
         AranaReina       = nullptr;
         Avispa           = nullptr;
-        Polilla    = nullptr;
+        Polilla          = nullptr;
+        MoscaCarronera       = nullptr;
         //
         mandatoRegio    = nullptr;
         feromonasJalea  = nullptr;
@@ -1626,6 +1863,21 @@ namespace juego {
         turbulenciaDebilitadora = nullptr;
         reflujoPolen            = nullptr;
         alasResonantes          = nullptr;
+        //
+        jaleaRestauradora  = nullptr;
+        mantoMiel          = nullptr;
+        cuidadosIntensivos = nullptr;
+        absorcionCera      = nullptr;
+        //
+        brebajeCorrupto = nullptr;
+        unguentoCera    = nullptr;
+        ceraPegajosa    = nullptr;
+        vapores         = nullptr;
+        //
+        cargaIlusoria   = nullptr;
+        ojosCarronero   = nullptr;
+        arrastreVictima = nullptr;
+        huidaCobarde    = nullptr;
         //
         cargaAguijon       = nullptr;
         precisionAguijon   = nullptr;

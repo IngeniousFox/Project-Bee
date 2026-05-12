@@ -121,6 +121,27 @@ namespace tapete {
         int  turnosObstaculo () const;
         void ponCreaObstaculo (int turnos);
 
+        // Elimina todos los obstáculos temporales del tablero al usarse (no afecta a muros fijos)
+        // El valorCuracion() se usa como curación por obstáculo eliminado
+        bool eliminaObstaculos () const;
+        void ponEliminaObstaculos ();
+
+        // Limpia los estados negativos (debuffs) del objetivo al curar
+        bool limpiaEstadosNegativos () const;
+        void ponLimpiaEstadosNegativos ();
+
+        // El atacante se mueve a la celda seleccionada (área libre); arrastra al enemigo adyacente
+        bool mueveAtacante () const;
+        void ponMueveAtacante ();
+
+        // Tras atacar, el atacante se desplaza automáticamente a una celda libre adyacente aleatoria
+        bool escapaAleatorio () const;
+        void ponEscapaAleatorio ();
+
+        // Efectos de estado que se aplican a los aliados vivos del atacante al ejecutar la habilidad
+        const ListaEfectosEstado & efectosEstadoAliados () const;
+        void ponEfectoEstadoAliados (TipoEstado tipo, int valor, int turnos);
+
     private:
 
         wstring nombre_ {};
@@ -160,6 +181,11 @@ namespace tapete {
         bool critico_si_objetivo_debil_   {};
         bool crea_obstaculo_              {};
         int  turnos_obstaculo_            {};
+        bool elimina_obstaculos_          {};
+        bool limpia_estados_negativos_    {};
+        bool mueve_atacante_              {};
+        bool escapa_aleatorio_            {};
+        ListaEfectosEstado efectos_aliados_ {};
 
     };
 

@@ -40,9 +40,11 @@ namespace juego {
         ActorPersonaje * AbejaReina {};
         ActorPersonaje * AbejaGuardia {};
         ActorPersonaje * AbejaExploradora {};
+        ActorPersonaje * AbejaNodriza {};
         ActorPersonaje * AranaReina {};
         ActorPersonaje * Avispa {};
         ActorPersonaje * Polilla {};
+        ActorPersonaje * MoscaCarronera {};
         /*******************************************************************************************
         /******************************************************************************************/
  
@@ -89,14 +91,32 @@ namespace juego {
         // --- Habilidades de la Abeja Exploradora ---
         Habilidad * vientoAscendente      {};  // Buff aliado: reduce el coste de habilidades
         Habilidad * turbulenciaDebilitadora{};  // Ataque melee + reduce el ataque del enemigo
-        Habilidad * reflujoPolen          {};  // Debuff a distancia indirecto: ataca el ataque y el coste enemigo
+        Habilidad * reflujoPolen          {};  // Crea un obstáculo temporal en una celda vacía
         Habilidad * alasResonantes        {};  // Ataque a distancia en área, coste muy elevado
+
+        // --- Habilidades de la Abeja Nodriza ---
+        Habilidad * jaleaRestauradora  {};  // Curación media a distancia (indirecto)
+        Habilidad * mantoMiel          {};  // Buff de defensa a un aliado a distancia
+        Habilidad * cuidadosIntensivos {};  // Curación alta a meleé + limpia estados negativos
+        Habilidad * absorcionCera      {};  // Equipo: elimina obstáculos y cura aliados según cantidad
+
+        // --- Habilidades de la Mosca Carroñera ---
+        Habilidad * cargaIlusoria   {};  // Ataque en área a distancia (afecta a 1)
+        Habilidad * ojosCarronero   {};  // Debuff: baja la defensa al objetivo
+        Habilidad * arrastreVictima {};  // Carga melee: mueve a la Mosca y arrastra al enemigo
+        Habilidad * huidaCobarde    {};  // Debuff ataque + empuje (escape)
 
         // --- Habilidades de la Avispa Asesina ---
         Habilidad * cargaAguijon       {};  // Carga melee: avanza hacia el enemigo, daña si llega adyacente
         Habilidad * precisionAguijon   {};  // Ataque melee: crítico garantizado si objetivo < 30 HP
         Habilidad * frenesi            {};  // Buff propia: +ataque y +defensa durante 2 turnos
         Habilidad * desgarrarFormacion {};  // Ataque melee débil + reduce la defensa del enemigo
+
+        // --- Habilidades de la Polilla ---
+        Habilidad * brebajeCorrupto {};  // Debuff área: reduce la defensa de los enemigos
+        Habilidad * unguentoCera    {};  // Curación a distancia a un aliado
+        Habilidad * ceraPegajosa    {};  // Crea un obstáculo temporal en una celda vacía
+        Habilidad * vapores         {};  // Ataque mágico en área + buff de ataque a aliados
 
         // --- Habilidades placeholder (pendientes de personaje real) ---
         Habilidad * ataqueEspadaNormal {};
