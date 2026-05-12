@@ -813,6 +813,9 @@ namespace tapete {
                 }
             } else {
                 juego_->sistemaAtaque ().calcula (atacante_, habilidad_accion, aliados);
+                // Defensivo: si alguna habilidad de equipo curase HP, refrescar barras de
+                // todos los aliados (no solo del atacante)
+                refrescaBarrasVida ();
             }
         } else {
             juego_->sistemaAtaque ().calcula (atacante_, habilidad_accion);
