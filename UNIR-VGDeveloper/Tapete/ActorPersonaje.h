@@ -100,6 +100,7 @@ namespace tapete {
 
         // Sistema de estados activos (veneno, modificadores de ataque/defensa, etc.)
         bool tieneEstadosActivos () const;
+        bool tieneEstado (TipoEstado tipo) const;
         void aplicaEstado (TipoEstado tipo, int valor, int turnos);
         void procesaEstados ();
         void limpiaEstados ();

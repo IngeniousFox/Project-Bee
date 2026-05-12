@@ -731,6 +731,47 @@ namespace juego {
         agregaHabilidad (ataqueTronador);
         agregaHabilidad (embestidaTerritorial);
         agregaHabilidad (aguijonCadena);
+        // ── Reina Araña ──────────────────────────────────────────────────────────
+        redDominio        = new Habilidad {
+                L"Red de Dominio",
+                EnfoqueHabilidad::area,      AccesoHabilidad::indirecto, Antagonista::oponente};
+        hiloTitiritero    = new Habilidad {
+                L"Hilo del Titiritero",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::indirecto, Antagonista::oponente};
+        mordeduraVenenosa = new Habilidad {
+                L"Mordedura Venenosa",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
+        armadurasSeda     = new Habilidad {
+                L"Armaduras de Seda",
+                EnfoqueHabilidad::area,      AccesoHabilidad::directo,   Antagonista::aliado};
+        //
+        redDominio       ->ponDescripcion (
+                L"La Araña teje una red invisible que enturbia la mente de los enemigos cercanos: todos los que estén en el área ven triplicado el coste de sus habilidades durante 2 turnos.");
+        hiloTitiritero   ->ponDescripcion (
+                L"La Araña clava su hilo telepático en un enemigo. El jugador rival controlará a ese personaje durante el resto de la ronda, pero gastar todos los PA de la Araña. El afectado actúa normalmente.");
+        mordeduraVenenosa->ponDescripcion (
+                L"La Araña muerde a su objetivo inyectando un veneno paralizante: daño físico inmediato más 10 puntos de veneno por turno durante 3 turnos.");
+        armadurasSeda    ->ponDescripcion (
+                L"La Araña envuelve a sus aliados cercanos con hilos de seda endurecida, aumentando la defensa de todos ellos en 20 puntos durante 2 turnos.");
+        //
+        redDominio       ->ponArchivosImagenes (
+                carpeta_habilids_juego + "cristales.png",       carpeta_habilids_juego + "fondo_5.png");
+        hiloTitiritero   ->ponArchivosImagenes (
+                carpeta_habilids_juego + "vela_triple.png",     carpeta_habilids_juego + "fondo_5.png");
+        mordeduraVenenosa->ponArchivosImagenes (
+                carpeta_habilids_juego + "espada.png",          carpeta_habilids_juego + "fondo_5.png");
+        armadurasSeda    ->ponArchivosImagenes (
+                carpeta_habilids_juego + "escudo.png",          carpeta_habilids_juego + "fondo_5.png");
+        //
+        redDominio       ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        hiloTitiritero   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        mordeduraVenenosa->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        armadurasSeda    ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        //
+        agregaHabilidad (redDominio);
+        agregaHabilidad (hiloTitiritero);
+        agregaHabilidad (mordeduraVenenosa);
+        agregaHabilidad (armadurasSeda);
         // ── Habilidades placeholder ──────────────────────────────────────────────
         ataqueEspadaNormal   = new Habilidad {
                 L"Ataque cuerpo a cuerpo normal",
@@ -919,10 +960,10 @@ namespace juego {
         AbejaExploradora->agregaHabilidad (ataqueArco);
         AbejaExploradora->agregaHabilidad (ataqueEspadaPoderoso);
         //
-        AranaReina      ->agregaHabilidad (ataqueEspadaNormal);
-        AranaReina      ->agregaHabilidad (ataqueArco);
-        AranaReina      ->agregaHabilidad (ataqueEspadaPoderoso);
-        AranaReina      ->agregaHabilidad (defensaFerrea);
+        AranaReina      ->agregaHabilidad (redDominio);
+        AranaReina      ->agregaHabilidad (hiloTitiritero);
+        AranaReina      ->agregaHabilidad (mordeduraVenenosa);
+        AranaReina      ->agregaHabilidad (armadurasSeda);
         //
         Avispa          ->agregaHabilidad (ataqueEspadaNormal);
         Avispa          ->agregaHabilidad (curacionSimple);
@@ -1075,6 +1116,35 @@ namespace juego {
         aguijonCadena->asignaDefensa (defensaADistancia);
         aguijonCadena->asignaDano    (danoFisico, 20);
         aguijonCadena->ponAtraccion (RejillaTablero::filas + RejillaTablero::columnas); // arrastra hasta quedar adyacente
+        // ── Reina Araña ──────────────────────────────────────────────────────────
+        // Red de Dominio: debuff de área puro (sin daño), triplica coste habilidades 2 turnos
+        // alcance 4, radio 2 → cubre un buen área pero no todo el mapa
+        redDominio->ponCoste (5);
+        redDominio->ponAlcance (4);
+        redDominio->ponRadioAlcance (2);
+        redDominio->ponEfectoEstado (TipoEstado::MultiplicadorCosteHabilidades, 3, 2);
+        //
+        // Hilo del Titiritero: debuff puro al personaje, siempre acierta; cuesta TODOS los PA
+        // turnos=-1 → dura hasta fin de ronda (se limpia en restauraPersonajes)
+        hiloTitiritero->ponAlcance (RejillaTablero::filas + RejillaTablero::columnas - 1);
+        hiloTitiritero->ponEfectoEstado (TipoEstado::HiloTitiritero, 1, -1);
+        hiloTitiritero->ponCostaTodo ();
+        //
+        // Mordedura Venenosa: melee con veneno (daño 30 + 10/turno durante 3 turnos)
+        // coste 5 PA, adyacente, contra defensaCaC → daño moderado más DoT persistente
+        mordeduraVenenosa->ponCoste (5);
+        mordeduraVenenosa->ponAlcance (1);
+        mordeduraVenenosa->asignaAtaque  (ataqueCuerpoACuerpo);
+        mordeduraVenenosa->asignaDefensa (defensaCuerpoACuerpo);
+        mordeduraVenenosa->asignaDano    (danoFisico, 30);
+        mordeduraVenenosa->ponEfectoEstado (TipoEstado::VenenoDanoPorTurno, 10, 3);
+        //
+        // Armaduras de Seda: buff de defensa en área para aliados, +20 defensa 2 turnos
+        // alcance 3, radio 2; no cura HP, solo aplica el estado defensivo
+        armadurasSeda->ponCoste (4);
+        armadurasSeda->ponAlcance (3);
+        armadurasSeda->ponRadioAlcance (2);
+        armadurasSeda->ponEfectoEstado (TipoEstado::ModificadorDefensa, 20, 2);
         // ── Habilidades placeholder ──────────────────────────────────────────────
         ataqueEspadaNormal->ponCoste (3);
         ataqueEspadaNormal->ponAlcance (1);
@@ -1407,6 +1477,11 @@ namespace juego {
         ataqueTronador       = nullptr;
         embestidaTerritorial = nullptr;
         aguijonCadena        = nullptr;
+        //
+        redDominio        = nullptr;
+        hiloTitiritero    = nullptr;
+        mordeduraVenenosa = nullptr;
+        armadurasSeda     = nullptr;
         //
         ataqueEspadaNormal   = nullptr;
         ataqueArco           = nullptr;

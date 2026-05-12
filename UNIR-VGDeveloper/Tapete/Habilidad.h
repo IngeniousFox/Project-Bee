@@ -95,6 +95,11 @@ namespace tapete {
         bool costaTodoMenosUno () const;
         void ponCostaTodoMenosUno ();
 
+        // La habilidad cuesta TODOS los PA del usuario (el usuario se queda con 0 PA)
+        // El coste base ponCoste() actúa solo como placeholder para validación
+        bool costaTodo () const;
+        void ponCostaTodo ();
+
         // Empuje: desplaza al objetivo N casillas en dirección contraria al atacante
         int  celdasEmpuje () const;
         void ponEmpuje (int celdas);
@@ -135,6 +140,7 @@ namespace tapete {
         ListaEfectosEstado efectos_estado {};
 
         bool costa_todo_menos_uno_ {};
+        bool costa_todo_           {};
         int  celdas_empuje_    {};
         int  celdas_atraccion_ {};
 

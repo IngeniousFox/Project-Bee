@@ -80,6 +80,12 @@ namespace juego {
         Habilidad * embestidaTerritorial {};  // Ataque melee potente + empuje 3 casillas
         Habilidad * aguijonCadena        {};  // Ataque a distancia: poco daño + atrae 3 casillas
 
+        // --- Habilidades de la Reina Araña ---
+        Habilidad * redDominio        {};  // Debuff área: multiplica x3 el coste de habilidades enemigas
+        Habilidad * hiloTitiritero    {};  // Meta: el rival controla el objetivo hasta fin de ronda
+        Habilidad * mordeduraVenenosa {};  // Ataque melee + veneno por turnos
+        Habilidad * armadurasSeda     {};  // Buff área: sube la defensa de los aliados
+
         // --- Habilidades placeholder (pendientes de personaje real) ---
         Habilidad * ataqueEspadaNormal {};
         Habilidad * ataqueArco {};

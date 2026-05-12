@@ -234,6 +234,19 @@ namespace tapete {
     }
 
 
+    bool Habilidad::costaTodo () const {
+        return costa_todo_;
+    }
+
+
+    void Habilidad::ponCostaTodo () {
+        costa_todo_ = true;
+        if (coste_ == 0) {
+            coste_ = 1;
+        }
+    }
+
+
 
 }
 

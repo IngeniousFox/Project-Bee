@@ -1161,8 +1161,14 @@ namespace tapete {
     void ModoJuegoBase::muestraIndicaActuante (LadoTablero lado_tablero) {
         // solo usado en 'ModoJuegoComun'
         //
-        juego_->tablero ()->indicaPersonaje (
-                lado_tablero, juego_->tablero ()->presencia (lado_tablero).personaje ()->nombre ());
+        ActorPersonaje * persona = juego_->tablero ()->presencia (lado_tablero).personaje ();
+        wstring nombre = persona->nombre ();
+        // Aviso visual: este personaje está bajo el efecto del Hilo del Titiritero
+        // (el jugador rival lo controla hasta fin de ronda)
+        if (persona->tieneEstado (TipoEstado::HiloTitiritero)) {
+            nombre += L"  ★ ¡CONTROLADO POR EL RIVAL!";
+        }
+        juego_->tablero ()->indicaPersonaje (lado_tablero, nombre);
     }
 
 

@@ -279,6 +279,16 @@ namespace tapete {
     }
 
 
+    bool ActorPersonaje::tieneEstado (TipoEstado tipo) const {
+        for (const EfectoEstado & estado : estados_) {
+            if (estado.tipo == tipo) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     void ActorPersonaje::aplicaEstado (TipoEstado tipo, int valor, int turnos) {
         // Para veneno: si ya hay veneno activo, acumula el daño y toma el mayor número de turnos
         if (tipo == TipoEstado::VenenoDanoPorTurno) {
@@ -334,6 +344,10 @@ namespace tapete {
 
 
     int ActorPersonaje::costeHabilidad (const Habilidad * habilidad) const {
+        // Habilidades que cuestan TODOS los PA del usuario (se queda con 0)
+        if (habilidad->costaTodo ()) {
+            return puntos_accion;
+        }
         // Habilidades que cuestan todos los PA del usuario menos 1
         if (habilidad->costaTodoMenosUno ()) {
             return std::max (1, puntos_accion - 1);

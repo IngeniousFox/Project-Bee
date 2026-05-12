@@ -206,6 +206,12 @@ namespace tapete {
         this->personaje_mostrado = personaje;
 
         imagen_marco_personaje->ponVisible (true);
+        // Tinte violeta en el marco si el personaje está bajo el Hilo del Titiritero
+        if (personaje->tieneEstado (TipoEstado::HiloTitiritero)) {
+            imagen_marco_personaje->colorea (unir2d::Color {180, 80, 255, 255});
+        } else {
+            imagen_marco_personaje->colorea (unir2d::Color::Blanco);
+        }
 
         unir2d::Imagen * retrato = personaje->presencia ().imagenRetrato ();
         retrato->ponPosicion (panel_abajo.posicion () + Vector {2, 22});
@@ -252,6 +258,7 @@ namespace tapete {
     void PresenciaActuante::oculta () {
         aserta (visible_, "presencia no visible");
         //
+        imagen_marco_personaje->colorea (unir2d::Color::Blanco);
         imagen_marco_personaje->ponVisible (false);
 
         unir2d::Imagen * retrato = personaje_mostrado->presencia ().imagenRetrato ();

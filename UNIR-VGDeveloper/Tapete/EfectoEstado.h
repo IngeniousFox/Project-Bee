@@ -16,6 +16,7 @@ namespace tapete {
         ModificadorAtaque,               // Modifica (suma) todos los valores de ataque del personaje
         ModificadorCosteHabilidades,     // Modifica (suma, puede ser negativo) el coste en PA de las habilidades
         MultiplicadorCosteHabilidades,   // Multiplica el coste en PA de las habilidades (valor >= 1)
+        HiloTitiritero,                  // Meta-efecto: el rival controla este personaje hasta fin de ronda
     };
 
 
