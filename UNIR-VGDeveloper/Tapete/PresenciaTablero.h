@@ -127,6 +127,8 @@ namespace tapete {
         void liberaAyuda    ();
         void liberaSonidos  ();
 
+        void reconstruyeMuros ();
+
         void calculaEstampasMuros (
                 const std::vector <Coord> & posiciones_rejilla,
                 IndicesEstampas           & indices_estampas   );

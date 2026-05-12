@@ -21,8 +21,8 @@ namespace tapete {
 
     void PresenciaTablero::prepara () {
         preparaBaldosas ();
-        preparaMuros    (); 
-        preparaPaneles  (); 
+        preparaMuros    ();
+        preparaPaneles  ();
         preparaMonitor  ();
         preparaDisplay  ();
         preparaAyuda    ();
@@ -124,6 +124,21 @@ namespace tapete {
         //
         malla_muros   = nullptr;
         textura_muros = nullptr;
+    }
+
+
+    // Recalcula la geometría de la malla de muros en el mismo objeto GPU existente.
+    // No destruye ni re-crea el objeto Malla, por lo que conserva su posición en la lista
+    // de dibujos del actor (z-order correcto) y evita punteros colgantes.
+    void PresenciaTablero::reconstruyeMuros () {
+        IndicesEstampas indcs_estmp;
+        calculaEstampasMuros (actor_tablero->sitios_muros, indcs_estmp);
+        //
+        PuntosHexagonos puntos_textr {};
+        punteaTexturaMuros (puntos_textr);
+        PuntosHexagonos puntos_rejll {};
+        punteaRejillaMuros (actor_tablero->sitios_muros, puntos_rejll);
+        estableceMallaMuros (puntos_rejll, indcs_estmp, puntos_textr);
     }
 
 

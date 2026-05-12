@@ -108,6 +108,19 @@ namespace tapete {
         int  celdasAtraccion () const;
         void ponAtraccion (int celdas);
 
+        // Carga: el atacante avanza hacia el objetivo; el daño solo se aplica si llega adyacente
+        bool esCarga () const;
+        void ponCarga ();
+
+        // Crítico garantizado si el objetivo tiene menos del 30% de vitalidad
+        bool criticoSiObjetivoDebil () const;
+        void ponCriticoSiObjetivoDebil ();
+
+        // Obstáculo temporal: crea un bloqueo en la celda seleccionada por N turnos
+        bool creaObstaculo () const;
+        int  turnosObstaculo () const;
+        void ponCreaObstaculo (int turnos);
+
     private:
 
         wstring nombre_ {};
@@ -143,6 +156,10 @@ namespace tapete {
         bool costa_todo_           {};
         int  celdas_empuje_    {};
         int  celdas_atraccion_ {};
+        bool es_carga_                    {};
+        bool critico_si_objetivo_debil_   {};
+        bool crea_obstaculo_              {};
+        int  turnos_obstaculo_            {};
 
     };
 

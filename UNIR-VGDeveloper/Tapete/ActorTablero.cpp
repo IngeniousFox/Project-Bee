@@ -68,6 +68,54 @@ namespace tapete {
     }
 
 
+    bool ActorTablero::tieneObstaculo (Coord celda) const {
+        for (const ObstaculoTemporal & obs : sitios_obstaculos_temporales) {
+            if (obs.celda == celda) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    void ActorTablero::agregaObstaculo (Coord celda, int turnos) {
+        // No añadir si ya existe un obstáculo en esa celda
+        if (tieneObstaculo (celda)) {
+            return;
+        }
+        sitios_obstaculos_temporales.push_back (ObstaculoTemporal {celda, turnos});
+        sitios_muros.push_back (celda);
+        presencia_tablero.reconstruyeMuros ();
+    }
+
+
+    void ActorTablero::procesaObstaculos () {
+        if (sitios_obstaculos_temporales.empty ()) {
+            return;
+        }
+        for (ObstaculoTemporal & obs : sitios_obstaculos_temporales) {
+            obs.turnos --;
+        }
+        bool algo_expirado = false;
+        sitios_obstaculos_temporales.erase (
+            std::remove_if (sitios_obstaculos_temporales.begin (), sitios_obstaculos_temporales.end (),
+                [&] (const ObstaculoTemporal & o) {
+                    if (o.turnos <= 0) {
+                        sitios_muros.erase (
+                            std::remove (sitios_muros.begin (), sitios_muros.end (), o.celda),
+                            sitios_muros.end ());
+                        algo_expirado = true;
+                        return true;
+                    }
+                    return false;
+                }),
+            sitios_obstaculos_temporales.end ());
+        if (algo_expirado) {
+            presencia_tablero.reconstruyeMuros ();
+        }
+    }
+
+
     void ActorTablero::validaGraficoMuros () {
         if (this->grafico_muros == nullptr) {
             throw std::logic_error ("no establecido");

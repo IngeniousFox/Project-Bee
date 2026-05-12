@@ -86,6 +86,18 @@ namespace juego {
         Habilidad * mordeduraVenenosa {};  // Ataque melee + veneno por turnos
         Habilidad * armadurasSeda     {};  // Buff área: sube la defensa de los aliados
 
+        // --- Habilidades de la Abeja Exploradora ---
+        Habilidad * vientoAscendente      {};  // Buff aliado: reduce el coste de habilidades
+        Habilidad * turbulenciaDebilitadora{};  // Ataque melee + reduce el ataque del enemigo
+        Habilidad * reflujoPolen          {};  // Debuff a distancia indirecto: ataca el ataque y el coste enemigo
+        Habilidad * alasResonantes        {};  // Ataque a distancia en área, coste muy elevado
+
+        // --- Habilidades de la Avispa Asesina ---
+        Habilidad * cargaAguijon       {};  // Carga melee: avanza hacia el enemigo, daña si llega adyacente
+        Habilidad * precisionAguijon   {};  // Ataque melee: crítico garantizado si objetivo < 30 HP
+        Habilidad * frenesi            {};  // Buff propia: +ataque y +defensa durante 2 turnos
+        Habilidad * desgarrarFormacion {};  // Ataque melee débil + reduce la defensa del enemigo
+
         // --- Habilidades placeholder (pendientes de personaje real) ---
         Habilidad * ataqueEspadaNormal {};
         Habilidad * ataqueArco {};

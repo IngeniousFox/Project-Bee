@@ -186,6 +186,9 @@ namespace tapete {
                 persj->procesaEstados ();
             }
         }
+        // Decrementar y eliminar obstáculos temporales expirados
+        juego_->tablero ()->procesaObstaculos ();
+        //
         refrescaBarrasVida ();
         //
         turno_ ++;
@@ -1037,8 +1040,12 @@ namespace tapete {
             acceso_valido = false;
             return;
         }
+        if (habilidad_accion->creaObstaculo () && CalculoCaminos::celdaOcupada (juego_, celda_area)) {
+            acceso_valido = false;
+            return;
+        }
         //
-        float distn = distanciaCeldas (celda_area, atacante_->sitioFicha ()); 
+        float distn = distanciaCeldas (celda_area, atacante_->sitioFicha ());
         if (distn > habilidad_accion->alcance ()) {
             acceso_valido = false;
             return;
@@ -1102,12 +1109,28 @@ namespace tapete {
         // solo usado en 'ModoJuegoComun'
         //
         asertaHabilidadArea ("atacaArea", true);
-        // 
+        //
         std::vector <ActorPersonaje *> lista_oponentes {};
         personajesAreaCeldas (lista_oponentes);
         //
         juego_->sistemaAtaque ().calcula (
                 atacante_, habilidad_accion, lista_oponentes, valor_aleatorio_100);
+        //
+        // Obstáculo temporal: si la habilidad crea un obstáculo, bloquear la celda central del área
+        // Solo se coloca si la celda está desocupada (ningún personaje vivo sobre ella)
+        if (habilidad_accion->creaObstaculo () && ! area_celdas.empty () && ! area_celdas [0].empty ()) {
+            Coord celda_bloqueo = area_celdas [0] [0];
+            bool  ocupada       = false;
+            for (ActorPersonaje * p : juego_->personajes ()) {
+                if (p->sitioFicha () == celda_bloqueo && p->vitalidad () > 0) {
+                    ocupada = true;
+                    break;
+                }
+            }
+            if (! ocupada) {
+                juego_->tablero ()->agregaObstaculo (celda_bloqueo, habilidad_accion->turnosObstaculo ());
+            }
+        }
         //
         desmarcaCeldasArea ();
         if (habilidadAccion ()->tipoAcceso () == AccesoHabilidad::directo) {

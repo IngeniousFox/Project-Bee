@@ -33,6 +33,12 @@ namespace tapete {
         void situaMuros (const GraficoMuros & grafico_muros);
         void validaGraficoMuros ();
 
+        // Obstáculos temporales: celdas bloqueadas durante N turnos (creados por habilidades)
+        struct ObstaculoTemporal { Coord celda; int turnos; };
+        bool tieneObstaculo (Coord celda) const;
+        void agregaObstaculo (Coord celda, int turnos);
+        void procesaObstaculos ();
+
         RejillaTablero    & rejilla ();
         PresenciaActuante & presencia (LadoTablero lado);
         CuadroIndica      & indicador ();
@@ -83,7 +89,8 @@ namespace tapete {
         string  archivo_escudo_derch {};
 
         const GraficoMuros * grafico_muros;
-        std::vector <Coord>  sitios_muros {};
+        std::vector <Coord>          sitios_muros {};
+        std::vector <ObstaculoTemporal> sitios_obstaculos_temporales {};
 
         PresenciaTablero     presencia_tablero        {this};
         RejillaTablero       rejilla_tablero          {this};

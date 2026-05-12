@@ -282,7 +282,8 @@ namespace tapete {
             }
             // (c)
             if (afecta_area) {
-                aserta (0 < habil->radioAlcance (),
+                // Radio 0 es válido: afecta solo a la celda central (p. ej. habilidades de obstáculo)
+                aserta (0 <= habil->radioAlcance (),
                         std::format (L"La habilidad '{}' no tiene un radio de área de alcance.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
                 aserta (habil->radioAlcance () < RejillaTablero::filas,  // por poner algo
@@ -301,7 +302,7 @@ namespace tapete {
                         std::format (L"La habilidad '{}' tiene un tipo de ataque desconocido.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
             } else {
-                aserta (! de_ataque || habil->efectosEstado ().size () > 0,
+                aserta (! de_ataque || habil->efectosEstado ().size () > 0 || habil->creaObstaculo (),
                         std::format (L"La habilidad '{}' de ataque sin daño debe tener efectos de estado.", habil->nombre ()),
                         LocalizaConfigura::Seccion_9_Estadisticas_habilidades);
                 aserta (! de_curacion && ! auto_aplicada && ! de_equipo || habil->tipoAtaque () == nullptr,

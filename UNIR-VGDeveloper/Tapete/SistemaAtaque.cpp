@@ -257,12 +257,19 @@ namespace tapete {
             throw std::logic_error {"Sistema de ataque mal configurado: grados de efectividad no configurados"};
         }
         //
-        // véase: 'ValidacionJuego::SistemaAtaque'
-        for (GradoEfectividad * efectividad : grados_efectividad) {
-            if (registro.valor_final_ataque <= efectividad->valorSuperioAtaque ()) {
-                registro.efectividad    = efectividad;
-                registro.porciento_dano = efectividad->porcentajeDano ();
-                break;
+        // Precisión de Aguijón: si el objetivo está muy debilitado, crítico garantizado
+        if (habilidad_->criticoSiObjetivoDebil () && oponente->vitalidad () < 30) {
+            // Usar el último grado de efectividad (crítico) sin tirar dados
+            registro.efectividad    = grados_efectividad.back ();
+            registro.porciento_dano = grados_efectividad.back ()->porcentajeDano ();
+        } else {
+            // véase: 'ValidacionJuego::SistemaAtaque'
+            for (GradoEfectividad * efectividad : grados_efectividad) {
+                if (registro.valor_final_ataque <= efectividad->valorSuperioAtaque ()) {
+                    registro.efectividad    = efectividad;
+                    registro.porciento_dano = efectividad->porcentajeDano ();
+                    break;
+                }
             }
         }
         //
@@ -415,6 +422,62 @@ namespace tapete {
             }
             oponente->ponSitioFicha (celda_actual);
             registro.celda_empuje_final = celda_actual;
+        }
+        //
+        // Carga de Aguijón: el atacante se mueve hacia el objetivo; daño solo si llega adyacente
+        if (habilidad_->esCarga () && registro.vitalidad_origen > 0) {
+            // Comprueba si dos celdas hex son adyacentes (una es vecina de la otra)
+            auto sonAdyacentes = [] (Coord a, Coord b) -> bool {
+                const std::array <Coord, 6> vecinos {{
+                    Coord (a.fila () - 2, a.coln ()    ),
+                    Coord (a.fila () - 1, a.coln () + 1),
+                    Coord (a.fila () + 1, a.coln () + 1),
+                    Coord (a.fila () + 2, a.coln ()    ),
+                    Coord (a.fila () + 1, a.coln () - 1),
+                    Coord (a.fila () - 1, a.coln () - 1),
+                }};
+                for (const Coord & c : vecinos) {
+                    if (c == b) { return true; }
+                }
+                return false;
+            };
+            Coord celda_atacante = atacante_->sitioFicha ();
+            Coord celda_objetivo = oponente->sitioFicha ();
+            int   pasos_max      = habilidad_->alcance ();
+            for (int paso = 0; paso < pasos_max; ++ paso) {
+                // Si ya somos adyacentes al objetivo, no hace falta moverse más
+                if (sonAdyacentes (celda_atacante, celda_objetivo)) {
+                    break;
+                }
+                Coord celda_sig = proximaHacia (celda_atacante, celda_objetivo);
+                if (celda_sig == celda_atacante) {
+                    break;  // no progress possible
+                }
+                // No entrar en la celda del objetivo
+                if (celda_sig == celda_objetivo) {
+                    break;
+                }
+                if (CalculoCaminos::celdaEnMuro (juego, celda_sig)) {
+                    break;
+                }
+                bool ocupada = false;
+                for (ActorPersonaje * p : juego->personajes ()) {
+                    if (p != atacante_ && p->sitioFicha () == celda_sig) {
+                        ocupada = true;
+                        break;
+                    }
+                }
+                if (ocupada) {
+                    break;
+                }
+                celda_atacante = celda_sig;
+            }
+            atacante_->ponSitioFicha (celda_atacante);
+            // Si no llegó adyacente, deshace el daño
+            if (! sonAdyacentes (celda_atacante, celda_objetivo)) {
+                oponente->ponVitalidad (registro.vitalidad_origen);
+                registro.vitalidad_final = registro.vitalidad_origen;
+            }
         }
         //
         ataques_oponente.push_back (registro);

@@ -247,6 +247,41 @@ namespace tapete {
     }
 
 
+    bool Habilidad::esCarga () const {
+        return es_carga_;
+    }
+
+
+    void Habilidad::ponCarga () {
+        es_carga_ = true;
+    }
+
+
+    bool Habilidad::criticoSiObjetivoDebil () const {
+        return critico_si_objetivo_debil_;
+    }
+
+
+    void Habilidad::ponCriticoSiObjetivoDebil () {
+        critico_si_objetivo_debil_ = true;
+    }
+
+
+    bool Habilidad::creaObstaculo () const {
+        return crea_obstaculo_;
+    }
+
+
+    int Habilidad::turnosObstaculo () const {
+        return turnos_obstaculo_;
+    }
+
+
+    void Habilidad::ponCreaObstaculo (int turnos) {
+        crea_obstaculo_  = true;
+        turnos_obstaculo_ = turnos;
+    }
+
 
 }
 

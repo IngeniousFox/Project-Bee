@@ -772,6 +772,88 @@ namespace juego {
         agregaHabilidad (hiloTitiritero);
         agregaHabilidad (mordeduraVenenosa);
         agregaHabilidad (armadurasSeda);
+        // ── Abeja Exploradora ────────────────────────────────────────────────────
+        vientoAscendente       = new Habilidad {
+                L"Viento Ascendente",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::indirecto, Antagonista::aliado};
+        turbulenciaDebilitadora = new Habilidad {
+                L"Turbulencia Debilitadora",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
+        reflujoPolen           = new Habilidad {
+                L"Reflujo de Polen",
+                EnfoqueHabilidad::area,      AccesoHabilidad::indirecto, Antagonista::oponente};
+        alasResonantes         = new Habilidad {
+                L"Alas Resonantes",
+                EnfoqueHabilidad::area,      AccesoHabilidad::directo,   Antagonista::oponente};
+        //
+        vientoAscendente       ->ponDescripcion (
+                L"La Exploradora canaliza una corriente de aire cálido que envuelve a un aliado, aligerando su mente y reduciendo el coste de sus habilidades durante 3 turnos.");
+        turbulenciaDebilitadora->ponDescripcion (
+                L"La Exploradora impacta al enemigo con una ráfaga de turbulencias: golpe melee moderado que además perturba su musculatura, reduciendo su ataque durante 2 turnos.");
+        reflujoPolen           ->ponDescripcion (
+                L"La Exploradora lanza una nube de polen paralizante sobre una casilla vacía a distancia, bloqueándola durante 3 turnos. Si hay un enemigo en esa casilla, también sufre -15 de ataque durante 2 turnos.");
+        alasResonantes         ->ponDescripcion (
+                L"La Exploradora bate sus alas a máxima frecuencia creando una onda de choque que golpea a todos los enemigos en un área amplia. Devastadora pero agotadora: consume la mayor parte de sus puntos de acción.");
+        //
+        vientoAscendente       ->ponArchivosImagenes (
+                carpeta_habilids_juego + "vela.png",            carpeta_habilids_juego + "fondo_5.png");
+        turbulenciaDebilitadora->ponArchivosImagenes (
+                carpeta_habilids_juego + "espada.png",          carpeta_habilids_juego + "fondo_5.png");
+        reflujoPolen           ->ponArchivosImagenes (
+                carpeta_habilids_juego + "cristales.png",       carpeta_habilids_juego + "fondo_5.png");
+        alasResonantes         ->ponArchivosImagenes (
+                carpeta_habilids_juego + "espada_poderosa.png", carpeta_habilids_juego + "fondo_5.png");
+        //
+        vientoAscendente       ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        turbulenciaDebilitadora->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        reflujoPolen           ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        alasResonantes         ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        //
+        agregaHabilidad (vientoAscendente);
+        agregaHabilidad (turbulenciaDebilitadora);
+        agregaHabilidad (reflujoPolen);
+        agregaHabilidad (alasResonantes);
+        // ── Avispa Asesina ───────────────────────────────────────────────────────
+        cargaAguijon       = new Habilidad {
+                L"Carga de Aguijón",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
+        precisionAguijon   = new Habilidad {
+                L"Precisión de Aguijón",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
+        frenesi            = new Habilidad {
+                L"Frenesí",
+                EnfoqueHabilidad::si_mismo,  AccesoHabilidad::ninguno,   Antagonista::si_mismo};
+        desgarrarFormacion = new Habilidad {
+                L"Desgarrar Formación",
+                EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
+        //
+        cargaAguijon      ->ponDescripcion (
+                L"La Avispa se lanza como una bala hacia el enemigo elegido. Si consigue ponerse adyacente a él (sin obstáculos de por medio), le clava el aguijón con toda su inercia. Si algo bloquea la carga, el impacto no se produce.");
+        precisionAguijon  ->ponDescripcion (
+                L"La Avispa elige el momento exacto: cuando su objetivo está gravemente herido (menos del 30% de vitalidad), el aguijón encuentra siempre un punto vital, garantizando un golpe crítico.");
+        frenesi           ->ponDescripcion (
+                L"La Avispa entra en estado de frenesí depredador: aumenta su ataque y su defensa durante 2 turnos, volviéndose más peligrosa y difícil de detener.");
+        desgarrarFormacion->ponDescripcion (
+                L"La Avispa rasga la coraza del enemigo con sus mandíbulas, infligiendo poco daño pero reduciendo su defensa durante 2 turnos y dejándolo expuesto a los ataques siguientes.");
+        //
+        cargaAguijon      ->ponArchivosImagenes (
+                carpeta_habilids_juego + "espada_poderosa.png", carpeta_habilids_juego + "fondo_5.png");
+        precisionAguijon  ->ponArchivosImagenes (
+                carpeta_habilids_juego + "espada.png",          carpeta_habilids_juego + "fondo_5.png");
+        frenesi           ->ponArchivosImagenes (
+                carpeta_habilids_juego + "escudo.png",          carpeta_habilids_juego + "fondo_5.png");
+        desgarrarFormacion->ponArchivosImagenes (
+                carpeta_habilids_juego + "cristales.png",       carpeta_habilids_juego + "fondo_5.png");
+        //
+        cargaAguijon      ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        precisionAguijon  ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        frenesi           ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        desgarrarFormacion->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        //
+        agregaHabilidad (cargaAguijon);
+        agregaHabilidad (precisionAguijon);
+        agregaHabilidad (frenesi);
+        agregaHabilidad (desgarrarFormacion);
         // ── Habilidades placeholder ──────────────────────────────────────────────
         ataqueEspadaNormal   = new Habilidad {
                 L"Ataque cuerpo a cuerpo normal",
@@ -956,19 +1038,20 @@ namespace juego {
         AbejaGuardia    ->agregaHabilidad (embestidaTerritorial);
         AbejaGuardia    ->agregaHabilidad (aguijonCadena);
         //
-        AbejaExploradora->agregaHabilidad (ataqueEspadaNormal);
-        AbejaExploradora->agregaHabilidad (ataqueArco);
-        AbejaExploradora->agregaHabilidad (ataqueEspadaPoderoso);
+        AbejaExploradora->agregaHabilidad (vientoAscendente);
+        AbejaExploradora->agregaHabilidad (turbulenciaDebilitadora);
+        AbejaExploradora->agregaHabilidad (reflujoPolen);
+        AbejaExploradora->agregaHabilidad (alasResonantes);
         //
         AranaReina      ->agregaHabilidad (redDominio);
         AranaReina      ->agregaHabilidad (hiloTitiritero);
         AranaReina      ->agregaHabilidad (mordeduraVenenosa);
         AranaReina      ->agregaHabilidad (armadurasSeda);
         //
-        Avispa          ->agregaHabilidad (ataqueEspadaNormal);
-        Avispa          ->agregaHabilidad (curacionSimple);
-        Avispa          ->agregaHabilidad (curacionGrupo);
-        Avispa          ->agregaHabilidad (proyectilMagico);
+        Avispa          ->agregaHabilidad (cargaAguijon);
+        Avispa          ->agregaHabilidad (precisionAguijon);
+        Avispa          ->agregaHabilidad (frenesi);
+        Avispa          ->agregaHabilidad (desgarrarFormacion);
         //
         Polilla   ->agregaHabilidad (ataqueEspadaNormal);
         Polilla   ->agregaHabilidad (proyectilMagico);
@@ -1145,6 +1228,63 @@ namespace juego {
         armadurasSeda->ponAlcance (3);
         armadurasSeda->ponRadioAlcance (2);
         armadurasSeda->ponEfectoEstado (TipoEstado::ModificadorDefensa, 20, 2);
+        // ── Abeja Exploradora ────────────────────────────────────────────────────
+        // Viento Ascendente: buff a aliado a distancia (indirecto), -2 coste habilidades 3 turnos
+        vientoAscendente->ponCoste (3);
+        vientoAscendente->ponAlcance (7);
+        vientoAscendente->ponEfectoEstado (TipoEstado::ModificadorCosteHabilidades, -2, 3);
+        //
+        // Turbulencia Debilitadora: melee + reduce ataque enemigo -20 durante 2 turnos
+        turbulenciaDebilitadora->ponCoste (4);
+        turbulenciaDebilitadora->ponAlcance (1);
+        turbulenciaDebilitadora->asignaAtaque  (ataqueCuerpoACuerpo);
+        turbulenciaDebilitadora->asignaDefensa (defensaCuerpoACuerpo);
+        turbulenciaDebilitadora->asignaDano    (danoFisico, 25);
+        turbulenciaDebilitadora->ponEfectoEstado (TipoEstado::ModificadorAtaque, -20, 2);
+        //
+        // Reflujo de Polen: crea un obstáculo en la celda seleccionada durante 3 turnos
+        reflujoPolen->ponCoste (5);
+        reflujoPolen->ponAlcance (6);
+        reflujoPolen->ponRadioAlcance (0);
+        reflujoPolen->ponCreaObstaculo (3);
+        //
+        // Alas Resonantes: ataque a distancia en área amplia, coste muy elevado
+        alasResonantes->ponCoste (10);
+        alasResonantes->ponAlcance (7);
+        alasResonantes->ponRadioAlcance (2);
+        alasResonantes->asignaAtaque  (ataqueADistancia);
+        alasResonantes->asignaDefensa (defensaADistancia);
+        alasResonantes->asignaDano    (danoFisico, 45);
+        // ── Avispa Asesina ───────────────────────────────────────────────────────
+        // Carga de Aguijón: melee directo con carga hacia el objetivo (alcance 5 hex)
+        // Daño solo si la Avispa llega adyacente; obstáculos bloquean el daño
+        cargaAguijon->ponCoste (5);
+        cargaAguijon->ponAlcance (5);
+        cargaAguijon->asignaAtaque  (ataqueCuerpoACuerpo);
+        cargaAguijon->asignaDefensa (defensaCuerpoACuerpo);
+        cargaAguijon->asignaDano    (danoFisico, 45);
+        cargaAguijon->ponCarga ();
+        //
+        // Precisión de Aguijón: melee adyacente; crítico garantizado si objetivo < 30 HP
+        precisionAguijon->ponCoste (4);
+        precisionAguijon->ponAlcance (1);
+        precisionAguijon->asignaAtaque  (ataqueCuerpoACuerpo);
+        precisionAguijon->asignaDefensa (defensaCuerpoACuerpo);
+        precisionAguijon->asignaDano    (danoFisico, 35);
+        precisionAguijon->ponCriticoSiObjetivoDebil ();
+        //
+        // Frenesí: buff propio → +15 ataque y +15 defensa durante 2 turnos
+        frenesi->ponCoste (4);
+        frenesi->ponEfectoEstado (TipoEstado::ModificadorAtaque,  15, 2);
+        frenesi->ponEfectoEstado (TipoEstado::ModificadorDefensa, 15, 2);
+        //
+        // Desgarrar Formación: ataque melee débil + reduce 20 pts de defensa al enemigo 2 turnos
+        desgarrarFormacion->ponCoste (3);
+        desgarrarFormacion->ponAlcance (1);
+        desgarrarFormacion->asignaAtaque  (ataqueCuerpoACuerpo);
+        desgarrarFormacion->asignaDefensa (defensaCuerpoACuerpo);
+        desgarrarFormacion->asignaDano    (danoFisico, 15);
+        desgarrarFormacion->ponEfectoEstado (TipoEstado::ModificadorDefensa, -20, 2);
         // ── Habilidades placeholder ──────────────────────────────────────────────
         ataqueEspadaNormal->ponCoste (3);
         ataqueEspadaNormal->ponAlcance (1);
@@ -1282,13 +1422,12 @@ namespace juego {
         AranaReina      ->agregaReduceDano (danoFisico,           10);
         AranaReina      ->agregaReduceDano (danoMagico,            5);
         //
-        Avispa          ->agregaAtaque     (ataqueCuerpoACuerpo,  50);
-        Avispa          ->agregaAtaque     (ataqueMagico,         50);
-        Avispa          ->agregaDefensa    (defensaCuerpoACuerpo, 50);
-        Avispa          ->agregaDefensa    (defensaADistancia,    50);
-        Avispa          ->agregaDefensa    (defensaMagica,        50);
+        Avispa          ->agregaAtaque     (ataqueCuerpoACuerpo,  65);  // atacante melee veloz
+        Avispa          ->agregaDefensa    (defensaCuerpoACuerpo, 45);  // armadura ligera
+        Avispa          ->agregaDefensa    (defensaADistancia,    40);
+        Avispa          ->agregaDefensa    (defensaMagica,        35);
         Avispa          ->agregaReduceDano (danoFisico,            5);
-        Avispa          ->agregaReduceDano (danoMagico,           10);
+        Avispa          ->agregaReduceDano (danoMagico,            5);
         //
         Polilla   ->agregaAtaque     (ataqueCuerpoACuerpo,  50);
         Polilla   ->agregaAtaque     (ataqueMagico,         70);
@@ -1482,6 +1621,16 @@ namespace juego {
         hiloTitiritero    = nullptr;
         mordeduraVenenosa = nullptr;
         armadurasSeda     = nullptr;
+        //
+        vientoAscendente        = nullptr;
+        turbulenciaDebilitadora = nullptr;
+        reflujoPolen            = nullptr;
+        alasResonantes          = nullptr;
+        //
+        cargaAguijon       = nullptr;
+        precisionAguijon   = nullptr;
+        frenesi            = nullptr;
+        desgarrarFormacion = nullptr;
         //
         ataqueEspadaNormal   = nullptr;
         ataqueArco           = nullptr;
