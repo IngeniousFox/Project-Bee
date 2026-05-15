@@ -55,15 +55,29 @@ namespace tapete {
         texto_indica->ponCadena (cadena);
         float anchr = texto_indica->anchura ();
         //
-        rectangl_indica->ponPosicion (poscn);
+        // Soporte multilínea: el alto del cuadro depende del número de líneas ('\n')
+        int lineas = 1;
+        for (wchar_t c : cadena) {
+            if (c == L'\n') {
+                ++ lineas;
+            }
+        }
+        float alto = lineas * 16.0f + 6.0f;
+        //
+        // El anclaje original deja un cuadro de ~20 px justo encima del retrato.
+        // Con varias líneas el cuadro se ancla por su base y crece hacia arriba,
+        // para no tapar el retrato ni los paneles de habilidades.
+        Vector pos = poscn - Vector {0.0f, alto - 20.0f};
+        //
+        rectangl_indica->ponPosicion (pos);
         rectangl_indica->ponBase (anchr + 8);
-        rectangl_indica->ponAltura (20);
+        rectangl_indica->ponAltura (alto);
         rectangl_indica->ponColor (colorIndica);
         //
-        trazos_indica->ponPosicion (poscn);
+        trazos_indica->ponPosicion (pos);
         trazos_indica->borraLineas ();
         float sup =  0.0f;
-        float inf = 20.0f;
+        float inf = alto;
         float der =  0.0f;
         float izq = anchr + 8;
         Vector sup_izq {izq, sup};
@@ -75,7 +89,7 @@ namespace tapete {
         trazos_indica->agrega (unir2d::TrazoLinea {sup_izq, inf_izq, Color::Negro});
         trazos_indica->agrega (unir2d::TrazoLinea {sup_der, inf_der, Color::Negro});
         //
-        texto_indica->ponPosicion (poscn + Vector {4, 3});
+        texto_indica->ponPosicion (pos + Vector {4, 3});
         //
         rectangl_indica->ponVisible (true);
         trazos_indica  ->ponVisible (true);

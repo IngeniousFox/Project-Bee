@@ -1278,13 +1278,36 @@ namespace tapete {
         // solo usado en 'ModoJuegoComun'
         //
         ActorPersonaje * persona = juego_->tablero ()->presencia (lado_tablero).personaje ();
-        wstring nombre = persona->nombre ();
+        wstring texto = persona->nombre ();
         // Aviso visual: este personaje está bajo el efecto del Hilo del Titiritero
         // (el jugador rival lo controla hasta fin de ronda)
         if (persona->tieneEstado (TipoEstado::HiloTitiritero)) {
-            nombre += L"  ★ ¡CONTROLADO POR EL RIVAL!";
+            texto += L"  ★ ¡CONTROLADO POR EL RIVAL!";
         }
-        juego_->tablero ()->indicaPersonaje (lado_tablero, nombre);
+        // Atributos del personaje en el tooltip del retrato.
+        // Se omiten los atributos mágicos (su nombre contiene "gic"): el juego no usa magia.
+        texto += std::format (L"\nVitalidad: {}", persona->vitalidad ());
+        texto += std::format (L"\nPuntos de acción: {}", persona->puntosAccion ());
+        texto += std::format (L"\nIniciativa: {}", persona->iniciativa ());
+        for (TipoAtaque * tipo : juego_->ataques ()) {
+            if (tipo->nombre ().find (L"gic") != std::wstring::npos) continue;
+            if (persona->apareceAtaque (tipo)) {
+                texto += std::format (L"\n{}: {}", tipo->nombre (), persona->valorAtaque (tipo));
+            }
+        }
+        for (TipoDefensa * tipo : juego_->defensas ()) {
+            if (tipo->nombre ().find (L"gic") != std::wstring::npos) continue;
+            if (persona->apareceDefensa (tipo)) {
+                texto += std::format (L"\n{}: {}", tipo->nombre (), persona->valorDefensa (tipo));
+            }
+        }
+        for (TipoDano * tipo : juego_->danos ()) {
+            if (tipo->nombre ().find (L"gic") != std::wstring::npos) continue;
+            if (persona->apareceReduceDano (tipo)) {
+                texto += std::format (L"\nReducción {}: {}", tipo->nombre (), persona->valorReduceDano (tipo));
+            }
+        }
+        juego_->tablero ()->indicaPersonaje (lado_tablero, texto);
     }
 
 

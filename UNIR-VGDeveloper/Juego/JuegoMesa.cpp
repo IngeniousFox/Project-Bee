@@ -720,13 +720,13 @@ namespace juego {
                 EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
         //
         escudoQuitina       ->ponDescripcion (
-                L"La Guardia endurece su exoesqueleto de quitina: obtiene +35 de defensa en todos los tipos durante 2 turnos, convirtiéndose en un muro casi infranqueable.");
+                L"La Guardiana endurece su exoesqueleto de quitina: obtiene +35 de defensa en todos los tipos durante 2 turnos, convirtiéndose en un muro casi infranqueable.");
         ataqueTronador      ->ponDescripcion (
-                L"La Guardia descarga un golpe devastador con toda su masa: ataque cuerpo a cuerpo de alto daño que sacude al enemigo.");
+                L"La Guardiana descarga un golpe devastador con toda su masa: ataque cuerpo a cuerpo de alto daño que sacude al enemigo.");
         embestidaTerritorial->ponDescripcion (
-                L"La Guardia carga como una apisonadora: ataque cuerpo a cuerpo potente que empuja al enemigo 3 casillas en dirección contraria al atacante.");
+                L"La Guardiana carga como una apisonadora: ataque cuerpo a cuerpo potente que empuja al enemigo 3 casillas en dirección contraria al atacante.");
         aguijonCadena       ->ponDescripcion (
-                L"La Guardia lanza su aguijón encadenado: ataque a distancia de poco daño que arrastra al objetivo hasta 3 casillas hacia ella. No arrastra si el ataque falla.");
+                L"La Guardiana lanza su aguijón encadenado: ataque a distancia de poco daño que arrastra al objetivo hasta 3 casillas hacia ella. No arrastra si el ataque falla.");
         //
         escudoQuitina       ->ponArchivosImagenes (
                 carpeta_habilids_juego + "AbejaGuardiana/escudo.png",    carpeta_habilids_juego + "fondo_5.png");
@@ -836,7 +836,7 @@ namespace juego {
                 L"Precisión de Aguijón",
                 EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
         frenesi            = new Habilidad {
-                L"Frenesí",
+                L"Frenesí", 
                 EnfoqueHabilidad::si_mismo,  AccesoHabilidad::ninguno,   Antagonista::si_mismo};
         desgarrarFormacion = new Habilidad {
                 L"Desgarrar Formación",
@@ -1473,13 +1473,13 @@ namespace juego {
         ceraPegajosa->ponRadioAlcance (0);
         ceraPegajosa->ponCreaObstaculo (3);
         //
-        // Vapores: ataque mágico en área + buff de ataque +20 a todos los aliados vivos durante 2 turnos
+        // Vapores: ataque a distancia en área + buff de ataque +20 a todos los aliados vivos durante 2 turnos
         vapores->ponCoste (3);
         vapores->ponAlcance (5);
         vapores->ponRadioAlcance (2);
-        vapores->asignaAtaque  (ataqueMagico);
-        vapores->asignaDefensa (defensaMagica);
-        vapores->asignaDano    (danoMagico, 40);
+        vapores->asignaAtaque  (ataqueADistancia);
+        vapores->asignaDefensa (defensaADistancia);
+        vapores->asignaDano    (danoFisico, 40);
         vapores->ponEfectoEstadoAliados (TipoEstado::ModificadorAtaque, 20, 2);
         // ── Habilidades placeholder ──────────────────────────────────────────────
         ataqueEspadaNormal->ponCoste (1);
@@ -1515,16 +1515,16 @@ namespace juego {
         //
         proyectilMagico->ponCoste (3);
         proyectilMagico->ponAlcance (15);                                            
-        proyectilMagico->asignaAtaque  (ataqueMagico);
-        proyectilMagico->asignaDefensa (defensaMagica);
-        proyectilMagico->asignaDano    (danoMagico, 30);
+        proyectilMagico->asignaAtaque  (ataqueADistancia);
+        proyectilMagico->asignaDefensa (defensaADistancia);
+        proyectilMagico->asignaDano    (danoFisico, 30);
         //
         bolaFuego->ponCoste (4);
         bolaFuego->ponAlcance (8);
         bolaFuego->ponRadioAlcance (3);
-        bolaFuego->asignaAtaque  (ataqueMagico);
-        bolaFuego->asignaDefensa (defensaMagica);
-        bolaFuego->asignaDano    (danoMagico, 50);
+        bolaFuego->asignaAtaque  (ataqueADistancia);
+        bolaFuego->asignaDefensa (defensaADistancia);
+        bolaFuego->asignaDano    (danoFisico, 50);
         //
         // Veneno mortal: inflige daño inmediato + 8 pts de veneno por turno durante 3 turnos
         venenoMortal->ponCoste (3);
@@ -1654,7 +1654,7 @@ namespace juego {
         Avispa          ->agregaReduceDano (danoFisico,            5);
         Avispa          ->agregaReduceDano (danoMagico,            5);
         //
-        Polilla   ->agregaAtaque     (ataqueMagico,         70);  // solo Vapores usa ataque mágico
+        Polilla   ->agregaAtaque     (ataqueADistancia,     70);  // solo Vapores usa ataque a distancia
         Polilla   ->agregaDefensa    (defensaCuerpoACuerpo, 40);
         Polilla   ->agregaDefensa    (defensaADistancia,    40);
         Polilla   ->agregaDefensa    (defensaMagica,        30);
@@ -1836,9 +1836,11 @@ namespace juego {
         tablero ()->asignaSonidoDesplaza  (carpeta_sonidos_juego + "SnowWalk.ogg",    100);
         musica  ()->asignaMusica          (carpeta_sonidos_juego + "Musica_Juego.wav", 100);
         //
-        agregaNombreAlumno (L"Fulano de Tal");
-        agregaNombreAlumno (L"Mengano de Cual");
-        agregaNombreAlumno (L"Zutano de Pascual");
+        agregaNombreAlumno (L"Virginia Martín Pérez");
+        agregaNombreAlumno (L"Gema Virginia Toyos Lanza");
+        agregaNombreAlumno(L"Eduardo Briz Merino");
+        agregaNombreAlumno(L"Elvira Bermúdez Fernández");
+        agregaNombreAlumno (L"Jonathan Raya Ríos");
         indicaCursoAcademico (L"2025 - 2026");
         //
         /*******************************************************************************************

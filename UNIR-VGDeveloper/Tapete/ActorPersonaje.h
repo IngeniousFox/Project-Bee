@@ -86,7 +86,7 @@ namespace tapete {
         int vitalidad () const;
         void ponVitalidad (int valor);
 
-        static constexpr int maximoPuntosAccion = 5;
+        static constexpr int maximoPuntosAccion = 50;
         int puntosAccion () const;
         void ponPuntosAccion (int valor);
 
