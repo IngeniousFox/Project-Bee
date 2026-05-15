@@ -1338,6 +1338,11 @@ namespace tapete {
         }
         int coste = personaje->costeHabilidad (habil);
         wstring cadena = std::format (L"{} ({} PA, {})", habil->nombre (), coste, tipo);
+        // Descripción de la habilidad, ajustada en líneas dentro del tooltip
+        for (const wstring & linea : EscritorAyuda::parrafea (50, habil->descripcion ())) {
+            cadena += L"\n";
+            cadena += linea;
+        }
         juego_->tablero ()->indicaHabilidad (lado_tablero, indice_habilidad, cadena);
     }
 
