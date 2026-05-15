@@ -59,6 +59,29 @@ namespace tapete {
         }
         listado.saltaLinea ();
         listado.escribe (std::format (L"    Curso académico: {}", juego.cursoAcademico ()));
+        listado.saltaLinea ();
+        listado.saltaLinea ();
+        listado.enNegrita ();
+        listado.escribe (L"    La leyenda de la Colmena");
+        listado.escribe (L"    -----------------------");
+        listado.enClaro ();
+        listado.saltaLinea ();
+        listado.escribe (L"      «Cuentan los olivos milenarios que, para que las flores");
+        listado.escribe (L"      bailaran con el sol, primero tuvo que alzarse un reino de");
+        listado.escribe (L"      murmullo y oro líquido. Así nació la Colmena, y bajo el");
+        listado.escribe (L"      mandato de su Reina hizo suya la misión de promover la");
+        listado.escribe (L"      vida, estación tras estación, trabajando incesantemente");
+        listado.escribe (L"      para traer de vuelta el color a páramos de hielo y frío.");
+        listado.escribe (L"      Pero, desde las sombras, Otra comenzó a tejer su ascenso.");
+        listado.escribe (L"      A su llamada acudieron criaturas del desorden,");
+        listado.escribe (L"      hambrientas, y juntas juraron hacerse con el dominio de la");
+        listado.escribe (L"      Colmena, aquel castillo rebosante de riqueza que abastecía");
+        listado.escribe (L"      sin descanso a sus habitantes.»");
+        listado.saltaLinea ();
+        listado.escribe (L"      Project Bee recoge esta fábula: la Colmena Dorada");
+        listado.escribe (L"      defiende su hogar frente a la Corte de Seda y Veneno, los");
+        listado.escribe (L"      insectos que la Reina Araña ha reunido desde las sombras");
+        listado.escribe (L"      para arrebatarle su reino de oro líquido.");
         while (listado.linea () < 44) {
             listado.saltaLinea ();
         }
