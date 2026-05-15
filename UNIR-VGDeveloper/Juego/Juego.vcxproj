@@ -169,6 +169,7 @@
     <Image Include="activos\escudo_devils.png" />
     <Image Include="activos\escudo_tusk.png" />
     <Image Include="activos\estampas_fondo.png" />
+    <Image Include="activos\fondo_concept.png" />
     <Image Include="habilidades\arco_flecha.png" />
     <Image Include="habilidades\bola_fuego.png" />
     <Image Include="habilidades\cristales.png" />

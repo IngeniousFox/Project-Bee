@@ -61,42 +61,24 @@ namespace tapete {
 
 
     void PresenciaTablero::preparaBaldosas () {
-        textura_fondo  = new unir2d::Textura {};
-        baldosas_fondo = new unir2d::Baldosas {};
-        constexpr int filas_estamp = 4;
-        constexpr int colns_estamp = 4;
+        // Carga la imagen de fondo como una sola textura, sin dividirla en estampas ni
+        // tilearla. La imagen se dibuja en la esquina superior-izquierda (0, 0) y los
+        // paneles laterales/inferiores se dibujan encima en sus propias regiones.
+        textura_fondo = new unir2d::Textura {};
         textura_fondo->carga (actor_tablero->archivoBaldosas ());
-        //textura_fondo->carga (JuegoMesaBase::carpetaActivos () + "estampas_fondo.png");
-        baldosas_fondo->asigna (this->textura_fondo);
-        baldosas_fondo->defineEstampas (filas_estamp, colns_estamp);
-        baldosas_fondo->ponPosicion (Vector {0, 0});
-        constexpr int filas_superf = 32;
-        constexpr int colns_superf = 56;
-        baldosas_fondo->defineSuperficie (filas_superf, colns_superf);
-        std::vector <uint32_t> mapeo {};
-        mapeo.resize (static_cast <int> (filas_superf * colns_superf));
-	    std::random_device semilla {};
-        std::mt19937 generador {semilla ()};
-	    std::uniform_int_distribution <unsigned int> distrb_filas {0, filas_estamp - 1};
-	    std::uniform_int_distribution <unsigned int> distrb_colns {0, colns_estamp - 1};
-        for (int f_s = 0; f_s < filas_superf; ++ f_s) {
-            for (int c_s = 0; c_s < colns_superf; ++ c_s) {
-                int f_e = (int) distrb_filas (generador);
-                int c_e = (int) distrb_colns (generador);
-                mapeo [f_s * colns_superf + c_s] = f_e * colns_estamp + c_e;
-            }
-        }
-        baldosas_fondo->mapea (mapeo);
-        actor_tablero->agregaDibujo (baldosas_fondo);
+        imagen_fondo = new unir2d::Imagen {};
+        imagen_fondo->asigna (textura_fondo);
+        imagen_fondo->ponPosicion (Vector {0, 0});
+        actor_tablero->agregaDibujo (imagen_fondo);
     }
 
 
     void PresenciaTablero::liberaBaldosas () {
-        delete baldosas_fondo;
+        delete imagen_fondo;
         delete textura_fondo;
         //
-        baldosas_fondo = nullptr;
-        textura_fondo  = nullptr;
+        imagen_fondo  = nullptr;
+        textura_fondo = nullptr;
     }
 
 

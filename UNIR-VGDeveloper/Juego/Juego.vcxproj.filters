@@ -106,6 +106,9 @@
     <Image Include="activos\estampas_fondo.png">
       <Filter>Archivos de recursos\activos</Filter>
     </Image>
+    <Image Include="activos\fondo_concept.png">
+      <Filter>Archivos de recursos\activos</Filter>
+    </Image>
     <Image Include="retratos\ficha_azul.png">
       <Filter>Archivos de recursos\retratos</Filter>
     </Image>
