@@ -688,13 +688,13 @@ namespace juego {
                 L"En un último acto de liderazgo, la Reina infunde determinación a todos sus aliados vivos, reduciendo el coste de sus habilidades en 1 PA durante 3 turnos.");
         //
         mandatoRegio   ->ponArchivosImagenes (
-                carpeta_habilids_juego + "espada.png",          carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaReina/mandato.png",     carpeta_habilids_juego + "fondo_5.png");
         feromonasJalea ->ponArchivosImagenes (
-                carpeta_habilids_juego + "vela_triple.png",     carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaReina/feromonas.png",   carpeta_habilids_juego + "fondo_5.png");
         decretoEnjambre->ponArchivosImagenes (
-                carpeta_habilids_juego + "espada_poderosa.png", carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaReina/decreto.png",     carpeta_habilids_juego + "fondo_5.png");
         ultimaVoluntad ->ponArchivosImagenes (
-                carpeta_habilids_juego + "escudo.png",          carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaReina/inspiracion.png", carpeta_habilids_juego + "fondo_5.png");
         //
         mandatoRegio   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
         feromonasJalea ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
@@ -729,13 +729,13 @@ namespace juego {
                 L"La Guardia lanza su aguijón encadenado: ataque a distancia de poco daño que arrastra al objetivo hasta 3 casillas hacia ella. No arrastra si el ataque falla.");
         //
         escudoQuitina       ->ponArchivosImagenes (
-                carpeta_habilids_juego + "escudo.png",          carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaGuardiana/escudo.png",    carpeta_habilids_juego + "fondo_5.png");
         ataqueTronador      ->ponArchivosImagenes (
-                carpeta_habilids_juego + "espada_poderosa.png", carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaGuardiana/tronador.png",  carpeta_habilids_juego + "fondo_5.png");
         embestidaTerritorial->ponArchivosImagenes (
-                carpeta_habilids_juego + "espada_poderosa.png", carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaGuardiana/embestida.png", carpeta_habilids_juego + "fondo_5.png");
         aguijonCadena       ->ponArchivosImagenes (
-                carpeta_habilids_juego + "arco_flecha.png",     carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaGuardiana/cadena.png",    carpeta_habilids_juego + "fondo_5.png");
         //
         escudoQuitina       ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
         ataqueTronador      ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
@@ -770,13 +770,13 @@ namespace juego {
                 L"La Araña envuelve a sus aliados cercanos con hilos de seda endurecida, aumentando la defensa de todos ellos en 20 puntos durante 2 turnos.");
         //
         redDominio       ->ponArchivosImagenes (
-                carpeta_habilids_juego + "cristales.png",       carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AranaReina/red.png",        carpeta_habilids_juego + "fondo_5.png");
         hiloTitiritero   ->ponArchivosImagenes (
-                carpeta_habilids_juego + "vela_triple.png",     carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AranaReina/titiritero.png", carpeta_habilids_juego + "fondo_5.png");
         mordeduraVenenosa->ponArchivosImagenes (
-                carpeta_habilids_juego + "espada.png",          carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AranaReina/mordedura.png",  carpeta_habilids_juego + "fondo_5.png");
         armadurasSeda    ->ponArchivosImagenes (
-                carpeta_habilids_juego + "escudo.png",          carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AranaReina/seda.png",       carpeta_habilids_juego + "fondo_5.png");
         //
         redDominio       ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
         hiloTitiritero   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
@@ -811,13 +811,13 @@ namespace juego {
                 L"La Exploradora bate sus alas a máxima frecuencia creando una onda de choque que golpea a todos los enemigos en un área amplia. Devastadora pero agotadora: consume la mayor parte de sus puntos de acción.");
         //
         vientoAscendente       ->ponArchivosImagenes (
-                carpeta_habilids_juego + "vela.png",            carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaExploradora/viento.png",      carpeta_habilids_juego + "fondo_5.png");
         turbulenciaDebilitadora->ponArchivosImagenes (
-                carpeta_habilids_juego + "espada.png",          carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaExploradora/turbulencia.png", carpeta_habilids_juego + "fondo_5.png");
         reflujoPolen           ->ponArchivosImagenes (
-                carpeta_habilids_juego + "cristales.png",       carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaExploradora/reflujo.png",     carpeta_habilids_juego + "fondo_5.png");
         alasResonantes         ->ponArchivosImagenes (
-                carpeta_habilids_juego + "espada_poderosa.png", carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaExploradora/alas.png",        carpeta_habilids_juego + "fondo_5.png");
         //
         vientoAscendente       ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
         turbulenciaDebilitadora->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
@@ -852,13 +852,13 @@ namespace juego {
                 L"La Avispa rasga la coraza del enemigo con sus mandíbulas, infligiendo poco daño pero reduciendo su defensa durante 2 turnos y dejándolo expuesto a los ataques siguientes.");
         //
         cargaAguijon      ->ponArchivosImagenes (
-                carpeta_habilids_juego + "espada_poderosa.png", carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AvispaAsesina/carga.png",     carpeta_habilids_juego + "fondo_5.png");
         precisionAguijon  ->ponArchivosImagenes (
-                carpeta_habilids_juego + "espada.png",          carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AvispaAsesina/precision.png", carpeta_habilids_juego + "fondo_5.png");
         frenesi           ->ponArchivosImagenes (
-                carpeta_habilids_juego + "escudo.png",          carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AvispaAsesina/frenesi.png",   carpeta_habilids_juego + "fondo_5.png");
         desgarrarFormacion->ponArchivosImagenes (
-                carpeta_habilids_juego + "cristales.png",       carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AvispaAsesina/desgarrar.png", carpeta_habilids_juego + "fondo_5.png");
         //
         cargaAguijon      ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
         precisionAguijon  ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
@@ -893,13 +893,13 @@ namespace juego {
                 L"La Nodriza absorbe la cera solidificada de los obstáculos creados en combate. Por cada obstáculo destruido, canaliza energía vital hacia todos sus aliados.");
         //
         jaleaRestauradora ->ponArchivosImagenes (
-                carpeta_habilids_juego + "vela.png",    carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaNodriza/gota.png",      carpeta_habilids_juego + "fondo_5.png");
         mantoMiel         ->ponArchivosImagenes (
-                carpeta_habilids_juego + "escudo.png",  carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaNodriza/manto.png",     carpeta_habilids_juego + "fondo_5.png");
         cuidadosIntensivos->ponArchivosImagenes (
-                carpeta_habilids_juego + "vela.png",    carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaNodriza/cuidados.png",  carpeta_habilids_juego + "fondo_5.png");
         absorcionCera     ->ponArchivosImagenes (
-                carpeta_habilids_juego + "cristales.png", carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "AbejaNodriza/absorcion.png", carpeta_habilids_juego + "fondo_5.png");
         //
         jaleaRestauradora ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
         mantoMiel         ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
@@ -934,13 +934,13 @@ namespace juego {
                 L"La Mosca distrae a un enemigo cercano, reduciéndole el ataque, y lo empuja para escapar de su alcance.");
         //
         cargaIlusoria  ->ponArchivosImagenes (
-                carpeta_habilids_juego + "cristales.png", carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "MoscaCarronera/cargailusoria.png", carpeta_habilids_juego + "fondo_5.png");
         ojosCarronero  ->ponArchivosImagenes (
-                carpeta_habilids_juego + "vela.png",      carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "MoscaCarronera/ojos.png",          carpeta_habilids_juego + "fondo_5.png");
         arrastreVictima->ponArchivosImagenes (
-                carpeta_habilids_juego + "espada.png",    carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "MoscaCarronera/arrastre.png",      carpeta_habilids_juego + "fondo_5.png");
         huidaCobarde   ->ponArchivosImagenes (
-                carpeta_habilids_juego + "escudo.png",    carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "MoscaCarronera/huida.png",         carpeta_habilids_juego + "fondo_5.png");
         //
         cargaIlusoria  ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
         ojosCarronero  ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
@@ -975,13 +975,13 @@ namespace juego {
                 L"La Polilla libera una nube de vapores tóxicos que daña a todos los enemigos del área y, a la vez, estimula el instinto de caza de sus aliados, aumentando su ataque.");
         //
         brebajeCorrupto->ponArchivosImagenes (
-                carpeta_habilids_juego + "cristales.png",  carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "Polilla/brebaje.png",  carpeta_habilids_juego + "fondo_5.png");
         unguentoCera   ->ponArchivosImagenes (
-                carpeta_habilids_juego + "vela.png",       carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "Polilla/unguento.png", carpeta_habilids_juego + "fondo_5.png");
         ceraPegajosa   ->ponArchivosImagenes (
-                carpeta_habilids_juego + "cristales.png",  carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "Polilla/cera.png",     carpeta_habilids_juego + "fondo_5.png");
         vapores        ->ponArchivosImagenes (
-                carpeta_habilids_juego + "bola_fuego.png", carpeta_habilids_juego + "fondo_5.png");
+                carpeta_habilids_juego + "Polilla/vapores.png",  carpeta_habilids_juego + "fondo_5.png");
         //
         brebajeCorrupto->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
         unguentoCera   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
