@@ -558,11 +558,11 @@ namespace juego {
         Polilla         ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider03_Polilla.png");
         MoscaCarronera  ->ponArchivoRetrato (carpeta_retratos_juego + "PB_Spider04_Mosca.png");
         //
-        AbejaReina      ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
+        AbejaReina      ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja_reina.png");
         AbejaGuardia    ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
         AbejaExploradora->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
         AbejaNodriza    ->ponArchivoFicha (carpeta_retratos_juego + "ficha_roja.png");
-        AranaReina      ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
+        AranaReina      ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul_reina.png");
         Avispa          ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
         Polilla         ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
         MoscaCarronera  ->ponArchivoFicha (carpeta_retratos_juego + "ficha_azul.png");
