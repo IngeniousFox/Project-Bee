@@ -59,6 +59,29 @@ namespace tapete {
         }
         listado.saltaLinea ();
         listado.escribe (std::format (L"    Curso académico: {}", juego.cursoAcademico ()));
+        listado.saltaLinea ();
+        listado.saltaLinea ();
+        listado.enNegrita ();
+        listado.escribe (L"    La leyenda de la Colmena");
+        listado.escribe (L"    -----------------------");
+        listado.enClaro ();
+        listado.saltaLinea ();
+        listado.escribe (L"      «Cuentan los olivos milenarios que, para que las flores");
+        listado.escribe (L"      bailaran con el sol, primero tuvo que alzarse un reino de");
+        listado.escribe (L"      murmullo y oro líquido. Así nació la Colmena, y bajo el");
+        listado.escribe (L"      mandato de su Reina hizo suya la misión de promover la");
+        listado.escribe (L"      vida, estación tras estación, trabajando incesantemente");
+        listado.escribe (L"      para traer de vuelta el color a páramos de hielo y frío.");
+        listado.escribe (L"      Pero, desde las sombras, Otra comenzó a tejer su ascenso.");
+        listado.escribe (L"      A su llamada acudieron criaturas del desorden,");
+        listado.escribe (L"      hambrientas, y juntas juraron hacerse con el dominio de la");
+        listado.escribe (L"      Colmena, aquel castillo rebosante de riqueza que abastecía");
+        listado.escribe (L"      sin descanso a sus habitantes.»");
+        listado.saltaLinea ();
+        listado.escribe (L"      Project Bee recoge esta fábula: la Colmena Dorada");
+        listado.escribe (L"      defiende su hogar frente a la Corte de Seda y Veneno, los");
+        listado.escribe (L"      insectos que la Reina Araña ha reunido desde las sombras");
+        listado.escribe (L"      para arrebatarle su reino de oro líquido.");
         while (listado.linea () < 44) {
             listado.saltaLinea ();
         }
@@ -98,21 +121,32 @@ namespace tapete {
         listado.saltaLinea ();
         listado.escribe (L"    Estadísticas");
         listado.escribe (L"    ------------");
+        // Los atributos mágicos no se muestran en el tooltip (su nombre contiene "gic":
+        // "Ataque mágico", "Defensa mágica", "Daño mágico"). El juego no usa magia.
         for (TipoAtaque * tipo_ataque : juego.ataques ()) {
+            if (tipo_ataque->nombre ().find (L"gic") != std::wstring::npos) {
+                continue;
+            }
             if (personaje->apareceAtaque (tipo_ataque)) {
-                listado.escribe (std::format (L"    {:30}  {:-3}", 
+                listado.escribe (std::format (L"    {:30}  {:-3}",
                                     tipo_ataque->nombre (), personaje->valorAtaque (tipo_ataque)));
             }
         }
         for (TipoDefensa * tipo_defensa : juego.defensas ()) {
+            if (tipo_defensa->nombre ().find (L"gic") != std::wstring::npos) {
+                continue;
+            }
             if (personaje->apareceDefensa (tipo_defensa)) {
-                listado.escribe (std::format (L"    {:30}  {:-3}", 
+                listado.escribe (std::format (L"    {:30}  {:-3}",
                                     tipo_defensa->nombre (), personaje->valorDefensa (tipo_defensa)));
             }
         }
         for (TipoDano * tipo_dano : juego.danos ()) {
+            if (tipo_dano->nombre ().find (L"gic") != std::wstring::npos) {
+                continue;
+            }
             if (personaje->apareceReduceDano (tipo_dano)) {
-                listado.escribe (std::format (L"    Reducción {:20}  {:-3}", 
+                listado.escribe (std::format (L"    Reducción {:20}  {:-3}",
                                     tipo_dano->nombre (), personaje->valorReduceDano (tipo_dano)));
             }
         }
@@ -222,25 +256,56 @@ namespace tapete {
         for (const wstring & parrafo : describe) {
             listado.escribe (std::format (L"      {}", parrafo));        
         }
-        wstring linea {L"    "};
+        // Nombre legible de un tipo de estado (no existe TipoEstado::nombre())
+        auto nombreEstado = [] (TipoEstado tipo) -> wstring {
+            switch (tipo) {
+            case TipoEstado::VenenoDanoPorTurno:            return L"Veneno por turno";
+            case TipoEstado::ModificadorDefensa:            return L"Modificador de defensa";
+            case TipoEstado::ModificadorAtaque:             return L"Modificador de ataque";
+            case TipoEstado::ModificadorCosteHabilidades:   return L"Modificador de coste";
+            case TipoEstado::MultiplicadorCosteHabilidades: return L"Multiplicador de coste";
+            case TipoEstado::HiloTitiritero:                return L"Control del rival";
+            }
+            return L"Efecto";
+        };
         switch (habilidad->antagonista ()) {
         case Antagonista::oponente:
-            listado.escribe (std::format (L"      - {}", habilidad->tipoAtaque ()->nombre ()));
-            listado.escribe (std::format (L"      - {}", habilidad->tipoDefensa ()->nombre ()));
-            listado.escribe (std::format (L"      - {}: {}", 
-                                habilidad->tipoDano ()->nombre (), habilidad->valorDano ()));
+            // Las habilidades de debuff puro no tienen tipo de ataque/defensa/daño:
+            // hay que comprobar nullptr antes de acceder a su nombre (evita el cierre).
+            if (habilidad->tipoAtaque () != nullptr) {
+                listado.escribe (std::format (L"      - {}", habilidad->tipoAtaque ()->nombre ()));
+            }
+            if (habilidad->tipoDefensa () != nullptr) {
+                listado.escribe (std::format (L"      - {}", habilidad->tipoDefensa ()->nombre ()));
+            }
+            if (habilidad->tipoDano () != nullptr) {
+                listado.escribe (std::format (L"      - {}: {}",
+                                    habilidad->tipoDano ()->nombre (), habilidad->valorDano ()));
+            }
             break;
         case Antagonista::aliado:
-            listado.escribe (std::format (L"      - Curación: {}", habilidad->valorCuracion ()));
+            if (habilidad->valorCuracion () > 0) {
+                listado.escribe (std::format (L"      - Curación: {}", habilidad->valorCuracion ()));
+            }
             break;
         case Antagonista::si_mismo:
             for (const std::pair <TipoAtaque *, int> & efect : habilidad->efectosAtaque ()) {
-                listado.escribe (std::format (L"      - Efecto {}: {}",    efect.first->nombre (), efect.second));       
+                listado.escribe (std::format (L"      - Efecto {}: {}",    efect.first->nombre (), efect.second));
             }
             for (const std::pair <TipoDefensa *, int> & efect : habilidad->efectosDefensa ()) {
-                listado.escribe (std::format (L"      - Efecto {}: {}",    efect.first->nombre (), efect.second));       
+                listado.escribe (std::format (L"      - Efecto {}: {}",    efect.first->nombre (), efect.second));
             }
             break;
+        }
+        // Efectos de estado (debuffs/buffs/veneno), para cualquier tipo de habilidad
+        for (const EfectoEstado & efecto : habilidad->efectosEstado ()) {
+            if (efecto.turnos < 0) {
+                listado.escribe (std::format (L"      - {}: {}  (hasta fin de ronda)",
+                                    nombreEstado (efecto.tipo), efecto.valor));
+            } else {
+                listado.escribe (std::format (L"      - {}: {}  ({} turnos)",
+                                    nombreEstado (efecto.tipo), efecto.valor, efecto.turnos));
+            }
         }
         if (habilidad->alcance () > 0) {
             if (habilidad->radioAlcance () == 0) {
@@ -259,10 +324,20 @@ namespace tapete {
             const SistemaAtaque                 & sistema, 
             const SistemaAtaque::AtaqueOponente & registro) {
         listado.saltaLinea ();
-        listado.escribe (std::format (L"    · {} con valor de {} puntos.", 
+        // Habilidad de debuff puro: no tiene tipo de ataque/defensa/daño ni efectividad
+        // (SistemaAtaque::calculaAtaque sale antes de calcularlos). Evita el null deref.
+        if (registro.tipo_ataque == nullptr) {
+            listado.escribe (std::format (L"    · Efecto sobre '{}' (sin daño directo).",
+                                registro.oponente->nombre ()));
+            listado.escribe (std::format (L"    · Vitalidad de '{}':  {} puntos",
+                                registro.oponente->nombre (), registro.vitalidad_final));
+            listado.saltaLinea ();
+            return;
+        }
+        listado.escribe (std::format (L"    · {} con valor de {} puntos.",
                             registro.tipo_ataque->nombre (), registro.valor_ataque));
-        listado.escribe (std::format (L"    · Contra '{}', provisto de:", 
-                            registro.oponente->nombre ()));  
+        listado.escribe (std::format (L"    · Contra '{}', provisto de:",
+                            registro.oponente->nombre ()));
         listado.escribe (std::format (L"          {} con valor de {} puntos.", 
                             registro.tipo_defensa->nombre (), registro.valor_defensa));
         listado.saltaLinea ();

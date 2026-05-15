@@ -25,6 +25,7 @@ namespace tapete {
         std::vector <std::vector <unir2d::Imagen *>> imagenes_fondos {};
 //        std::vector <unir2d::BuzonSonido *>          buzones_sonidos_habilds {};
         std::vector <unir2d::Sonido *>               sonidos_habilidades {};
+        std::vector <unir2d::Sonido *>               sonidos_seleccion {};
 
 
         explicit PresenciaHabilidades (ActorTablero * actor_personaje);

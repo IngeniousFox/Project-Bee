@@ -56,7 +56,7 @@ namespace tapete {
         ActorTablero * actor_tablero;
 
         unir2d::Textura  * textura_fondo {};
-        unir2d::Baldosas * baldosas_fondo {};
+        unir2d::Imagen   * imagen_fondo {};
         unir2d::Textura  * textura_muros {};
         unir2d::Malla    * malla_muros {};
 

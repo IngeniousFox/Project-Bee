@@ -38,6 +38,8 @@ namespace tapete {
         void ponArchivoRetrato (const string & valor);
         const string & archivoFicha () const;
         void ponArchivoFicha (const string & valor);
+        const string & archivoSonidoSeleccion () const;
+        void ponArchivoSonidoSeleccion (const string & valor);
 
         // 
         // Los valores de los tipos defensa y de sistemaAtaque de los personajes son dobles, es decir, hay 
@@ -84,7 +86,7 @@ namespace tapete {
         int vitalidad () const;
         void ponVitalidad (int valor);
 
-        static constexpr int maximoPuntosAccion = 20;
+        static constexpr int maximoPuntosAccion = 5;
         int puntosAccion () const;
         void ponPuntosAccion (int valor);
 
@@ -126,6 +128,7 @@ namespace tapete {
 
         string archivo_retrato {};
         string archivo_ficha {};
+        string archivo_sonido_seleccion {};
 
         struct Multivalor {
             int inicial;

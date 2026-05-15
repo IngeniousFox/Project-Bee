@@ -74,7 +74,7 @@ namespace juego {
         Habilidad * mandatoRegio    {};  // Debuff: multiplica x10 el coste de habilidades del enemigo
         Habilidad * feromonasJalea  {};  // Buff área: sube la defensa de los aliados
         Habilidad * decretoEnjambre {};  // Ataque melee + empuje 3 casillas
-        Habilidad * ultimaVoluntad  {};  // Buff equipo: reduce el coste de habilidades en 1 PA
+        Habilidad * inspiracion     {};  // Buff equipo: reduce el coste de habilidades en 1 PA
 
         // --- Habilidades de la Abeja Guardia ---
         Habilidad * escudoQuitina        {};  // Buff propia: +35 defensa por 2 turnos

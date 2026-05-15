@@ -73,6 +73,102 @@
     <Image Include="habilidades\vela_triple.png">
       <Filter>Archivos de recursos\habilidades</Filter>
     </Image>
+    <Image Include="habilidades\AbejaReina\mandato.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaReina\feromonas.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaReina\decreto.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaReina\inspiracion.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaGuardiana\escudo.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaGuardiana\tronador.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaGuardiana\embestida.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaGuardiana\cadena.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaExploradora\viento.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaExploradora\turbulencia.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaExploradora\reflujo.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaExploradora\alas.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaNodriza\gota.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaNodriza\manto.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaNodriza\cuidados.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AbejaNodriza\absorcion.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AranaReina\red.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AranaReina\titiritero.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AranaReina\mordedura.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AranaReina\seda.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AvispaAsesina\carga.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AvispaAsesina\precision.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AvispaAsesina\frenesi.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\AvispaAsesina\desgarrar.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\Polilla\brebaje.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\Polilla\unguento.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\Polilla\cera.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\Polilla\vapores.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\MoscaCarronera\cargailusoria.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\MoscaCarronera\ojos.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\MoscaCarronera\arrastre.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
+    <Image Include="habilidades\MoscaCarronera\huida.png">
+      <Filter>Archivos de recursos\habilidades</Filter>
+    </Image>
     <Image Include="retratos\aristocrat_75.png">
       <Filter>Archivos de recursos\retratos</Filter>
     </Image>
@@ -104,6 +200,9 @@
       <Filter>Archivos de recursos\activos</Filter>
     </Image>
     <Image Include="activos\estampas_fondo.png">
+      <Filter>Archivos de recursos\activos</Filter>
+    </Image>
+    <Image Include="activos\fondo_concept.png">
       <Filter>Archivos de recursos\activos</Filter>
     </Image>
     <Image Include="retratos\ficha_azul.png">

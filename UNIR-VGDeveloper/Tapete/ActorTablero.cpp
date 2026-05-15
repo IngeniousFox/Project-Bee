@@ -301,6 +301,16 @@ namespace tapete {
     }
 
 
+    void ActorTablero::emiteSonidoSeleccion (ActorPersonaje * personaje) {
+        unir2d::Sonido * sonido = presencia_habilidades.sonidos_seleccion [personaje->indice ()];
+        if (sonido != nullptr) {
+            sonido->suena ();
+        } else {
+            emiteSonidoEstablece ();
+        }
+    }
+
+
     void ActorTablero::muestraDisplay (int digito_1, int digito_2) {
         presencia_tablero.imagenes_digitos_display [0]->seleccionaEstampa (1, digito_1 + 1);
         presencia_tablero.imagenes_digitos_display [1]->seleccionaEstampa (1, digito_2 + 1);

@@ -67,6 +67,16 @@ namespace tapete {
     }
 
 
+    const string & ActorPersonaje::archivoSonidoSeleccion () const {
+        return archivo_sonido_seleccion;
+    }
+
+
+    void ActorPersonaje::ponArchivoSonidoSeleccion (const string & valor) {
+        archivo_sonido_seleccion = valor;
+    }
+
+
     void ActorPersonaje::agregaAtaque (TipoAtaque * tipo_ataque, int valor) {
         valores_tipo_ataque [tipo_ataque] = Multivalor {valor, 0};
     }

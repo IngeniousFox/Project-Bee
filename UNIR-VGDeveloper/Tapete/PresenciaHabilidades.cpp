@@ -63,6 +63,17 @@ namespace tapete {
             sonidos_habilidades [indc] = new unir2d::Sonido {};
             sonidos_habilidades [indc]->carga (habld->archivoSonido ());
         }
+        // Sonido de selección propio de cada personaje (indexado por personaje->indice ()).
+        // Si el personaje no tiene sonido asignado se deja nullptr y se usa el clic genérico.
+        sonidos_seleccion.resize (actor_tablero->juego->personajes ().size (), nullptr);
+        for (int indc_persj = 0; indc_persj < sonidos_seleccion.size (); ++ indc_persj) {
+            ActorPersonaje * persj = actor_tablero->juego->personajes () [indc_persj];
+            if (persj->archivoSonidoSeleccion ().empty ()) {
+                continue;
+            }
+            sonidos_seleccion [persj->indice ()] = new unir2d::Sonido {};
+            sonidos_seleccion [persj->indice ()]->carga (persj->archivoSonidoSeleccion ());
+        }
     }
 
 
@@ -71,6 +82,10 @@ namespace tapete {
             delete sonidos_habilidades [indc];
         }
         sonidos_habilidades.clear ();
+        for (int indc = 0; indc < sonidos_seleccion.size (); ++ indc) {
+            delete sonidos_seleccion [indc];
+        }
+        sonidos_seleccion.clear ();
         //
         for (int indc_persj = 0; indc_persj < imagenes_habilidades.size (); ++ indc_persj) {
             for (int indc_habld = 0; indc_habld < imagenes_habilidades [indc_persj].size (); ++ indc_habld) {
