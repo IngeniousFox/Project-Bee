@@ -61,6 +61,7 @@ namespace tapete {
         void emiteSonidoEstablece ();
         void emiteSonidoDesplaza ();
         void emiteSonidoHabilidad (Habilidad * habilidad);
+        void emiteSonidoSeleccion (ActorPersonaje * personaje);
         //void emiteMusica ();
         //void bajaMusica (int & volumen);
 

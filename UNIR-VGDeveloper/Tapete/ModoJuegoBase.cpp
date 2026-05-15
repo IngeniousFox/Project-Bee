@@ -335,8 +335,8 @@ namespace tapete {
         presnc.muestra (personaje);
         presnc.iluminaPuntosAccion (personaje->puntosAccion (), 0);
         presnc.refrescaBarraVida ();
-        juego_->tablero ()->rejilla ().marcaCelda (personaje->sitioFicha (), ModoJuegoBase::color_elegido); 
-        juego_->tablero ()->emiteSonidoEstablece ();
+        juego_->tablero ()->rejilla ().marcaCelda (personaje->sitioFicha (), ModoJuegoBase::color_elegido);
+        juego_->tablero ()->emiteSonidoSeleccion (personaje);
     }
 
 

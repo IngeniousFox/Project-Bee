@@ -696,10 +696,10 @@ namespace juego {
         ultimaVoluntad ->ponArchivosImagenes (
                 carpeta_habilids_juego + "AbejaReina/inspiracion.png", carpeta_habilids_juego + "fondo_5.png");
         //
-        mandatoRegio   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        feromonasJalea ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        decretoEnjambre->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        ultimaVoluntad ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        mandatoRegio   ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Ataque_Ranged_Colmena.wav");
+        feromonasJalea ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Defensa_Colmena.wav");
+        decretoEnjambre->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Ataque_melee_Colmena.wav");
+        ultimaVoluntad ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Defensa_Colmena.wav");
         //
         agregaHabilidad (mandatoRegio);
         agregaHabilidad (feromonasJalea);
@@ -737,10 +737,10 @@ namespace juego {
         aguijonCadena       ->ponArchivosImagenes (
                 carpeta_habilids_juego + "AbejaGuardiana/cadena.png",    carpeta_habilids_juego + "fondo_5.png");
         //
-        escudoQuitina       ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        ataqueTronador      ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        embestidaTerritorial->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        aguijonCadena       ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        escudoQuitina       ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Defensa_Colmena.wav");
+        ataqueTronador      ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Ataque_melee_Colmena.wav");
+        embestidaTerritorial->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Ataque_melee_Colmena.wav");
+        aguijonCadena       ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Ataque_Ranged_Colmena.wav");
         //
         agregaHabilidad (escudoQuitina);
         agregaHabilidad (ataqueTronador);
@@ -778,10 +778,10 @@ namespace juego {
         armadurasSeda    ->ponArchivosImagenes (
                 carpeta_habilids_juego + "AranaReina/seda.png",       carpeta_habilids_juego + "fondo_5.png");
         //
-        redDominio       ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        hiloTitiritero   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        mordeduraVenenosa->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        armadurasSeda    ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        redDominio       ->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Ataque_ranged_Corte.wav");
+        hiloTitiritero   ->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Ataque_ranged_Corte.wav");
+        mordeduraVenenosa->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Ataque_melee_Corte.wav");
+        armadurasSeda    ->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Defensa_Corte.wav");
         //
         agregaHabilidad (redDominio);
         agregaHabilidad (hiloTitiritero);
@@ -819,10 +819,10 @@ namespace juego {
         alasResonantes         ->ponArchivosImagenes (
                 carpeta_habilids_juego + "AbejaExploradora/alas.png",        carpeta_habilids_juego + "fondo_5.png");
         //
-        vientoAscendente       ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        turbulenciaDebilitadora->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        reflujoPolen           ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        alasResonantes         ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        vientoAscendente       ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Defensa_Colmena.wav");
+        turbulenciaDebilitadora->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Ataque_melee_Colmena.wav");
+        reflujoPolen           ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Ataque_Ranged_Colmena.wav");
+        alasResonantes         ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Ataque_Ranged_Colmena.wav");
         //
         agregaHabilidad (vientoAscendente);
         agregaHabilidad (turbulenciaDebilitadora);
@@ -860,10 +860,10 @@ namespace juego {
         desgarrarFormacion->ponArchivosImagenes (
                 carpeta_habilids_juego + "AvispaAsesina/desgarrar.png", carpeta_habilids_juego + "fondo_5.png");
         //
-        cargaAguijon      ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        precisionAguijon  ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        frenesi           ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        desgarrarFormacion->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        cargaAguijon      ->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Ataque_melee_Corte.wav");
+        precisionAguijon  ->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Ataque_melee_Corte.wav");
+        frenesi           ->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Defensa_Corte.wav");
+        desgarrarFormacion->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Ataque_melee_Corte.wav");
         //
         agregaHabilidad (cargaAguijon);
         agregaHabilidad (precisionAguijon);
@@ -901,10 +901,10 @@ namespace juego {
         absorcionCera     ->ponArchivosImagenes (
                 carpeta_habilids_juego + "AbejaNodriza/absorcion.png", carpeta_habilids_juego + "fondo_5.png");
         //
-        jaleaRestauradora ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        mantoMiel         ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        cuidadosIntensivos->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        absorcionCera     ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        jaleaRestauradora ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Curar_Colmena.wav");
+        mantoMiel         ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Defensa_Colmena.wav");
+        cuidadosIntensivos->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Curar_Colmena.wav");
+        absorcionCera     ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Curar_Colmena.wav");
         //
         agregaHabilidad (jaleaRestauradora);
         agregaHabilidad (mantoMiel);
@@ -942,10 +942,10 @@ namespace juego {
         huidaCobarde   ->ponArchivosImagenes (
                 carpeta_habilids_juego + "MoscaCarronera/huida.png",         carpeta_habilids_juego + "fondo_5.png");
         //
-        cargaIlusoria  ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        ojosCarronero  ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        arrastreVictima->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        huidaCobarde   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        cargaIlusoria  ->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Ataque_ranged_Corte.wav");
+        ojosCarronero  ->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Ataque_ranged_Corte.wav");
+        arrastreVictima->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Movimiento_Corte.wav");
+        huidaCobarde   ->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Movimiento_Corte.wav");
         //
         agregaHabilidad (cargaIlusoria);
         agregaHabilidad (ojosCarronero);
@@ -983,10 +983,10 @@ namespace juego {
         vapores        ->ponArchivosImagenes (
                 carpeta_habilids_juego + "Polilla/vapores.png",  carpeta_habilids_juego + "fondo_5.png");
         //
-        brebajeCorrupto->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        unguentoCera   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        ceraPegajosa   ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
-        vapores        ->ponArchivoSonido (carpeta_sonidos_juego + "Magic Missiles.wav");
+        brebajeCorrupto->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Ataque_ranged_Corte.wav");
+        unguentoCera   ->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Curar_Corte.wav");
+        ceraPegajosa   ->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Ataque_ranged_Corte.wav");
+        vapores        ->ponArchivoSonido (carpeta_sonidos_juego + "Corte/Ataque_ranged_Corte.wav");
         //
         agregaHabilidad (brebajeCorrupto);
         agregaHabilidad (unguentoCera);
@@ -1822,9 +1822,19 @@ namespace juego {
         Polilla         ->ponSitioFicha (Coord {29, 35});
         MoscaCarronera      ->ponSitioFicha (Coord {35, 35});
         //
+        // Sonido específico al seleccionar cada personaje
+        AbejaReina      ->ponArchivoSonidoSeleccion (carpeta_sonidos_juego + "Colmena/Seleccion_AbejaReina_Colmena.wav");
+        AbejaGuardia    ->ponArchivoSonidoSeleccion (carpeta_sonidos_juego + "Colmena/Seleccion_Guardiana_Colmena.wav");
+        AbejaExploradora->ponArchivoSonidoSeleccion (carpeta_sonidos_juego + "Colmena/Seleccion_Exploradora_Colmena.wav");
+        AbejaNodriza    ->ponArchivoSonidoSeleccion (carpeta_sonidos_juego + "Colmena/Seleccion_Nodriza_Colmena.wav");
+        AranaReina      ->ponArchivoSonidoSeleccion (carpeta_sonidos_juego + "Corte/Seleccion_ReinaArana_Corte.wav");
+        Avispa          ->ponArchivoSonidoSeleccion (carpeta_sonidos_juego + "Corte/Seleccion_Avispa_Corte.wav");
+        Polilla         ->ponArchivoSonidoSeleccion (carpeta_sonidos_juego + "Corte/Seleccion_Polilla_Corte.wav");
+        MoscaCarronera  ->ponArchivoSonidoSeleccion (carpeta_sonidos_juego + "Corte/Seleccion_Mosca_Corte.wav");
+        //
         tablero ()->asignaSonidoEstablece (carpeta_sonidos_juego + "Metal Click.wav", 100);
         tablero ()->asignaSonidoDesplaza  (carpeta_sonidos_juego + "SnowWalk.ogg",    100);
-        musica  ()->asignaMusica          (carpeta_sonidos_juego + "Track_1.ogg",     100);
+        musica  ()->asignaMusica          (carpeta_sonidos_juego + "Musica_Juego.wav", 100);
         //
         agregaNombreAlumno (L"Fulano de Tal");
         agregaNombreAlumno (L"Mengano de Cual");
