@@ -674,8 +674,8 @@ namespace juego {
         decretoEnjambre = new Habilidad {
                 L"Decreto de Enjambre",
                 EnfoqueHabilidad::personaje, AccesoHabilidad::directo,   Antagonista::oponente};
-        ultimaVoluntad  = new Habilidad {
-                L"Última Voluntad",
+        inspiracion  = new Habilidad {
+                L"Inspiración",
                 EnfoqueHabilidad::equipo,    AccesoHabilidad::ninguno,   Antagonista::aliado};
         //
         mandatoRegio   ->ponDescripcion (
@@ -684,8 +684,8 @@ namespace juego {
                 L"La Reina libera feromonas de jalea real que refuerzan la coraza de todos los aliados en el área, aumentando su defensa durante 2 turnos.");
         decretoEnjambre->ponDescripcion (
                 L"La Reina lidera una carga en masa: ataca cuerpo a cuerpo y empuja al enemigo 3 casillas hacia atrás.");
-        ultimaVoluntad ->ponDescripcion (
-                L"En un último acto de liderazgo, la Reina infunde determinación a todos sus aliados vivos, reduciendo el coste de sus habilidades en 1 PA durante 3 turnos.");
+        inspiracion ->ponDescripcion (
+                L"La Reina inspira a todos sus aliados vivos: durante 3 turnos, el coste de todas sus habilidades se reduce en 1 punto de acción.");
         //
         mandatoRegio   ->ponArchivosImagenes (
                 carpeta_habilids_juego + "AbejaReina/mandato.png",     carpeta_habilids_juego + "fondo_5.png");
@@ -693,18 +693,18 @@ namespace juego {
                 carpeta_habilids_juego + "AbejaReina/feromonas.png",   carpeta_habilids_juego + "fondo_5.png");
         decretoEnjambre->ponArchivosImagenes (
                 carpeta_habilids_juego + "AbejaReina/decreto.png",     carpeta_habilids_juego + "fondo_5.png");
-        ultimaVoluntad ->ponArchivosImagenes (
+        inspiracion ->ponArchivosImagenes (
                 carpeta_habilids_juego + "AbejaReina/inspiracion.png", carpeta_habilids_juego + "fondo_5.png");
         //
         mandatoRegio   ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Ataque_Ranged_Colmena.wav");
         feromonasJalea ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Defensa_Colmena.wav");
         decretoEnjambre->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Ataque_melee_Colmena.wav");
-        ultimaVoluntad ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Defensa_Colmena.wav");
+        inspiracion ->ponArchivoSonido (carpeta_sonidos_juego + "Colmena/Defensa_Colmena.wav");
         //
         agregaHabilidad (mandatoRegio);
         agregaHabilidad (feromonasJalea);
         agregaHabilidad (decretoEnjambre);
-        agregaHabilidad (ultimaVoluntad);
+        agregaHabilidad (inspiracion);
         // ── Abeja Guardia ────────────────────────────────────────────────────────
         escudoQuitina        = new Habilidad {
                 L"Escudo de Quitina",
@@ -1169,7 +1169,7 @@ namespace juego {
         AbejaReina      ->agregaHabilidad (mandatoRegio);
         AbejaReina      ->agregaHabilidad (feromonasJalea);
         AbejaReina      ->agregaHabilidad (decretoEnjambre);
-        AbejaReina      ->agregaHabilidad (ultimaVoluntad);
+        AbejaReina      ->agregaHabilidad (inspiracion);
         //
         AbejaGuardia    ->agregaHabilidad (escudoQuitina);
         AbejaGuardia    ->agregaHabilidad (ataqueTronador);
@@ -1299,31 +1299,31 @@ namespace juego {
         mandatoRegio->ponEfectoEstado (TipoEstado::MultiplicadorCosteHabilidades, 10, -1); // -1 = hasta fin de ronda
         //
         // Feromonas de Jalea Real: buff de defensa en área a aliados (sin curación de HP)
-        feromonasJalea->ponCoste (4);
+        feromonasJalea->ponCoste (2);
         feromonasJalea->ponAlcance (5);
         feromonasJalea->ponRadioAlcance (2);
         feromonasJalea->ponEfectoEstado (TipoEstado::ModificadorDefensa, 20, 2);
         //
         // Decreto de Enjambre: ataque melee físico + empuje 3 casillas
-        decretoEnjambre->ponCoste (5);
+        decretoEnjambre->ponCoste (2);
         decretoEnjambre->ponAlcance (1);
         decretoEnjambre->asignaAtaque  (ataqueCuerpoACuerpo);
         decretoEnjambre->asignaDefensa (defensaCuerpoACuerpo);
         decretoEnjambre->asignaDano    (danoFisico, 35);
         decretoEnjambre->ponEmpuje (3);
         //
-        // Última Voluntad: buff equipo, reduce coste de habilidades en 1 PA durante 3 turnos
-        ultimaVoluntad->ponCoste (8);
-        ultimaVoluntad->ponEfectoEstado (TipoEstado::ModificadorCosteHabilidades, -1, 3);
+        // Inspiración: buff equipo, reduce coste de habilidades en 1 PA durante 3 turnos
+        inspiracion->ponCoste (4);
+        inspiracion->ponEfectoEstado (TipoEstado::ModificadorCosteHabilidades, -1, 3);
         // ── Abeja Guardia ────────────────────────────────────────────────────────
         // Escudo de Quitina: buff de defensa propio, dura 2 turnos
         // Con base C-C 65, llega a 85 efectiva → más difícil de golpear pero no invulnerable
-        escudoQuitina->ponCoste (4);
+        escudoQuitina->ponCoste (2);
         escudoQuitina->ponEfectoEstado (TipoEstado::ModificadorDefensa, 20, 2);
         //
         // Ataque Tronador: golpe melee potente (55 daño bruto)
         // vs def 50: E[daño] ≈ 41 bruto, ~36 neto (5 reducción). 5 PA → 7 daño/PA
-        ataqueTronador->ponCoste (5);
+        ataqueTronador->ponCoste (2);
         ataqueTronador->ponAlcance (1);
         ataqueTronador->asignaAtaque  (ataqueCuerpoACuerpo);
         ataqueTronador->asignaDefensa (defensaCuerpoACuerpo);
@@ -1331,7 +1331,7 @@ namespace juego {
         //
         // Embestida Territorial: golpe melee + empuje 3 casillas (45 daño bruto)
         // Más caro que Tronador por la utilidad del empuje; daño menor pero reposiciona
-        embestidaTerritorial->ponCoste (6);
+        embestidaTerritorial->ponCoste (3);
         embestidaTerritorial->ponAlcance (1);
         embestidaTerritorial->asignaAtaque  (ataqueCuerpoACuerpo);
         embestidaTerritorial->asignaDefensa (defensaCuerpoACuerpo);
@@ -1341,7 +1341,7 @@ namespace juego {
         // Aguijón Cadena: ataque a distancia de poco daño + atrae hacia la Guardiana
         // Daño bajo (20), pero el gancho trae al enemigo adyacente si el camino está libre
         // Solo arrastra si el ataque impacta (roce, impacto o crítico)
-        aguijonCadena->ponCoste (4);
+        aguijonCadena->ponCoste (2);
         aguijonCadena->ponAlcance (6);   // desde cuántos casillas se puede lanzar
         aguijonCadena->asignaAtaque  (ataqueADistancia);
         aguijonCadena->asignaDefensa (defensaADistancia);
@@ -1350,7 +1350,7 @@ namespace juego {
         // ── Reina Araña ──────────────────────────────────────────────────────────
         // Red de Dominio: debuff de área puro (sin daño), triplica coste habilidades 2 turnos
         // alcance 4, radio 2 → cubre un buen área pero no todo el mapa
-        redDominio->ponCoste (5);
+        redDominio->ponCoste (2);
         redDominio->ponAlcance (4);
         redDominio->ponRadioAlcance (2);
         redDominio->ponEfectoEstado (TipoEstado::MultiplicadorCosteHabilidades, 3, 2);
@@ -1363,7 +1363,7 @@ namespace juego {
         //
         // Mordedura Venenosa: melee con veneno (daño 30 + 10/turno durante 3 turnos)
         // coste 5 PA, adyacente, contra defensaCaC → daño moderado más DoT persistente
-        mordeduraVenenosa->ponCoste (5);
+        mordeduraVenenosa->ponCoste (2);
         mordeduraVenenosa->ponAlcance (1);
         mordeduraVenenosa->asignaAtaque  (ataqueCuerpoACuerpo);
         mordeduraVenenosa->asignaDefensa (defensaCuerpoACuerpo);
@@ -1372,18 +1372,18 @@ namespace juego {
         //
         // Armaduras de Seda: buff de defensa en área para aliados, +20 defensa 2 turnos
         // alcance 3, radio 2; no cura HP, solo aplica el estado defensivo
-        armadurasSeda->ponCoste (4);
+        armadurasSeda->ponCoste (2);
         armadurasSeda->ponAlcance (3);
         armadurasSeda->ponRadioAlcance (2);
         armadurasSeda->ponEfectoEstado (TipoEstado::ModificadorDefensa, 20, 2);
         // ── Abeja Exploradora ────────────────────────────────────────────────────
         // Viento Ascendente: buff a aliado a distancia (indirecto), -2 coste habilidades 3 turnos
-        vientoAscendente->ponCoste (3);
+        vientoAscendente->ponCoste (1);
         vientoAscendente->ponAlcance (7);
         vientoAscendente->ponEfectoEstado (TipoEstado::ModificadorCosteHabilidades, -2, 3);
         //
         // Turbulencia Debilitadora: melee + reduce ataque enemigo -20 durante 2 turnos
-        turbulenciaDebilitadora->ponCoste (4);
+        turbulenciaDebilitadora->ponCoste (2);
         turbulenciaDebilitadora->ponAlcance (1);
         turbulenciaDebilitadora->asignaAtaque  (ataqueCuerpoACuerpo);
         turbulenciaDebilitadora->asignaDefensa (defensaCuerpoACuerpo);
@@ -1391,13 +1391,13 @@ namespace juego {
         turbulenciaDebilitadora->ponEfectoEstado (TipoEstado::ModificadorAtaque, -20, 2);
         //
         // Reflujo de Polen: crea un obstáculo en la celda seleccionada durante 3 turnos
-        reflujoPolen->ponCoste (5);
+        reflujoPolen->ponCoste (2);
         reflujoPolen->ponAlcance (6);
         reflujoPolen->ponRadioAlcance (0);
         reflujoPolen->ponCreaObstaculo (3);
         //
         // Alas Resonantes: ataque a distancia en área amplia, coste muy elevado
-        alasResonantes->ponCoste (10);
+        alasResonantes->ponCoste (4);
         alasResonantes->ponAlcance (7);
         alasResonantes->ponRadioAlcance (2);
         alasResonantes->asignaAtaque  (ataqueADistancia);
@@ -1406,7 +1406,7 @@ namespace juego {
         // ── Avispa Asesina ───────────────────────────────────────────────────────
         // Carga de Aguijón: melee directo con carga hacia el objetivo (alcance 5 hex)
         // Daño solo si la Avispa llega adyacente; obstáculos bloquean el daño
-        cargaAguijon->ponCoste (5);
+        cargaAguijon->ponCoste (2);
         cargaAguijon->ponAlcance (5);
         cargaAguijon->asignaAtaque  (ataqueCuerpoACuerpo);
         cargaAguijon->asignaDefensa (defensaCuerpoACuerpo);
@@ -1414,7 +1414,7 @@ namespace juego {
         cargaAguijon->ponCarga ();
         //
         // Precisión de Aguijón: melee adyacente; crítico garantizado si objetivo < 30 HP
-        precisionAguijon->ponCoste (4);
+        precisionAguijon->ponCoste (2);
         precisionAguijon->ponAlcance (1);
         precisionAguijon->asignaAtaque  (ataqueCuerpoACuerpo);
         precisionAguijon->asignaDefensa (defensaCuerpoACuerpo);
@@ -1422,12 +1422,12 @@ namespace juego {
         precisionAguijon->ponCriticoSiObjetivoDebil ();
         //
         // Frenesí: buff propio → +15 ataque y +15 defensa durante 2 turnos
-        frenesi->ponCoste (4);
+        frenesi->ponCoste (2);
         frenesi->ponEfectoEstado (TipoEstado::ModificadorAtaque,  15, 2);
         frenesi->ponEfectoEstado (TipoEstado::ModificadorDefensa, 15, 2);
         //
         // Desgarrar Formación: ataque melee débil + reduce 20 pts de defensa al enemigo 2 turnos
-        desgarrarFormacion->ponCoste (3);
+        desgarrarFormacion->ponCoste (1);
         desgarrarFormacion->ponAlcance (1);
         desgarrarFormacion->asignaAtaque  (ataqueCuerpoACuerpo);
         desgarrarFormacion->asignaDefensa (defensaCuerpoACuerpo);
@@ -1435,46 +1435,46 @@ namespace juego {
         desgarrarFormacion->ponEfectoEstado (TipoEstado::ModificadorDefensa, -20, 2);
         // ── Abeja Nodriza ────────────────────────────────────────────────────────
         // Jalea Restauradora: curación media a distancia (indirecto), sin contacto
-        jaleaRestauradora->ponCoste (4);
+        jaleaRestauradora->ponCoste (2);
         jaleaRestauradora->ponAlcance (5);
         jaleaRestauradora->asignaCuracion (30);
         //
         // Manto de Miel: buff de defensa a un aliado a distancia
-        mantoMiel->ponCoste (3);
+        mantoMiel->ponCoste (1);
         mantoMiel->ponAlcance (5);
         mantoMiel->ponEfectoEstado (TipoEstado::ModificadorDefensa, 25, 3);
         //
         // Cuidados Intensivos: curación alta a meleé + limpia todos los estados negativos
-        cuidadosIntensivos->ponCoste (6);
+        cuidadosIntensivos->ponCoste (3);
         cuidadosIntensivos->ponAlcance (1);
         cuidadosIntensivos->asignaCuracion (60);
         cuidadosIntensivos->ponLimpiaEstadosNegativos ();
         //
         // Absorción de Cera: elimina obstáculos temporales del tablero y cura aliados
         // valorCuracion = curación por cada obstáculo absorbido (0 obstáculos = 0 curación)
-        absorcionCera->ponCoste (5);
+        absorcionCera->ponCoste (2);
         absorcionCera->asignaCuracion (20);
         absorcionCera->ponEliminaObstaculos ();
         // ── Polilla ──────────────────────────────────────────────────────────────
         // Brebaje Corrupto: debuff puro en área — reduce defensa -25 durante 3 rondas
-        brebajeCorrupto->ponCoste (4);
+        brebajeCorrupto->ponCoste (2);
         brebajeCorrupto->ponAlcance (5);
         brebajeCorrupto->ponRadioAlcance (2);
         brebajeCorrupto->ponEfectoEstado (TipoEstado::ModificadorDefensa, -25, 3);
         //
         // Ungüento de Cera: curación moderada a distancia a un aliado
-        unguentoCera->ponCoste (4);
+        unguentoCera->ponCoste (2);
         unguentoCera->ponAlcance (5);
         unguentoCera->asignaCuracion (30);
         //
         // Cera Pegajosa: crea obstáculo temporal en celda vacía (idéntico a Reflujo de Polen)
-        ceraPegajosa->ponCoste (5);
+        ceraPegajosa->ponCoste (2);
         ceraPegajosa->ponAlcance (6);
         ceraPegajosa->ponRadioAlcance (0);
         ceraPegajosa->ponCreaObstaculo (3);
         //
         // Vapores: ataque mágico en área + buff de ataque +20 a todos los aliados vivos durante 2 turnos
-        vapores->ponCoste (7);
+        vapores->ponCoste (3);
         vapores->ponAlcance (5);
         vapores->ponRadioAlcance (2);
         vapores->asignaAtaque  (ataqueMagico);
@@ -1482,44 +1482,44 @@ namespace juego {
         vapores->asignaDano    (danoMagico, 40);
         vapores->ponEfectoEstadoAliados (TipoEstado::ModificadorAtaque, 20, 2);
         // ── Habilidades placeholder ──────────────────────────────────────────────
-        ataqueEspadaNormal->ponCoste (3);
+        ataqueEspadaNormal->ponCoste (1);
         ataqueEspadaNormal->ponAlcance (1);
         ataqueEspadaNormal->asignaAtaque  (ataqueCuerpoACuerpo); 
         ataqueEspadaNormal->asignaDefensa (defensaCuerpoACuerpo); 
         ataqueEspadaNormal->asignaDano    (danoFisico, 20); 
         //
-        ataqueArco->ponCoste (5);
+        ataqueArco->ponCoste (2);
         ataqueArco->ponAlcance (15);
         ataqueArco->asignaAtaque  (ataqueADistancia);
         ataqueArco->asignaDefensa (defensaADistancia);
         ataqueArco->asignaDano    (danoFisico, 20);
         //
-        ataqueEspadaPoderoso->ponCoste (5);
+        ataqueEspadaPoderoso->ponCoste (2);
         ataqueEspadaPoderoso->ponAlcance (1);
         ataqueEspadaPoderoso->asignaAtaque  (ataqueCuerpoACuerpo);
         ataqueEspadaPoderoso->asignaDefensa (defensaCuerpoACuerpo);
         ataqueEspadaPoderoso->asignaDano    (danoFisico, 50);
         //
-        defensaFerrea->ponCoste (3);
+        defensaFerrea->ponCoste (1);
         defensaFerrea->agregaEfectoDefensa (defensaCuerpoACuerpo, 30);
         defensaFerrea->agregaEfectoDefensa (defensaADistancia,    30);
         //
-        curacionSimple->ponCoste (5);
+        curacionSimple->ponCoste (2);
         curacionSimple->ponAlcance (3);  
         curacionSimple->asignaCuracion (40);
         //
-        curacionGrupo->ponCoste (10);
+        curacionGrupo->ponCoste (4);
         curacionGrupo->ponAlcance (3);  
         curacionGrupo->ponRadioAlcance (3);
         curacionGrupo->asignaCuracion (40);
         //
-        proyectilMagico->ponCoste (7);
+        proyectilMagico->ponCoste (3);
         proyectilMagico->ponAlcance (15);                                            
         proyectilMagico->asignaAtaque  (ataqueMagico);
         proyectilMagico->asignaDefensa (defensaMagica);
         proyectilMagico->asignaDano    (danoMagico, 30);
         //
-        bolaFuego->ponCoste (10);
+        bolaFuego->ponCoste (4);
         bolaFuego->ponAlcance (8);
         bolaFuego->ponRadioAlcance (3);
         bolaFuego->asignaAtaque  (ataqueMagico);
@@ -1527,7 +1527,7 @@ namespace juego {
         bolaFuego->asignaDano    (danoMagico, 50);
         //
         // Veneno mortal: inflige daño inmediato + 8 pts de veneno por turno durante 3 turnos
-        venenoMortal->ponCoste (6);
+        venenoMortal->ponCoste (3);
         venenoMortal->ponAlcance (1);
         venenoMortal->asignaAtaque  (ataqueCuerpoACuerpo);
         venenoMortal->asignaDefensa (defensaCuerpoACuerpo);
@@ -1536,7 +1536,7 @@ namespace juego {
         // ── Mosca Carroñera ─────────────────────────────────────────────────────
         // Carga Ilusoria: ataque en área indirecto, radio=0 (celda única), rango largo
         // Ataca como a distancia (la Mosca lanza desde lejos sin línea de visión directa)
-        cargaIlusoria->ponCoste (4);
+        cargaIlusoria->ponCoste (2);
         cargaIlusoria->ponAlcance (6);
         cargaIlusoria->ponRadioAlcance (0);
         cargaIlusoria->asignaAtaque  (ataqueADistancia);
@@ -1544,18 +1544,18 @@ namespace juego {
         cargaIlusoria->asignaDano    (danoFisico, 35);
         //
         // Ojos del Carroñero: debuff puro a distancia — baja defensa del objetivo -35 pts por 3 rondas
-        ojosCarronero->ponCoste (3);
+        ojosCarronero->ponCoste (1);
         ojosCarronero->ponAlcance (7);
         ojosCarronero->ponEfectoEstado (TipoEstado::ModificadorDefensa, -35, 3);
         //
         // Arrastre de Víctima: selecciona celda libre; la Mosca se mueve allí y arrastra al enemigo adyacente
-        arrastreVictima->ponCoste (5);
+        arrastreVictima->ponCoste (2);
         arrastreVictima->ponAlcance (4);
         arrastreVictima->ponRadioAlcance (0);
         arrastreVictima->ponMueveAtacante ();
         //
         // Huida Cobarde: ataque corto + debuff ataque -20 por 1 ronda + la Mosca escapa a celda aleatoria
-        huidaCobarde->ponCoste (3);
+        huidaCobarde->ponCoste (1);
         huidaCobarde->ponAlcance (2);
         huidaCobarde->asignaAtaque  (ataqueCuerpoACuerpo);
         huidaCobarde->asignaDefensa (defensaCuerpoACuerpo);
@@ -1839,7 +1839,7 @@ namespace juego {
         agregaNombreAlumno (L"Fulano de Tal");
         agregaNombreAlumno (L"Mengano de Cual");
         agregaNombreAlumno (L"Zutano de Pascual");
-        indicaCursoAcademico (L"2022 - 2023");
+        indicaCursoAcademico (L"2025 - 2026");
         //
         /*******************************************************************************************
         /******************************************************************************************/
@@ -1862,7 +1862,7 @@ namespace juego {
         mandatoRegio    = nullptr;
         feromonasJalea  = nullptr;
         decretoEnjambre = nullptr;
-        ultimaVoluntad  = nullptr;
+        inspiracion  = nullptr;
         //
         escudoQuitina        = nullptr;
         ataqueTronador       = nullptr;
