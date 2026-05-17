@@ -242,6 +242,7 @@
     <Image Include="interrogacion.png" />
     <Image Include="marca_amarilla_corta.png" />
     <Image Include="marco_75.png" />
+    <Image Include="marco_75_bugs.png" />
     <Image Include="marco_display.png" />
     <Image Include="marco_habilidad.png" />
     <Image Include="marco_personaje.png" />

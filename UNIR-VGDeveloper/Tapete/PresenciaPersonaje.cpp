@@ -71,9 +71,13 @@ namespace tapete {
         //
         delete imagen_marco_retrato;
         imagen_marco_retrato = nullptr;
-        if (textura_marco_retrato->cuentaUsos () == 0) {
+        if (textura_marco_retrato != nullptr && textura_marco_retrato->cuentaUsos () == 0) {
             delete textura_marco_retrato;
             textura_marco_retrato = nullptr;
+        }
+        if (textura_marco_retrato_bichos != nullptr && textura_marco_retrato_bichos->cuentaUsos () == 0) {
+            delete textura_marco_retrato_bichos;
+            textura_marco_retrato_bichos = nullptr;
         }
         delete imagen_retrato_lateral;
         imagen_retrato_lateral = nullptr;
@@ -182,13 +186,23 @@ namespace tapete {
         imagen_retrato_lateral->ponPosicion (panel_lateral.posicion () + Vector {10, 30});
         imagen_retrato_lateral->asigna (textura_retrato);
         //
-        if (textura_marco_retrato == nullptr) {
-            textura_marco_retrato = new unir2d::Textura {};
-            textura_marco_retrato->carga (JuegoMesaBase::carpetaActivos () + "marco_75.png");
+        unir2d::Textura * textura_marco;
+        if (actor_personaje->lado_tablero == LadoTablero::Derecha) {
+            if (textura_marco_retrato_bichos == nullptr) {
+                textura_marco_retrato_bichos = new unir2d::Textura {};
+                textura_marco_retrato_bichos->carga (JuegoMesaBase::carpetaActivos () + "marco_75_bugs.png");
+            }
+            textura_marco = textura_marco_retrato_bichos;
+        } else {
+            if (textura_marco_retrato == nullptr) {
+                textura_marco_retrato = new unir2d::Textura {};
+                textura_marco_retrato->carga (JuegoMesaBase::carpetaActivos () + "marco_75.png");
+            }
+            textura_marco = textura_marco_retrato;
         }
         imagen_marco_retrato = new unir2d::Imagen ();
         imagen_marco_retrato->ponPosicion (panel_lateral.posicion () + Vector {0, 20});
-        imagen_marco_retrato->asigna (textura_marco_retrato);
+        imagen_marco_retrato->asigna (textura_marco);
         //
         actor_personaje->agregaDibujo (fondo_retrato);
         actor_personaje->agregaDibujo (imagen_retrato_lateral);
